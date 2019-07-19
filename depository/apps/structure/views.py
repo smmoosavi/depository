@@ -1,22 +1,34 @@
-from django.shortcuts import render
-
 # Create your views here.
+from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from depository.apps.structure.serializers import StructureCreateSerializer
+from depository.apps.structure.serializers import CabinetCreateSerializer, \
+    StatusSerializer, CabinetSerializer
 
 
-class StructureViewSet(GenericViewSet, CreateModelMixin):
-    serializer_class = StructureCreateSerializer
-
+class ChangeStatusMixin:
     @action(methods=['POST'], detail=False)
-    def change_cell_status(self, request):
-        # TODO: change is_healthy of a cell
-        pass
+    def change_status(self, request):
+        serializer = StatusSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # TODO: update cell status
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @action(detail=False)
-    def overview(self, request):
-        # TODO: return overview of depository includes cabinets, rows, cells
-        pass
+
+class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin):
+    serializer_class = CabinetCreateSerializer
+
+
+class CellViewSet(GenericViewSet, ChangeStatusMixin):
+    pass
+
+
+class RowViewSet(CellViewSet, ChangeStatusMixin):
+    pass
+
+
+class StructureViewSet(GenericViewSet, ListModelMixin):
+    serializer_class = CabinetSerializer

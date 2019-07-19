@@ -1,0 +1,5 @@
+django
+packaging
+pillow
+django-filter
+django-rest-framework

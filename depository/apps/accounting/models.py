@@ -11,3 +11,6 @@ class Pilgrim(models.Model):
     city = models.CharField(max_length=100, null=True, blank=True)
     passport_id = models.CharField(max_length=20, null=True, blank=True)
     passport_pic = models.ImageField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{first_name} {last_name} {country} {passport_id}'

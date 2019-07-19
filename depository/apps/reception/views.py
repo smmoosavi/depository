@@ -1,12 +1,13 @@
 # Create your views here.
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.mixins import CreateModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from depository.apps.reception.filters import DeliveryFilter
 from depository.apps.reception.serializers import ReceptionTakeSerializer, \
-    ReceptionGiveSerializer
+    ReceptionGiveSerializer, DeliverySerializer
 
 
 class ReceptionViewSet(GenericViewSet, CreateModelMixin):
@@ -14,7 +15,7 @@ class ReceptionViewSet(GenericViewSet, CreateModelMixin):
 
     def get_serializer_class(self):
         if action == 'take':
-            return self.serializer_class
+            return ReceptionTakeSerializer
         else:
             return ReceptionGiveSerializer
 
@@ -35,14 +36,14 @@ class ReceptionViewSet(GenericViewSet, CreateModelMixin):
         return self._create(request)
 
     @action(methods=['POST'], detail=False)
-    def search(self, request):
-        # TODO: search on user and delivery date
-        pass
-
-    @action(methods=['POST'], detail=False)
     def deliver_to_store(self, request):
         # TODO:
         pass
+
+
+class DeliveryViewSet(GenericViewSet, ListModelMixin):
+    serializer_class = DeliverySerializer
+    filter_class = DeliveryFilter
 
 
 class ReportViewSet(GenericViewSet):

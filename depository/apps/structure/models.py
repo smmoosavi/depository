@@ -22,8 +22,8 @@ class Cell(models.Model):
     SIZE_SMALL = 0
     SIZE_LARGE = 1
     SIZE_CHOICES = (
-        SIZE_SMALL, _('Small'),
-        SIZE_LARGE, _('Large')
+        (SIZE_SMALL, _('Small')),
+        (SIZE_LARGE, _('Large'))
     )
     code = models.CharField(max_length=20)
     Cabinet = models.ForeignKey(Row, on_delete=models.CASCADE)

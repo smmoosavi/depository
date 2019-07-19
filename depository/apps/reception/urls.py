@@ -6,5 +6,6 @@ from depository.apps.reception.views import ReceptionViewSet, ReportViewSet, \
 
 router = DefaultRouter()
 router.register('reception', ReceptionViewSet, 'reception')
+router.register('delivery', ReportViewSet, 'delivery')
 router.register('report', ReportViewSet, 'report')
 router.register('backup', BackUpViewSet, 'backup')
