@@ -15,7 +15,7 @@ class Cabinet(models.Model):
 
 class Row(models.Model):
     code = models.CharField(max_length=20)
-    Cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE)
+    cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE, related_name='rows')
 
 
 class Cell(models.Model):
@@ -26,7 +26,7 @@ class Cell(models.Model):
         (SIZE_LARGE, _('Large'))
     )
     code = models.CharField(max_length=20)
-    Cabinet = models.ForeignKey(Row, on_delete=models.CASCADE)
+    row = models.ForeignKey(Row, on_delete=models.CASCADE, related_name='cells')
     is_healthy = models.BooleanField(default=True)
     size = models.IntegerField(choices=SIZE_CHOICES, default=SIZE_SMALL)
 

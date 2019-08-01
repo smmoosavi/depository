@@ -7,28 +7,32 @@ from rest_framework.viewsets import GenericViewSet
 
 from depository.apps.structure.serializers import CabinetCreateSerializer, \
     StatusSerializer, CabinetSerializer
+from depository.apps.utils.permissions import IsAdmin
 
 
 class ChangeStatusMixin:
+
     @action(methods=['POST'], detail=False)
     def change_status(self, request):
         serializer = StatusSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        # TODO: update cell status
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin):
     serializer_class = CabinetCreateSerializer
+    permission_classes = [IsAdmin]
 
 
 class CellViewSet(GenericViewSet, ChangeStatusMixin):
-    pass
+    permission_classes = [IsAdmin]
 
 
 class RowViewSet(CellViewSet, ChangeStatusMixin):
-    pass
+    permission_classes = [IsAdmin]
 
 
 class StructureViewSet(GenericViewSet, ListModelMixin):
     serializer_class = CabinetSerializer
+    permission_classes = [IsAdmin]

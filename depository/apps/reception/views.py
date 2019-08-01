@@ -2,19 +2,24 @@
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from depository.apps.reception.filters import DeliveryFilter
 from depository.apps.reception.serializers import ReceptionTakeSerializer, \
     ReceptionGiveSerializer, DeliverySerializer
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ReceptionViewSet(GenericViewSet, CreateModelMixin):
     serializer_class = ReceptionTakeSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
-        if action == 'take':
+        if self.action == 'take':
             return ReceptionTakeSerializer
         else:
             return ReceptionGiveSerializer

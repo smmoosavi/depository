@@ -3,3 +3,5 @@ packaging
 pillow
 django-filter
 django-rest-framework
+hashids
+drf-yasg

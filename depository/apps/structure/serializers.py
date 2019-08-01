@@ -1,10 +1,13 @@
+from django.conf import settings
 from rest_framework import serializers
+from rest_framework.generics import get_object_or_404
 
+from depository.apps.structure.helpers import CodeHelper
 from depository.apps.structure.models import Cell, Cabinet, Row
 
 
 class CabinetCreateSerializer(serializers.Serializer):
-    name = serializers.CharField()
+    code = serializers.CharField()
     num_of_rows = serializers.IntegerField()
     num_of_cols = serializers.IntegerField()
     size = serializers.ChoiceField(
@@ -14,20 +17,46 @@ class CabinetCreateSerializer(serializers.Serializer):
         Cell.SIZE_CHOICES, default=Cell.SIZE_SMALL
     )
 
-    def create(self, validated_data):
-        # TODO: create cabinet
-        pass
+    def create(self, data):
+        cabinet = Cabinet.objects.create(code=data['code'], depository_id=settings.DEFAULT_DEPOSITORY_ID)
+        for row_idx in range(data['num_of_rows']):
+            row = Row.objects.create(code=str(row_idx + 1), cabinet=cabinet)
+            for col_idx in range(data['num_of_cols']):
+                size = Cell.SIZE_SMALL
+                if row_idx == 0 and data['first_row_size'] == Cell.SIZE_LARGE:
+                    size = Cell.SIZE_LARGE
+                Cell.objects.create(code=str(col_idx + 1), row=row, size=size)
+        return data
 
 
 class StatusSerializer(serializers.Serializer):
     code = serializers.CharField()
     is_healthy = serializers.BooleanField()
 
+    def create(self, data):
+        cabinet, row, cell = CodeHelper().to_code(data['code'])
+        if cell:
+            cell = get_object_or_404(Cell.objects.all(), code=cell, row__code=row, row__cabinet__code=cabinet)
+            cell.is_healthy = data['is_healthy']
+            cell.save()
+        elif row:
+            row = get_object_or_404(Row.objects.all(), code=row, cabinet__code=cabinet)
+            row.cells.update(is_healthy=data['is_healthy'])
+        elif cabinet:
+            cabinet = get_object_or_404(Cabinet.objects.all(), code=cabinet)
+            Cell.objects.filter(row__cabinet=cabinet).update(is_healthy=data['is_healthy'])
+        return data
+
 
 class CellSerializer(serializers.ModelSerializer):
+    code = serializers.SerializerMethodField()
+
     class Meta:
         model = Cell
         fields = '__all__'
+
+    def get_code(self, obj):
+        return CodeHelper().to_str(obj.row.cabinet.code, obj.row.code, obj.code)
 
 
 class RowSerializer(serializers.ModelSerializer):
