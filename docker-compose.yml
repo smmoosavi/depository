@@ -16,6 +16,6 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - ../depository:/depository
+      - ../db:/db
     env_file:
       - ./.env
