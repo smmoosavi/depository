@@ -1,0 +1,21 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./docker/depository.conf:/etc/nginx/conf.d/depository.conf
+      - ./public/static:/STATIC
+      - ./public/media:/MEDIA
+  web:
+    build:
+      context: ./
+      dockerfile: ./docker/DockerFile
+    ports:
+      - 8000:8000
+    volumes:
+      - ../depository:/depository
+    env_file:
+      - ./.env
