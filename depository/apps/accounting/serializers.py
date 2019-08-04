@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy
 from rest_framework import serializers
 
+from depository.apps.accounting.helper import AccountHelper
 from depository.apps.accounting.models import Pilgrim
 
 
@@ -26,10 +27,13 @@ class SignInSerializer(serializers.Serializer):
         if all(data.values()):
             user = authenticate(username=data['username'], password=data['password'])
             if user:
-                return {}
+                return {
+                    'token': AccountHelper().generate_jwt_token(user),
+                    'user': user,
+                }
             else:
                 msg = ugettext_lazy('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg)
         else:
-            msg = ugettext_lazy('Must include "username" and "password".')
+            msg = ugettext_lazy('Must include "email" and "password".')
             raise serializers.ValidationError(msg)

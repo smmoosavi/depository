@@ -13,6 +13,13 @@ class SignInTest(APITestCase):
         self.user.set_password('a')
         self.user.save()
 
-    def test_login(self):
-        response = self.client.post(reverse("signin-list"), {"username": "taker", "password": "a"})
-        self.assertEqual(status.HTTP_200_OK, response.status_code)
+    def test_jwt_refresh_token(self):
+        expected_status = status.HTTP_200_OK
+
+        login_data = {'username': 'taker', 'password': 'a'}
+        response = self.client.post(reverse('signin-list'), login_data)
+        self.assertEqual(response.status_code, expected_status)
+
+        data = {'token': response.json().get('token', None)}
+        resp = self.client.post(reverse('refresh-token'), data=data)
+        self.assertEqual(resp.status_code, expected_status)

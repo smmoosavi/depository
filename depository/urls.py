@@ -17,12 +17,14 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-from depository.apps.accounting.urls import router as accounting_router
-from depository.apps.structure.urls import router as structure_router
-from depository.apps.reception.urls import router as reception_router
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
+from rest_framework_jwt.views import refresh_jwt_token
+
+from depository.apps.accounting.urls import router as accounting_router
+from depository.apps.reception.urls import router as reception_router
+from depository.apps.structure.urls import router as structure_router
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -41,6 +43,7 @@ urlpatterns = [
     path(r'', include(accounting_router.urls)),
     path(r'', include(structure_router.urls)),
     path(r'', include(reception_router.urls)),
+    url(r'^api-token-refresh/', refresh_jwt_token, name='refresh-token'),
     path('admin/', admin.site.urls),
     url(r'^swagger(?P<format>\.json|\.yaml)$',
         schema_view.without_ui(cache_timeout=0), name='schema-json'),

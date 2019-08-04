@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from datetime import timedelta
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -61,6 +63,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
     'drf_yasg',
     'django_filters',
     'depository.apps.accounting',
@@ -207,3 +211,9 @@ DEFAULT_DEPOSITORY_ID = 1
 CABINET_DIGITS = 2
 ROW_DIGITS = 2
 CELL_DIGITS = 2
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': timedelta(hours=2),
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(hours=3),
+}
