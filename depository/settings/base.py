@@ -15,8 +15,34 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+def get_env_var(name, default=None, prefixed=False):
+    """ Returns the value of the environment variable with th given name
+
+    :param name: name of environment variable
+    :param prefixed whether to add project name prefix to env var or not
+    :param default: default value if the environment variable was not set
+    :return: value of the given environment variable
+    """
+    key = '%s'
+    if prefixed:
+        key = 'APP_SERVER_%s'
+    return os.environ.get(key % name, default)
+
+
+def get_env_list(name, default=None, prefixed=False):
+    values = get_env_var(name, default, prefixed)
+
+    if values is None:
+        return list()
+
+    if type(values) == list:
+        return values
+
+    return [value.strip() for value in values.split(',') if value.strip()]
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'e!@^v&!$wwpi*0y65*o57#_l2z7d$-y-ez_yx-6v!z5la64w8_'
@@ -24,7 +50,7 @@ SECRET_KEY = 'e!@^v&!$wwpi*0y65*o57#_l2z7d$-y-ez_yx-6v!z5la64w8_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = get_env_list("ALLOWED_HOSTS", ["*"])
 
 # Application definition
 
@@ -116,7 +142,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, '../', 'public', 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, '../', 'public', 'media')
 
 LOGGING = {
     'version': 1,
