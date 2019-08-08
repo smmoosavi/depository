@@ -10,6 +10,7 @@ from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.utils import jwt_response_payload_handler
 
 from depository.apps.accounting.filters import PilgrimFilter
+from depository.apps.accounting.models import Pilgrim
 from depository.apps.accounting.serializers import UserSerializer, \
     PilgrimSerializer, SignInSerializer
 
@@ -26,6 +27,7 @@ class AccountingViewSet(GenericViewSet, CreateModelMixin):
 class PilgrimViewSet(GenericViewSet, ListModelMixin):
     serializer_class = PilgrimSerializer
     filter_class = PilgrimFilter
+    queryset = Pilgrim.objects.all()
 
 
 class SignInViewSet(GenericViewSet):
