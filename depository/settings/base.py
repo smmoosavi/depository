@@ -214,7 +214,7 @@ ROW_DIGITS = 2
 CELL_DIGITS = 2
 
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': timedelta(hours=2),
+    'JWT_EXPIRATION_DELTA': timedelta(hours=6),
     'JWT_ALLOW_REFRESH': True,
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(hours=3),
 }

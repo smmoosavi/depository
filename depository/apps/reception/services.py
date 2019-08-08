@@ -14,7 +14,10 @@ class CellAssigner:
             is_healthy=True
         ).exclude(
             pk__in=busy_cells
-        ).order_by('row__cabinet__order').first().row.cabinet.order
+        ).order_by('row__cabinet__order').first()
+        if not cabinet_order:
+            return None
+        cabinet_order = cabinet_order.row.cabinet.order
         for cabinet in Cabinet.objects.filter(order=cabinet_order):
             is_asc = cabinet.is_asc
             cells = Cell.objects.filter(
