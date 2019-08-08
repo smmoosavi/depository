@@ -13,4 +13,4 @@ class Pilgrim(models.Model):
     passport_pic = models.ImageField(null=True, blank=True)
 
     def __str__(self):
-        return f'{first_name} {last_name} {country} {passport_id}'
+        return f'{self.first_name} {self.last_name} {self.country} {self.passport_id}'
