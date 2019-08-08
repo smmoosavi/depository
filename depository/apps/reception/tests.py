@@ -1,14 +1,17 @@
+import logging
+
 from django.contrib.auth.models import User
+from django.test import TestCase
 from django.urls import reverse
 # Create your tests here.
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
-import logging
 
 from depository.apps.accounting.models import Pilgrim
 from depository.apps.reception.models import Pack, Delivery
-from depository.apps.structure.models import Cabinet, Row, Cell
+from depository.apps.reception.services import CellAssigner
+from depository.apps.structure.models import Cabinet, Row, Cell, Depository
 
 logger = logging.getLogger(__name__)
 
@@ -46,3 +49,28 @@ class ReceptionTest(APITestCase):
 
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertEqual(Delivery.objects.get(hash_id=self.hash_id).giver, self.user)
+
+
+class CellAssignerTest(TestCase):
+    def setUp(self):
+        depository = Depository.objects.create(name="d1")
+        c1 = Cabinet.objects.create(depository=depository, code='2', order=1, is_asc=False)
+        c2 = Cabinet.objects.create(depository=depository, code='1', order=2)
+        for cabinet in [c1, c2]:
+            Row.objects.create(cabinet=cabinet, code=1)
+            Row.objects.create(cabinet=cabinet, code=2)
+            Row.objects.create(cabinet=cabinet, code=3)
+            for row in cabinet.rows.all():
+                Cell.objects.create(code=1, row=row)
+                Cell.objects.create(code=2, row=row, size=Cell.SIZE_LARGE)
+                Cell.objects.create(code=3, row=row)
+
+    def test_assign_small(self):
+        cell = CellAssigner().assign_cell(Cell.SIZE_SMALL)
+        code = (cell.row.cabinet.code, cell.row.code, cell.code)
+        self.assertEqual(code, ('2', 2, 3))
+
+    def test_assign_large(self):
+        cell = CellAssigner().assign_cell(Cell.SIZE_LARGE)
+        code = (cell.row.cabinet.code, cell.row.code, cell.code)
+        self.assertEqual(code, ('2', 2, 2))

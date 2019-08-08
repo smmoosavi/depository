@@ -11,7 +11,7 @@ from depository.apps.structure.models import Cell, Cabinet, Row
 logger = logging.getLogger(__name__)
 
 
-class ReceptionTest(APITestCase):
+class StructureTest(APITestCase):
 
     def setUp(self):
         self.user = User.objects.create(username="admin")
@@ -36,7 +36,7 @@ class ReceptionTest(APITestCase):
         response = self.client.post(reverse('cabinet-list'), data)
         logger.info(response.data)
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
-        self.assertEqual(15, Cell.objects.count())
+        self.assertEqual(16, Cell.objects.count())
         self.assertEqual(5, Cell.objects.filter(size=Cell.SIZE_LARGE).count())
 
     def test_change_status_cell(self):
