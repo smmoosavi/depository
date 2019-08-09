@@ -69,6 +69,14 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
         obj.save()
         return Response({}, status.HTTP_200_OK)
 
+    @action(methods=['POST'], detail=True)
+    def revert_exit(self, request, hash_id):
+        obj = self.get_object()
+        obj.exit_type = None
+        obj.exited_at = None
+        obj.giver = None
+        obj.save()
+        return Response({}, status.HTTP_200_OK)
 
 class ReportViewSet(GenericViewSet):
     # TODO: ??
