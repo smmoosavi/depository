@@ -1,4 +1,8 @@
 # Create your views here.
+import logging
+
+from django.conf import settings
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
@@ -7,9 +11,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from depository.apps.reception.filters import DeliveryFilter
+from depository.apps.reception.models import Delivery
 from depository.apps.reception.serializers import ReceptionTakeSerializer, \
     ReceptionGiveSerializer, DeliverySerializer
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -40,15 +44,30 @@ class ReceptionViewSet(GenericViewSet, CreateModelMixin):
     def take(self, request):
         return self._create(request)
 
-    @action(methods=['POST'], detail=False)
-    def deliver_to_store(self, request):
-        # TODO:
-        pass
-
 
 class DeliveryViewSet(GenericViewSet, ListModelMixin):
     serializer_class = DeliverySerializer
     filter_class = DeliveryFilter
+    lookup_field = 'hash_id'
+    queryset = Delivery.objects.all()
+
+    @action(methods=['GET'], detail=False)
+    def old(self, request):
+        threshold = timezone.now() - timezone.timedelta(days=settings.STORE_DAYS)
+        deliveries = Delivery.objects.filter(
+            exited_at__isnull=True, entered_at__lte=threshold
+        )
+        serializer = self.get_serializer(deliveries, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(methods=['POST'], detail=True)
+    def deliver_to_store(self, request, hash_id):
+        obj = self.get_object()
+        obj.exited_at = timezone.now()
+        obj.exit_type = Delivery.DELIVERED_TO_STORE
+        obj.giver = request.user
+        obj.save()
+        return Response({}, status.HTTP_200_OK)
 
 
 class ReportViewSet(GenericViewSet):

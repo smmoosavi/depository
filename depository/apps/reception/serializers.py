@@ -27,6 +27,10 @@ class ReceptionTakeSerializer(serializers.Serializer):
             raise ValidationError(
                 _("At least one of following fields is required: bag_count,'pram_count, suitcase_count")
             )
+        if 'bag_count' in attrs and {'pram_count', 'suitcase_count'}.intersection(attrs):
+            raise ValidationError(
+                _("The given combination of packs isn't valid, because size of bag and para/suitcase isn't equal.")
+            )
         return attrs
 
     def get_pilgrim(self, data):
@@ -67,6 +71,12 @@ class ReceptionGiveSerializer(serializers.Serializer):
         return data
 
 
+class PackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pack
+        fields = '__all__'
+
+
 class DeliverySerializer(serializers.ModelSerializer):
     pack = serializers.SerializerMethodField()
 
@@ -78,4 +88,4 @@ class DeliverySerializer(serializers.ModelSerializer):
         )
 
     def get_pack(self, obj):
-        return obj.packs
+        return PackSerializer(obj.packs, many=True).data

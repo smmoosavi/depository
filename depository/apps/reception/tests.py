@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 
 class ReceptionTest(APITestCase):
-
     def setUp(self):
         self.hash_id = "hash-id"
         self.user = User.objects.create(username="taker")
@@ -68,9 +67,9 @@ class CellAssignerTest(TestCase):
     def test_assign_small(self):
         cell = CellAssigner().assign_cell(Cell.SIZE_SMALL)
         code = (cell.row.cabinet.code, cell.row.code, cell.code)
-        self.assertEqual(code, ('2', 2, 3))
+        self.assertEqual(code, (2, 2, 3))
 
     def test_assign_large(self):
         cell = CellAssigner().assign_cell(Cell.SIZE_LARGE)
         code = (cell.row.cabinet.code, cell.row.code, cell.code)
-        self.assertEqual(code, ('2', 2, 2))
+        self.assertEqual(code, (2, 2, 2))
