@@ -5,7 +5,7 @@ from rest_framework.generics import get_object_or_404
 
 from depository.apps.accounting.models import Pilgrim
 from depository.apps.reception.models import Delivery, Pack
-from depository.apps.reception.services import CellAssigner
+from depository.apps.reception.services import CellHelper
 from depository.apps.structure.models import Cell
 from django.utils.translation import ugettext as _
 
@@ -41,7 +41,7 @@ class ReceptionTakeSerializer(serializers.Serializer):
     def create(self, data):
         pilgrim = self.get_pilgrim(data)
         size = Cell.SIZE_LARGE if data.get('pram_count') else Cell.SIZE_SMALL
-        free_cell = CellAssigner().assign_cell(size)
+        free_cell = CellHelper().assign_cell(size)
         if not free_cell:
             raise ValidationError(_("All spaces are busy"))
         delivery_data = {'pilgrim': pilgrim, 'taker': self.context['request'].user}
@@ -50,6 +50,7 @@ class ReceptionTakeSerializer(serializers.Serializer):
         pack_data['delivery'] = delivery
         pack_data['cell'] = free_cell
         Pack.objects.create(**pack_data)
+
         return data
 
 
