@@ -1,10 +1,12 @@
-from django.db.models import F, Func, Max, Min
+from django.db.models import Max, Min
+from django.template.loader import render_to_string
 
 from depository.apps.reception.models import Pack
 from depository.apps.structure.models import Cell, Cabinet
+from depository.apps.utils.print import PrintHelper
 
 
-class CellAssigner:
+class CellHelper:
     def assign_cell(self, size):
         assert size in [Cell.SIZE_SMALL, Cell.SIZE_LARGE]
         busy_cells = Pack.objects.filter(
@@ -41,3 +43,13 @@ class CellAssigner:
 
             return sorted(cells, key=compare)[0]
         return None
+
+    def print(self, pack):
+        badge_count = pack.bag_count + pack.pram_count + pack.suitcase_count
+        ph = PrintHelper()
+        for idx in range(badge_count):
+            html = render_to_string('badge.html', {'index': idx, 'count': badge_count})
+            ph.print(html)
+        html = render_to_string('reciept.html', {})
+        # TODO:
+        ph.print(html)

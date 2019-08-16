@@ -5,7 +5,7 @@ from rest_framework.generics import get_object_or_404
 
 from depository.apps.accounting.models import Pilgrim
 from depository.apps.reception.models import Delivery, Pack
-from depository.apps.reception.services import CellAssigner
+from depository.apps.reception.services import CellHelper
 from depository.apps.structure.models import Cell
 from django.utils.translation import ugettext as _
 
@@ -27,6 +27,10 @@ class ReceptionTakeSerializer(serializers.Serializer):
             raise ValidationError(
                 _("At least one of following fields is required: bag_count,'pram_count, suitcase_count")
             )
+        if 'bag_count' in attrs and {'pram_count', 'suitcase_count'}.intersection(attrs):
+            raise ValidationError(
+                _("The given combination of packs isn't valid, because size of bag and para/suitcase isn't equal.")
+            )
         return attrs
 
     def get_pilgrim(self, data):
@@ -37,7 +41,7 @@ class ReceptionTakeSerializer(serializers.Serializer):
     def create(self, data):
         pilgrim = self.get_pilgrim(data)
         size = Cell.SIZE_LARGE if data.get('pram_count') else Cell.SIZE_SMALL
-        free_cell = CellAssigner().assign_cell(size)
+        free_cell = CellHelper().assign_cell(size)
         if not free_cell:
             raise ValidationError(_("All spaces are busy"))
         delivery_data = {'pilgrim': pilgrim, 'taker': self.context['request'].user}
@@ -46,6 +50,7 @@ class ReceptionTakeSerializer(serializers.Serializer):
         pack_data['delivery'] = delivery
         pack_data['cell'] = free_cell
         Pack.objects.create(**pack_data)
+
         return data
 
 
@@ -67,6 +72,12 @@ class ReceptionGiveSerializer(serializers.Serializer):
         return data
 
 
+class PackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pack
+        fields = '__all__'
+
+
 class DeliverySerializer(serializers.ModelSerializer):
     pack = serializers.SerializerMethodField()
 
@@ -78,4 +89,4 @@ class DeliverySerializer(serializers.ModelSerializer):
         )
 
     def get_pack(self, obj):
-        return obj.packs
+        return PackSerializer(obj.packs, many=True).data

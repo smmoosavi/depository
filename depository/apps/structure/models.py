@@ -11,7 +11,7 @@ class Depository(models.Model):
 
 
 class Cabinet(models.Model):
-    code = models.CharField(max_length=20)
+    code = models.PositiveIntegerField()
     depository = models.ForeignKey(Depository, on_delete=models.CASCADE)
     order = models.FloatField(default=1)
     is_asc = models.BooleanField(default=True)

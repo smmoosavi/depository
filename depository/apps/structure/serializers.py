@@ -7,7 +7,7 @@ from depository.apps.structure.models import Cell, Cabinet, Row
 
 
 class CabinetCreateSerializer(serializers.Serializer):
-    code = serializers.CharField()
+    code = serializers.CharField(required=False)
     num_of_rows = serializers.IntegerField()
     num_of_cols = serializers.IntegerField()
     size = serializers.ChoiceField(
@@ -18,14 +18,21 @@ class CabinetCreateSerializer(serializers.Serializer):
     )
 
     def create(self, data):
-        cabinet = Cabinet.objects.create(code=data['code'], depository_id=settings.DEFAULT_DEPOSITORY_ID)
+        cabinet_code = data.get('code')
+        if not cabinet_code:
+            last_cabinet = Cabinet.objects.order_by('-code').first()
+            if last_cabinet:
+                cabinet_code = last_cabinet.code + 1
+            else:
+                cabinet_code = 10
+        cabinet = Cabinet.objects.create(code=cabinet_code, depository_id=settings.DEFAULT_DEPOSITORY_ID)
         for row_idx in range(data['num_of_rows']):
             row = Row.objects.create(code=str(row_idx + 1), cabinet=cabinet)
             for col_idx in range(data['num_of_cols']):
                 size = Cell.SIZE_SMALL
                 if row_idx == 0 and data['first_row_size'] == Cell.SIZE_LARGE:
                     size = Cell.SIZE_LARGE
-                Cell.objects.create(code=str(col_idx + 1), row=row, size=size)
+                Cell.objects.create(code=str(col_idx), row=row, size=size)
         return data
 
 
