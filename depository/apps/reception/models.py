@@ -12,7 +12,7 @@ from hashids import Hashids
 
 
 def hash_id_generator():
-    hashids = Hashids(alphabet='abcdefghijklmnopqrstuvwxyz0123456789', min_length=16)
+    hashids = Hashids(alphabet='abcdefghijklmnopqrstuvwxyz0123456789', min_length=8)
     return hashids.encode(int(time.time() * 10000000))
 
 

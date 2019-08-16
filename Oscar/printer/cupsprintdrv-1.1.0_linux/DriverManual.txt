@@ -1,0 +1,163 @@
+Thermal Printer Driver for Linux
+Driver Manual
+
+Contents
+1. Operational environment
+2. How to Install
+3. How to Add printer
+4. How to Uninstall
+
+---------------------------------------------------------------------
+1. Operational environment
+---------------------------------------------------------------------
+
+This software supports the following environments.
+Operations in an unsupported environment are not guaranteed.
+
+* Operating System
+  - openSUSE 12.3
+  - Ubuntu 12.04
+
+* Related software
+  - CUPS Ver.1.5.3 or later
+      <http://www.cups.org/>
+
+  - libusb-1.0.0 or later
+      <http://www.libusb.org/>
+
+* Operations have been confirmed in the following environments.
+  - openSUSE 12.3 environment
+     - libusb-1_0-0-1.0.9-3.1.2
+     - cups-1.5.4
+
+  - Ubuntu 12.04 environment
+     - libusb-1.0-0-2:1.0.0-1
+     - cups-1.5.3
+
+* You can check information on the above packages for your 
+  environment as follows.
+
+  - openSUSE 12.3 environment
+    How to check libusb-1_0-0
+      1. Checking names of the installed packages.
+       $ rpm -qa | grep libusb-1_0-0
+       libusb-1_0-0-1.0.9-5.1.1      <- Displayed details
+
+      2. Checking details of the package displayed by the above
+         command.
+       $ rpm -qi libusb-1_0-0-1.0.9-5.1.1 
+
+    How to check cups
+      1. Checking names of the installed packages.
+       $ rpm -qa | grep cups
+       ...
+       cups-1.5.4-5.2.1              <- Displayed details
+       ....
+
+      2. Checking details of the package displayed by the above
+         command.
+       $ rpm -qi cups-1.5.4-5.2.1
+
+  - Ubuntu 12.04 environment
+    How to check libusb-1.0-0
+      $ dpkg-query -l libusb-1.0-0
+
+    How to check cups
+      $ dpkg-query -l cups
+
+
+---------------------------------------------------------------------
+2. How to Install
+---------------------------------------------------------------------
+
+
+2.1. Install the package which is required in your environment.
+  * Because libusb-1_0-0 and cups has been installed by default,
+    so you don't have to install them.
+
+  * If your PC does not install them, you can install manually.
+    Check to see if you are connected to the Internet before obtaining the required package.
+    - Case in ubuntu:
+      1. Use the following command to install libusb-1.0-0.
+         # apt-get install libusb-1.0-0
+
+      2. Use the following command to update the CUPS package.
+         # apt-get install cups
+
+      Note)
+        ! You need root privileges for the installation.
+        ! If the necessary package is not installed by the 
+          above procedure, run the following command and reinstall 
+          the package.
+          # apt-get update
+
+
+2.2. Installing driver
+
+  * Run install.sh.
+
+    Run install.sh by either clicking the install.sh icon. Or,
+    enter to the directory where the installation package has been expanded,
+    then run install.sh by typing the following in the command line prompt.
+    # ./install.sh
+
+  Note)
+    ! You need root privileges for the installation.
+      If you do not have root privileges, install.sh will execute
+      the sudo command. Type the password.
+    ! Switch the printer off before installing the driver.
+
+---------------------------------------------------------------------
+3. How to Add printer
+---------------------------------------------------------------------
+  * Registering the printer to CUPS
+
+    Turn the printer on before registering the printer to CUPS.
+
+    Open CUPS WebAdmin <http://localhost:631/> on a web browser 
+    to register the printer to CUPS.
+
+    Refer to CUPS information using the following URLs.
+          <http://localhost:631/help/>
+          <http://www.cups.org/>
+
+    - Select the [Administration] tab and click "Add Printer."
+    - Input the PC username and password.
+    - You will find your printer in the "local printers" list.
+
+      - In case of Serial port printer, Select Serial port parameters, such as baud rate. and then click "continue".
+	If the list doesn't show your serial port, you need modify the file that is located in:
+        Ubuntu environment:        /etc/init.d/rc.local
+        Suse environment:          /etc/init.d/boot.local
+        add the following command as a new line in the end of the file and then restart your computer:
+            chmod 777 /dev/ttyS*
+
+      - In case of USB printer, connect the printer to your computer and turn on the power.
+        In general, USB printer shows "UNKNOWN" in the local printers list.
+
+      - In case of Ethernet printer, choose "Internet Printing Protocol" in the "Other Network Printers" list:
+        Enter the printer URL, such as: socket://192.168.1.158:9100  (Modify the IP address matches the printer)
+
+    - Enter the Printer Name, Location, and Description, then click "Continue."
+
+    - Select "Printer" in the Device selection screen,
+      then click "Continue."
+    - Select the PPD file directly in the Model selection screen, then click "Add Printer."
+	-In case of thermal printer, choose "Printer ThermalRaster".
+	-In case of stylus printer, choose "Printer StylusRaster".(Not implemented yet)
+
+    - The "Set Printer Options" screen appears. 
+      Confirm and set the printer options, such as "cutter", "cashdrawer" etc.
+---------------------------------------------------------------------
+4. How to Uninstall
+---------------------------------------------------------------------
+
+The following describes how to uninstall this software.
+
+  - Change directory where the installation package expanded,
+    execute uninstall.sh shell script.
+    # ./uninstall.sh
+
+  Note)
+    ! You need root privilege to uninstall the software.
+

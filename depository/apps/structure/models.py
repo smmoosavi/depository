@@ -7,6 +7,7 @@ from depository.apps.structure.helpers import CodeHelper
 
 class Depository(models.Model):
     name = models.CharField(max_length=100)
+    address = models.TextField()
 
 
 class Cabinet(models.Model):
