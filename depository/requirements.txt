@@ -9,3 +9,4 @@ djangorestframework
 djangorestframework-jwt
 gunicorn
 pdfkit
+ipython

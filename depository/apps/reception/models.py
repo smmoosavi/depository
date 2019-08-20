@@ -2,13 +2,13 @@ import time
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils.translation import ugettext as _
 # Create your models here.
 from django.utils import timezone
+from django.utils.translation import ugettext as _
+from hashids import Hashids
 
 from depository.apps.accounting.models import Pilgrim
 from depository.apps.structure.models import Cell, Depository
-from hashids import Hashids
 
 
 def hash_id_generator():
@@ -19,9 +19,11 @@ def hash_id_generator():
 class Delivery(models.Model):
     DELIVERED_TO_CUSTOMER = 0
     DELIVERED_TO_STORE = 1
+    MISSED = 2
     EXIT_CHOICES = (
         (DELIVERED_TO_CUSTOMER, _('delivered to customer')),
-        (DELIVERED_TO_STORE, _('delivered to store'))
+        (DELIVERED_TO_STORE, _('delivered to store')),
+        (MISSED, _("Missed"))
     )
     pilgrim = models.ForeignKey(Pilgrim, on_delete=models.CASCADE)
     taker = models.ForeignKey(

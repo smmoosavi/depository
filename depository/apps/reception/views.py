@@ -14,6 +14,7 @@ from depository.apps.reception.filters import DeliveryFilter
 from depository.apps.reception.models import Delivery
 from depository.apps.reception.serializers import ReceptionTakeSerializer, \
     ReceptionGiveSerializer, DeliverySerializer
+from depository.apps.reception.services import CellHelper
 
 logger = logging.getLogger(__name__)
 
@@ -78,9 +79,12 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
         obj.save()
         return Response({}, status.HTTP_200_OK)
 
+
 class ReportViewSet(GenericViewSet):
-    # TODO: ??
-    pass
+    @action(detail=False)
+    def list(self, request):
+        result = CellHelper().report()
+        return Response(result, status=status.HTTP_200_OK)
 
 
 class BackUpViewSet(GenericViewSet):

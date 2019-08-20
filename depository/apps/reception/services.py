@@ -1,7 +1,10 @@
-from django.db.models import Max, Min
-from django.template.loader import render_to_string
+from datetime import timedelta
 
-from depository.apps.reception.models import Pack
+from django.db.models import Max, Min, Count, F
+from django.template.loader import render_to_string
+from django.utils import timezone
+
+from depository.apps.reception.models import Pack, Delivery
 from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.utils.print import PrintHelper
 
@@ -53,3 +56,21 @@ class CellHelper:
         html = render_to_string('reciept.html', {})
         # TODO:
         ph.print(html)
+
+    def report(self):
+        total_count = Delivery.objects.count()
+        deliveries = Delivery.objects.values('type').annotate(count=Count('pk'))
+        in_house = Delivery.objects.filter(exited_at__isnull=True).annotate(
+            diff_time=timezone.now() - F('entered_at')).values_list('pk', 'diff_time')
+        periods = [0, 3, 6, 24, 48]
+        result = {
+            'total': total_count,
+            Delivery.DELIVERED_TO_CUSTOMER: deliveries[Delivery.DELIVERED_TO_CUSTOMER],
+            Delivery.DELIVERED_TO_STORE: deliveries[Delivery.DELIVERED_TO_STORE],
+            Delivery.MISSED: deliveries[Delivery.MISSED],
+        }
+        for i in range(len(periods)):
+            start = timedelta(periods[i])
+            end = timedelta(periods[i + 1])
+            result[periods[i + 1]] = in_house.filter(diff_time__range=[start, end]).count()
+        return result
