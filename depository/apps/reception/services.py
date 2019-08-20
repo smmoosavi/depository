@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from django.db.models import Max, Min, Count, F
+from django.db.models import Max, Min, Count
 from django.template.loader import render_to_string
 from django.utils import timezone
 
@@ -9,7 +9,7 @@ from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.utils.print import PrintHelper
 
 
-class CellHelper:
+class ReceptionHelper:
     def assign_cell(self, size):
         assert size in [Cell.SIZE_SMALL, Cell.SIZE_LARGE]
         busy_cells = Pack.objects.filter(
@@ -59,18 +59,20 @@ class CellHelper:
 
     def report(self):
         total_count = Delivery.objects.count()
-        deliveries = Delivery.objects.values('type').annotate(count=Count('pk'))
-        in_house = Delivery.objects.filter(exited_at__isnull=True).annotate(
-            diff_time=timezone.now() - F('entered_at')).values_list('pk', 'diff_time')
+        distribution = {'total': total_count, }
+        deliveries = Delivery.objects.values('exit_type').annotate(count=Count('pk'))
+        for item in deliveries:
+            distribution[item['exit_type']] = item['count']
+
+        in_house = Delivery.objects.filter(exited_at__isnull=True)
         periods = [0, 3, 6, 24, 48]
+        result_in_house = {}
+        for i in range(len(periods) - 1):
+            end = timezone.now() - timedelta(hours=periods[i])
+            start = timezone.now() - timedelta(hours=periods[i + 1])
+            result_in_house[periods[i + 1]] = in_house.filter(entered_at__range=[start, end]).count()
         result = {
-            'total': total_count,
-            Delivery.DELIVERED_TO_CUSTOMER: deliveries[Delivery.DELIVERED_TO_CUSTOMER],
-            Delivery.DELIVERED_TO_STORE: deliveries[Delivery.DELIVERED_TO_STORE],
-            Delivery.MISSED: deliveries[Delivery.MISSED],
+            'in_house': result_in_house,
+            'distribution': distribution
         }
-        for i in range(len(periods)):
-            start = timedelta(periods[i])
-            end = timedelta(periods[i + 1])
-            result[periods[i + 1]] = in_house.filter(diff_time__range=[start, end]).count()
         return result

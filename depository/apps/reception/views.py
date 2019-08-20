@@ -14,7 +14,7 @@ from depository.apps.reception.filters import DeliveryFilter
 from depository.apps.reception.models import Delivery
 from depository.apps.reception.serializers import ReceptionTakeSerializer, \
     ReceptionGiveSerializer, DeliverySerializer
-from depository.apps.reception.services import CellHelper
+from depository.apps.reception.services import ReceptionHelper
 
 logger = logging.getLogger(__name__)
 
@@ -82,7 +82,7 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
 
 class ReportViewSet(GenericViewSet):
     def list(self, request, *args, **kwargs):
-        result = CellHelper().report()
+        result = ReceptionHelper().report()
         return Response(result, status=status.HTTP_200_OK)
 
 
