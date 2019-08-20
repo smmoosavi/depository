@@ -81,8 +81,7 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
 
 
 class ReportViewSet(GenericViewSet):
-    @action(detail=False)
-    def list(self, request):
+    def list(self, request, *args, **kwargs):
         result = CellHelper().report()
         return Response(result, status=status.HTTP_200_OK)
 
