@@ -1,9 +1,11 @@
 FROM python:3.6
 EXPOSE 8000
+ADD depository/requirements.txt /
+RUN pip install -r requirements.txt
+
 
 WORKDIR /depository
-RUN pip install -r depository/requirements.txt
-RUN python manage.py migrate
+#RUN python manage.py migrate
 #RUN python manage.py collectstatic --noinput
 CMD gunicorn depository.wsgi --log-level info --bind 0.0.0.0:8000
 
