@@ -28,7 +28,7 @@ class ReceptionTest(APITestCase):
         cell = Cell.objects.create(code="2", row=row)
         Pilgrim.objects.create(last_name='last-name', phone='09123456789', country='iran')
         delivery = Delivery.objects.create(pilgrim_id=1, taker_id=1, hash_id=self.hash_id, entered_at=timezone.now())
-        pack = Pack.objects.create(delivery=delivery, pram_count=1, cell_id=1)
+        self.pack = Pack.objects.create(delivery=delivery, pram_count=1, cell_id=1)
         self.client.login(username="taker", password="a")
 
     def test_take(self):
@@ -48,6 +48,10 @@ class ReceptionTest(APITestCase):
 
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertEqual(Delivery.objects.get(hash_id=self.hash_id).giver, self.user)
+
+    def test_print(self):
+        rh = ReceptionHelper()
+        rh.print(self.pack)
 
 
 class AssignmentTest(TestCase):
