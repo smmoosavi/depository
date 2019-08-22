@@ -7,7 +7,7 @@ from depository.apps.structure.models import Cell, Cabinet, Row
 
 
 class CabinetCreateSerializer(serializers.Serializer):
-    code = serializers.CharField(required=False)
+    code = serializers.IntegerField(required=False)
     num_of_rows = serializers.IntegerField()
     num_of_cols = serializers.IntegerField()
     size = serializers.ChoiceField(
@@ -33,7 +33,7 @@ class CabinetCreateSerializer(serializers.Serializer):
                 if row_idx == 0 and data['first_row_size'] == Cell.SIZE_LARGE:
                     size = Cell.SIZE_LARGE
                 Cell.objects.create(code=str(col_idx), row=row, size=size)
-        return data
+        return cabinet
 
 
 class StatusSerializer(serializers.Serializer):
@@ -74,7 +74,7 @@ class RowSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_cells(self, obj):
-        return CellSerializer(obj.cells, many=True)
+        return CellSerializer(obj.cells, many=True).data
 
 
 class CabinetSerializer(serializers.ModelSerializer):
@@ -85,4 +85,4 @@ class CabinetSerializer(serializers.ModelSerializer):
         fields = ('code', 'rows')
 
     def get_rows(self, obj):
-        return RowSerializer(obj.rows, many=True)
+        return RowSerializer(obj.rows, many=True).data

@@ -24,6 +24,14 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin):
     serializer_class = CabinetCreateSerializer
     permission_classes = [IsAdmin]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        cabinet_serializer = CabinetSerializer(instance=serializer.instance)
+        headers = self.get_success_headers(cabinet_serializer.data)
+        return Response(cabinet_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class CellViewSet(GenericViewSet, ChangeStatusMixin):
     permission_classes = [IsAdmin]
