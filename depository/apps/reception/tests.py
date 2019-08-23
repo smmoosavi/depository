@@ -18,16 +18,16 @@ logger = logging.getLogger(__name__)
 
 class ReceptionTest(APITestCase):
     def setUp(self):
-        self.hash_id = "hash-id"
+        self.hash_id = "mg63x59lq8v0o29g"
         self.user = User.objects.create(username="taker")
         self.user.set_password('a')
         self.user.save()
-        depository = Depository.objects.create(name='depository-name', address='depository-address')
+        depository = Depository.objects.create(name='امانت داری شماره ۱', address='صحن حضرت فاطمه - سمت چپ')
         cabinet = Cabinet.objects.create(code="1", depository=depository)
         row = Row.objects.create(code="1", cabinet=cabinet)
         Cell.objects.create(code="1", row=row)
         cell = Cell.objects.create(code="2", row=row)
-        Pilgrim.objects.create(last_name='last-name', phone='09123456789', country='iran')
+        Pilgrim.objects.create(last_name='امین تبار', phone='09123456789', country='ایران')
         delivery = Delivery.objects.create(pilgrim_id=1, taker_id=1, hash_id=self.hash_id, entered_at=timezone.now())
         self.pack = Pack.objects.create(delivery=delivery, pram_count=1, cell_id=1)
         self.client.login(username="taker", password="a")
@@ -68,8 +68,6 @@ class AssignmentTest(TestCase):
                 Cell.objects.create(code=1, row=row)
                 Cell.objects.create(code=2, row=row, size=Cell.SIZE_LARGE)
                 Cell.objects.create(code=3, row=row)
-
-        Delivery.objects.create()
 
     def test_assign_small(self):
         cell = ReceptionHelper().assign_cell(Cell.SIZE_SMALL)

@@ -1,14 +1,20 @@
+import random
+import string
 from datetime import timedelta
 
+from io import StringIO
+import qrcode
 from django.conf import settings
 from django.db.models import Max, Min, Count
 from django.template.loader import render_to_string
 from django.utils import timezone
 from khayyam.jalali_datetime import JalaliDatetime
+from datetime import datetime
 
 from depository.apps.reception.models import Pack, Delivery
 from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.utils.print import PrintHelper
+from depository.apps.utils.utils import Encryption
 
 
 class ReceptionHelper:
@@ -49,16 +55,36 @@ class ReceptionHelper:
             return sorted(cells, key=compare)[0]
         return None
 
+    def barcode(self, pack):
+        pilgrim = pack.delivery.pilgrim
+        data = f'{pilgrim.get_full_name()}#{pilgrim.country}#{pack.delivery.hash_id}#{pilgrim.get_four_digit_phone()}'
+        data=Encryption().cesar(data)
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(data)
+        qr.make(fit=True)
+
+        img = qr.make_image(fill_color="black", back_color="white")
+        file_name = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+        path = f'{settings.STATIC_ROOT}/barcode/{datetime.now().strftime("%H:%M")}-{file_name}.jpg'
+        img.save(path)
+        return path
+
     def print(self, pack):
         badge_count = pack.bag_count + pack.pram_count + pack.suitcase_count
         ph = PrintHelper()
         pilgrim = pack.delivery.pilgrim
         entered_at = JalaliDatetime(pack.delivery.entered_at).strftime("%A %d %B %H:%M")
+        barcode=self.barcode(pack)
         for idx in range(badge_count):
             html = render_to_string('badge.html', {
                 'name': pilgrim.get_full_name(), 'index': idx + 1, 'count': badge_count,
-                'country': pilgrim.country, 'phone': pilgrim.phone[-4:], 'entered_at': entered_at,
-                'code': pack.cell.get_code()
+                'country': pilgrim.country, 'phone': pilgrim.get_four_digit_phone(), 'entered_at': entered_at,
+                'code': pack.cell.get_code(),'barcode':barcode
 
             })
             ph.print(html)
@@ -67,9 +93,8 @@ class ReceptionHelper:
         html = render_to_string('reciept.html', {
             'depository_name': depository.name, 'depository_address': depository.address,
             'social': settings.CONST_KEY_SOCIAL, 'phone': settings.CONST_KEY_PHONE,
-            'notice': settings.CONST_KEY_NOTICE, 'entered_at': entered_at
+            'notice': settings.CONST_KEY_NOTICE, 'entered_at': entered_at, 'barcode':barcode
         })
-        # TODO:
         ph.print(html, 80, 100)
 
     def report(self):

@@ -6,7 +6,7 @@
     <style>
         @font-face {
             font-family: IranSans;
-            src: url({{ STATIC_URL }}fonts/iranian-sans.woff),Tahoma;
+            src: url({{ STATIC_URL }}fonts/iranian-sans.woff), Tahoma;
         }
 
         .col {
@@ -32,6 +32,10 @@
             text-align: center;
         }
 
+        .barcode {
+            height: 180px;
+        }
+
     </style>
 </head>
 <body>
@@ -45,6 +49,7 @@
         <div class="cell" style="font-size: 50px">{{ index }}/{{ count }}</div>
     </div>
     <div class="col">
+        <img src="{{ barcode }}" class="barcode">
     </div>
 </div>
 </body>

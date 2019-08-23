@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +16,10 @@
             width: 100%;
             font-size: 20px;
         }
+
+        .barcode {
+            height: 180px;
+        }
     </style>
 </head>
 <body>
@@ -29,5 +34,8 @@
 {{ notice }}
 </br>
 {{ entered_at }}
+</br>
+<img src="{{ barcode }}" class="barcode">
+</br>
 </body>
 </html>

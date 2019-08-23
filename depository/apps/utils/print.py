@@ -1,3 +1,4 @@
+import os
 import random
 import string
 import subprocess
@@ -19,7 +20,7 @@ class PrintHelper:
             'margin-right': '0',
         }
         file_name = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-        path = f'/home/vahid/Projects/depository/pdf/{datetime.now().strftime("%H:%M")}-{file_name}.pdf'
+        path = f'{settings.STATIC_ROOT}/pdf/{datetime.now().strftime("%H:%M")}-{file_name}.pdf'
         config = pdfkit.configuration(wkhtmltopdf=settings.WKHTMLTOPDF_PATH)
         pdf = pdfkit.from_string(
             html, path, configuration=config, options=options)
@@ -28,4 +29,5 @@ class PrintHelper:
     def print(self, html, width=80, height=50):
         path = self.generate_pdf(html, width, height)
         # subprocess.run(["ls", "-l"])
-        # TODO
+        # os.remove(path) ?
+        # TODO:
