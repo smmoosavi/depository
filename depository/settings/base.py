@@ -57,9 +57,9 @@ ALLOWED_HOSTS = get_env_list("ALLOWED_HOSTS", ["*"])
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.contenttypes',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -219,3 +219,5 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH': True,
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(hours=3),
 }
+
+WKHTMLTOPDF_PATH = None

@@ -3,12 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .col {
+            display: inline-block;
+            width: 49%;
+        }
+
+        body {
+            direction: rtl;
+            width: 100%;
+        }
+
+        .cell {
+            font-size: 150px;
+            direction: rtl;
+            text-align: right;
+            padding-top: 0.2em;
+        }
+
+        .name {
+            font-size: 250px;
+            direction: rtl;
+            text-align: center;
+        }
+
+    </style>
 </head>
 <body>
-{{ index }}/{{ count }}
-</br>
-{{ code }}
-</br>
-
+<div class="name">{{ name }}</div>
+<div>
+    <div class="col">
+        <div class="cell">{{ country }}</div>
+        <div class="cell">00********{{ phone }}</div>
+        <div class="cell">{{ entered_at }}</div>
+        <div class="cell" style="font-size: 400px">{{ code }}</div>
+        <div class="cell" style="font-size: 500px">{{ index }}/{{ count }}</div>
+    </div>
+    <div class="col">
+    </div>
+</div>
 </body>
 </html>
