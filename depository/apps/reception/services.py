@@ -70,7 +70,7 @@ class ReceptionHelper:
 
         img = qr.make_image(fill_color="black", back_color="white")
         file_name = ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
-        path = f'{settings.STATIC_ROOT}/barcode/{datetime.now().strftime("%H:%M")}-{file_name}.jpg'
+        path = f'{settings.TEMP_ROOT}/barcode/{datetime.now().strftime("%H:%M")}-{file_name}.jpg'
         img.save(path)
         return path
 
