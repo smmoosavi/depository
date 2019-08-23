@@ -10,6 +10,7 @@ from rest_framework.test import APITestCase
 
 from depository.apps.accounting.models import Pilgrim
 from depository.apps.reception.models import Delivery
+from depository.apps.structure.helpers import StructureHelper
 from depository.apps.structure.models import Cell, Cabinet, Row, Depository
 
 logger = logging.getLogger(__name__)
@@ -23,8 +24,8 @@ class StructureTest(APITestCase):
         self.user.groups.add(group)
         self.user.save()
 
-        cabinet = Cabinet.objects.create(code=10, depository_id=1)
-        row = Row.objects.create(code=1, cabinet=cabinet)
+        self.cabinet = Cabinet.objects.create(code=10, depository_id=1)
+        row = Row.objects.create(code=1, cabinet=self.cabinet)
         Cell.objects.create(code=1, row=row)
 
         self.client.login(username='admin', password='a')
@@ -58,6 +59,10 @@ class StructureTest(APITestCase):
         response = self.client.post(reverse('cell-change-status'), data)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertFalse(Cell.objects.first().is_healthy)
+
+    def test_print(self):
+        sh = StructureHelper()
+        sh.print(self.cabinet)
 
 
 class DeliveryTest(APITestCase):

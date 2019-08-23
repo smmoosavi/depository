@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.conf import settings
 from django.db.models import Max, Min, Count
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -61,9 +62,15 @@ class ReceptionHelper:
 
             })
             ph.print(html)
-        html = render_to_string('reciept.html', {})
+
+        depository = pack.cell.row.cabinet.depository
+        html = render_to_string('reciept.html', {
+            'depository_name': depository.name, 'depository_address': depository.address,
+            'social': settings.CONST_KEY_SOCIAL, 'phone': settings.CONST_KEY_PHONE,
+            'notice': settings.CONST_KEY_NOTICE, 'entered_at': entered_at
+        })
         # TODO:
-        ph.print(html)
+        ph.print(html, 80, 100)
 
     def report(self):
         total_count = Delivery.objects.count()

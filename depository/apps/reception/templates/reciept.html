@@ -3,11 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        @font-face {
+            font-family: IranSans;
+            src: url({{ STATIC_URL }}fonts/iranian-sans.woff), Tahoma;
+        }
+
+        body {
+            font-family: IranSans;
+            direction: rtl;
+            width: 100%;
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
-{{ barcode }}
+{{ depository_name }}
 </br>
-{{ terms }}
+{{ depository_address }}
 </br>
+{{ social }}
+</br>
+{{ phone }}
+</br>
+{{ notice }}
+</br>
+{{ entered_at }}
 </body>
 </html>

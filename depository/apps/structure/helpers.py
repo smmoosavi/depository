@@ -28,8 +28,8 @@ class StructureHelper:
     def print(self, cabinet):
         ph = PrintHelper()
         ch = CodeHelper()
-        for row in cabinet.rows:
-            for cell in row.cells:
+        for row in cabinet.rows.all():
+            for cell in row.cells.all():
                 # TODO:
                 code = ch.print_cell_code(cell)
                 html = render_to_string('number.html', {'number': code})
