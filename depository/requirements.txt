@@ -11,3 +11,4 @@ gunicorn
 pdfkit
 ipython
 khayyam
+qrcode
