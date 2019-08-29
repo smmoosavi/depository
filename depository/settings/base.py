@@ -215,7 +215,7 @@ CELL_DIGITS = 1
 STORE_DAYS=1
 
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': timedelta(hours=6),
+    'JWT_EXPIRATION_DELTA': timedelta(days=999),
     'JWT_ALLOW_REFRESH': True,
-    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(hours=3),
+    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=999),
 }

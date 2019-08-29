@@ -27,7 +27,7 @@ class ReceptionTakeSerializer(serializers.Serializer):
             raise ValidationError(
                 _("At least one of following fields is required: bag_count,'pram_count, suitcase_count")
             )
-        if 'bag_count' in attrs and {'pram_count', 'suitcase_count'}.intersection(attrs):
+        if attrs.get('bag_count', 0) and (attrs.get('pram_count', 0) or attrs.get('suitcase_count', 0)):
             raise ValidationError(
                 _("The given combination of packs isn't valid, because size of bag and para/suitcase isn't equal.")
             )
