@@ -3,6 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        @font-face {
+            font-family: IranSans;
+            src: url({{ STATIC_URL }}fonts/iranian-sans.woff), Tahoma;
+        }
+
+        body {
+            font-family: IranSans;
+            font-size: 180px;
+            text-align: center;
+            direction: rtl;
+            width: 100%;
+            height: 100%;
+            vertical-align: middle;
+        }
+    </style>
 </head>
 <body>
 {{ number }}

@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import path
 from django.urls.conf import include
 from drf_yasg import openapi
@@ -52,3 +53,5 @@ urlpatterns = [
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0),
         name='schema-redoc'),
 ]
+
+urlpatterns += staticfiles_urlpatterns()

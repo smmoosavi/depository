@@ -14,3 +14,14 @@ class Pilgrim(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} {self.country} {self.passport_id}'
+
+    def get_full_name(self):
+        if self.first_name:
+            return f'{self.first_name} {self.last_name}'
+        else:
+            return self.last_name
+
+    def get_four_digit_phone(self):
+        if self.phone:
+            return self.phone[-4:]
+        return ''

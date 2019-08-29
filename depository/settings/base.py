@@ -15,7 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from datetime import timedelta
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/../'
+print(BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -57,9 +58,9 @@ ALLOWED_HOSTS = get_env_list("ALLOWED_HOSTS", ["*"])
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.contenttypes',
     'django.contrib.admin',
     'django.contrib.auth',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -149,9 +150,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-STATIC_ROOT = os.path.join(BASE_DIR, '../', 'public', 'static')
-MEDIA_ROOT = os.path.join(BASE_DIR, '../', 'public', 'media')
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
+TEMP_ROOT = os.path.join(BASE_DIR, 'temp', )
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -212,10 +213,16 @@ DEFAULT_DEPOSITORY_ID = 1
 CABINET_DIGITS = 2
 ROW_DIGITS = 1
 CELL_DIGITS = 1
-STORE_DAYS=1
+STORE_DAYS = 1
 
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': timedelta(days=999),
     'JWT_ALLOW_REFRESH': True,
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=999),
 }
+
+WKHTMLTOPDF_PATH = None
+
+CONST_KEY_SOCIAL = 'social'
+CONST_KEY_PHONE = 'phone'
+CONST_KEY_NOTICE = 'notice'
