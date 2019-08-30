@@ -7,6 +7,7 @@ class Pilgrim(models.Model):
     first_name = models.CharField(max_length=254, null=True, blank=True)
     last_name = models.CharField(max_length=254)
     phone = models.CharField(max_length=50)
+    gender = models.IntegerField(default=0)  # male 0 female 1 other 2
     country = models.CharField(max_length=50)
     birthday = models.DateField(null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
