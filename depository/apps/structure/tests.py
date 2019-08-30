@@ -73,9 +73,10 @@ class DeliveryTest(APITestCase):
         self.user.groups.add(group)
         self.user.save()
         dep = Depository.objects.create(name='dep1')
-        cabinet = Cabinet.objects.create(code=10, depository_id=1)
-        row = Row.objects.create(code=1, cabinet=cabinet)
+        self.cabinet = Cabinet.objects.create(code=10, depository_id=1)
+        row = Row.objects.create(code=1, cabinet=self.cabinet)
         cell = Cell.objects.create(code=1, row=row)
+        self.cell2 = Cell.objects.create(code=2, row=row)
         pilgrim = Pilgrim.objects.create(last_name='last_name', phone="091232313", country='IR')
         d = timezone.now() - timezone.timedelta(days=settings.STORE_DAYS + 1)
         self.delivery = Delivery.objects.create(pilgrim=pilgrim, taker=self.user, depository=dep, entered_at=d)
@@ -92,3 +93,10 @@ class DeliveryTest(APITestCase):
         self.delivery.refresh_from_db()
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(self.delivery.exit_type, Delivery.DELIVERED_TO_STORE)
+
+    def test_favorites(self):
+        assert self.cabinet.is_asc, True
+        response = self.client.post(reverse('cell-favorite', args=[self.cell2.get_code()]), )
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.cabinet.refresh_from_db()
+        self.assertFalse(self.cabinet.is_asc)

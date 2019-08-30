@@ -14,7 +14,7 @@ class Cabinet(models.Model):
     code = models.PositiveIntegerField()
     depository = models.ForeignKey(Depository, on_delete=models.CASCADE)
     order = models.FloatField(default=1)
-    is_asc = models.BooleanField(default=True)
+    is_asc = models.NullBooleanField(default=True)
 
 
 class Row(models.Model):

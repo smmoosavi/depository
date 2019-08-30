@@ -46,11 +46,15 @@ class ReceptionHelper:
             row_code_min = agg_cells.aggregate(m=Min('row__code'))['m']
             row_code_mean = (row_code_max + row_code_min) / 2
             cell_code_max = agg_cells.aggregate(m=Max('code'))['m']
+            cell_code_min = agg_cells.aggregate(m=Min('code'))['m']
+            cell_code_mean = (cell_code_max + cell_code_min) / 2
 
             def compare(cell):
                 cell_code = cell.code
-                if not is_asc:
+                if is_asc is False:
                     cell_code = cell_code_max - cell.code
+                elif is_asc is None:
+                    cell_code = abs(cell.code - cell_code_mean)
                 return abs(cell.row.code - row_code_mean) * 100 + cell_code
 
             return sorted(cells, key=compare)[0]

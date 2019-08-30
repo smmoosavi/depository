@@ -68,6 +68,23 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         delivery.save()
         return Response({}, status=status.HTTP_200_OK)
 
+    @action(methods=['POST'], detail=True)
+    def favorite(self, request, pk):
+        cell = self.get_object()
+        cabinet = cell.row.cabinet
+        agg_cells = Cell.objects.filter(row__cabinet=cabinet)
+        cell_code_max = agg_cells.aggregate(m=Max('code'))['m']
+        cell_code_min = agg_cells.aggregate(m=Min('code'))['m']
+        is_asc = None
+        if cell_code_max == cell.get_code():
+            is_asc = False
+        elif cell_code_min == cell.get_code():
+            is_asc = True
+        cabinet.is_asc = is_asc
+        cabinet.save()
+        return Response({}, status=status.HTTP_200_OK)
+
+
 
 class RowViewSet(CellViewSet, ChangeStatusMixin):
     permission_classes = [IsAdmin]
