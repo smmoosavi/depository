@@ -8,6 +8,7 @@ class Pilgrim(models.Model):
     last_name = models.CharField(max_length=254)
     phone = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
+    birthday = models.DateField(null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     passport_id = models.CharField(max_length=20, null=True, blank=True)
     passport_pic = models.ImageField(null=True, blank=True)

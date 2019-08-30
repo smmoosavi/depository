@@ -9,7 +9,7 @@ from django.conf import settings
 
 
 class PrintHelper:
-    def generate_pdf(self, html, width=80, height=50):
+    def generate_pdf(self, html, width=75, height=50):
         options = {
             # 'page-size': "A4",
             'page-width': str(width),
@@ -26,7 +26,7 @@ class PrintHelper:
             html, path, configuration=config, options=options)
         return path
 
-    def print(self, html, width=80, height=50):
+    def print(self, html, width=75, height=50):
         path = self.generate_pdf(html, width, height)
         # subprocess.run(["ls", "-l"])
         # os.remove(path) ?

@@ -15,7 +15,7 @@ from depository.apps.utils.utils import sub_dict
 class ReceptionTakeSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    phone = serializers.CharField()
+    phone = serializers.CharField(required=False)
     country = serializers.CharField()
     passport_id = serializers.CharField(required=False)
     bag_count = serializers.IntegerField(required=False)
@@ -49,7 +49,9 @@ class ReceptionTakeSerializer(serializers.Serializer):
         pack_data = sub_dict(data, ['bag_count', 'suitcase_count', 'pram_count'])
         pack_data['delivery'] = delivery
         pack_data['cell'] = free_cell
-        Pack.objects.create(**pack_data)
+        pack = Pack.objects.create(**pack_data)
+        rh = ReceptionHelper()
+        rh.print(pack)
 
         return data
 

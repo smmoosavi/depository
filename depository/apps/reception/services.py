@@ -58,7 +58,7 @@ class ReceptionHelper:
     def barcode(self, pack):
         pilgrim = pack.delivery.pilgrim
         data = f'{pilgrim.get_full_name()}#{pilgrim.country}#{pack.delivery.hash_id}#{pilgrim.get_four_digit_phone()}'
-        data=Encryption().cesar(data)
+        data = Encryption().cesar(data)
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -79,12 +79,12 @@ class ReceptionHelper:
         ph = PrintHelper()
         pilgrim = pack.delivery.pilgrim
         entered_at = JalaliDatetime(pack.delivery.entered_at).strftime("%A %d %B %H:%M")
-        barcode=self.barcode(pack)
+        barcode = self.barcode(pack)
         for idx in range(badge_count):
             html = render_to_string('badge.html', {
                 'name': pilgrim.get_full_name(), 'index': idx + 1, 'count': badge_count,
                 'country': pilgrim.country, 'phone': pilgrim.get_four_digit_phone(), 'entered_at': entered_at,
-                'code': pack.cell.get_code(),'barcode':barcode
+                'code': pack.cell.get_code(), 'barcode': barcode
 
             })
             ph.print(html)
@@ -93,13 +93,13 @@ class ReceptionHelper:
         html = render_to_string('reciept.html', {
             'depository_name': depository.name, 'depository_address': depository.address,
             'social': settings.CONST_KEY_SOCIAL, 'phone': settings.CONST_KEY_PHONE,
-            'notice': settings.CONST_KEY_NOTICE, 'entered_at': entered_at, 'barcode':barcode
+            'notice': settings.CONST_KEY_NOTICE, 'entered_at': entered_at, 'barcode': barcode
         })
-        ph.print(html, 80, 100)
+        ph.print(html, height=100)
 
     def report(self):
         total_count = Delivery.objects.count()
-        distribution = {'total': total_count,}
+        distribution = {'total': total_count, }
         deliveries = Delivery.objects.values('exit_type').annotate(count=Count('pk'))
         for item in deliveries:
             distribution[item['exit_type']] = item['count']
