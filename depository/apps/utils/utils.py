@@ -18,6 +18,3 @@ class Encryption(object):
             new_c = chr(ord(i) + step)
             result += new_c
         return result[::-1]
-
-    def make_hash(self, text):
-        return sha1((text + "Beautiful S5").encode("utf-8")).hexdigest()
