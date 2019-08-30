@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from depository.apps.reception.models import Delivery, Pack
-from depository.apps.structure.helpers import CodeHelper
+from depository.apps.structure.helpers import CodeHelper, StructureHelper
 from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.structure.serializers import CabinetCreateSerializer, \
     StatusSerializer, CabinetSerializer
@@ -26,9 +26,11 @@ class ChangeStatusMixin:
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin, ListModelMixin):
+class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
+                     ListModelMixin):
     permission_classes = [IsAdmin]
     queryset = Cabinet.objects.all()
+    lookup_field = 'code'
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -42,7 +44,15 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin, ListMo
         serializer.save()
         cabinet_serializer = CabinetSerializer(instance=serializer.instance)
         headers = self.get_success_headers(cabinet_serializer.data)
-        return Response(cabinet_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(cabinet_serializer.data,
+                        status=status.HTTP_201_CREATED, headers=headers)
+
+    @action(methods=['POST'], detail=True)
+    def print(self, request, code):
+        obj = self.get_object()
+        sh = StructureHelper()
+        sh.print(obj)
+        return Response({}, status=status.HTTP_200_OK)
 
 
 class CellViewSet(GenericViewSet, ChangeStatusMixin):
@@ -62,7 +72,8 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
                 (self.__class__.__name__, lookup_url_kwarg)
         )
 
-        cabinet, row, cell = CodeHelper().to_code(self.kwargs[lookup_url_kwarg])
+        cabinet, row, cell = CodeHelper().to_code(
+            self.kwargs[lookup_url_kwarg])
         query = {'code': cell, 'row__code': row, 'row__cabinet__code': cabinet}
         obj = get_object_or_404(queryset, **query)
 
@@ -74,7 +85,8 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
     @action(methods=['POST'], detail=True)
     def deliver_to_store(self, request, pk):
         cell = self.get_object()
-        delivery = Pack.objects.get(cell=cell, delivery__exited_at__isnull=True).delivery
+        delivery = Pack.objects.get(cell=cell,
+                                    delivery__exited_at__isnull=True).delivery
         delivery.exited_at = timezone.now()
         delivery.exit_type = Delivery.DELIVERED_TO_STORE
         delivery.save()
@@ -95,7 +107,6 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         cabinet.is_asc = is_asc
         cabinet.save()
         return Response({}, status=status.HTTP_200_OK)
-
 
 
 class RowViewSet(CellViewSet, ChangeStatusMixin):
