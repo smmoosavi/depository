@@ -1,4 +1,5 @@
 import logging
+from unittest.mock import patch
 
 from django.conf import settings
 from django.contrib.auth.models import User, Group
@@ -60,9 +61,11 @@ class StructureTest(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertFalse(Cell.objects.first().is_healthy)
 
-    def test_print(self):
-        sh = StructureHelper()
-        sh.print(self.cabinet)
+    @patch.object(StructureHelper, 'print')
+    def test_print(self, *args):
+        response = self.client.post(
+            reverse('cabinet-print', args=[self.cabinet.code]))
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
 
 
 class DeliveryTest(APITestCase):
@@ -77,9 +80,13 @@ class DeliveryTest(APITestCase):
         row = Row.objects.create(code=1, cabinet=self.cabinet)
         cell = Cell.objects.create(code=1, row=row)
         self.cell2 = Cell.objects.create(code=2, row=row)
-        pilgrim = Pilgrim.objects.create(last_name='last_name', phone="091232313", country='IR')
+        pilgrim = Pilgrim.objects.create(
+            last_name='last_name', phone="091232313", country='IR'
+        )
         d = timezone.now() - timezone.timedelta(days=settings.STORE_DAYS + 1)
-        self.delivery = Delivery.objects.create(pilgrim=pilgrim, taker=self.user, depository=dep, entered_at=d)
+        self.delivery = Delivery.objects.create(
+            pilgrim=pilgrim, taker=self.user, depository=dep, entered_at=d
+        )
         self.pack = Pack.objects.create(delivery=self.delivery, cell=cell)
         self.client.login(username='admin', password='a')
 
@@ -89,14 +96,16 @@ class DeliveryTest(APITestCase):
         self.assertEqual(1, len(response.data))
 
     def test_deliver_to_store(self):
-        response = self.client.post(reverse('cell-deliver-to-store', args=[self.pack.cell.get_code()]), )
+        response = self.client.post(reverse('cell-deliver-to-store', args=[
+            self.pack.cell.get_code()]), )
         self.delivery.refresh_from_db()
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(self.delivery.exit_type, Delivery.DELIVERED_TO_STORE)
 
     def test_favorites(self):
         assert self.cabinet.is_asc, True
-        response = self.client.post(reverse('cell-favorite', args=[self.cell2.get_code()]), )
+        response = self.client.post(
+            reverse('cell-favorite', args=[self.cell2.get_code()]), )
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.cabinet.refresh_from_db()
         self.assertFalse(self.cabinet.is_asc)

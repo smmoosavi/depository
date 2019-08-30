@@ -1,4 +1,5 @@
 import logging
+from unittest.mock import patch
 
 from django.contrib.auth.models import User
 from django.test import TestCase
@@ -12,6 +13,7 @@ from depository.apps.accounting.models import Pilgrim
 from depository.apps.reception.models import Pack, Delivery
 from depository.apps.reception.services import ReceptionHelper
 from depository.apps.structure.models import Cabinet, Row, Cell, Depository
+from depository.apps.utils.print import PrintHelper
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +34,8 @@ class ReceptionTest(APITestCase):
         self.pack = Pack.objects.create(delivery=delivery, pram_count=1, cell_id=1)
         self.client.login(username="taker", password="a")
 
-    def test_take(self):
+    @patch.object(PrintHelper, 'print')
+    def test_take(self, mock):
         data = {
             'first_name': 'first_name',
             'last_name': 'last_name',
@@ -50,9 +53,11 @@ class ReceptionTest(APITestCase):
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertEqual(Delivery.objects.get(hash_id=self.hash_id).giver, self.user)
 
-    def test_print(self):
+    @patch.object(PrintHelper, 'print')
+    def test_print(self, mock):
         rh = ReceptionHelper()
         rh.print(self.pack)
+        self.assertEqual(2, mock.call_count)
 
 
 class AssignmentTest(TestCase):
