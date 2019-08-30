@@ -35,6 +35,38 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin):
 
 class CellViewSet(GenericViewSet, ChangeStatusMixin):
     permission_classes = [IsAdmin]
+    queryset = Cell.objects.all()
+
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # Perform the lookup filtering.
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+
+        assert lookup_url_kwarg in self.kwargs, (
+                'Expected view %s to be called with a URL keyword argument '
+                'named "%s". Fix your URL conf, or set the `.lookup_field` '
+                'attribute on the view correctly.' %
+                (self.__class__.__name__, lookup_url_kwarg)
+        )
+
+        cabinet, row, cell = CodeHelper().to_code(self.kwargs[lookup_url_kwarg])
+        query = {'code': cell, 'row__code': row, 'row__cabinet__code': cabinet}
+        obj = get_object_or_404(queryset, **query)
+
+        # May raise a permission denied
+        self.check_object_permissions(self.request, obj)
+
+        return obj
+
+    @action(methods=['POST'], detail=True)
+    def deliver_to_store(self, request, pk):
+        cell = self.get_object()
+        delivery = Pack.objects.get(cell=cell, delivery__exited_at__isnull=True).delivery
+        delivery.exited_at = timezone.now()
+        delivery.exit_type = Delivery.DELIVERED_TO_STORE
+        delivery.save()
+        return Response({}, status=status.HTTP_200_OK)
 
 
 class RowViewSet(CellViewSet, ChangeStatusMixin):

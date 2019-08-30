@@ -61,14 +61,6 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
         serializer = self.get_serializer(deliveries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @action(methods=['POST'], detail=True)
-    def deliver_to_store(self, request, hash_id):
-        obj = self.get_object()
-        obj.exited_at = timezone.now()
-        obj.exit_type = Delivery.DELIVERED_TO_STORE
-        obj.giver = request.user
-        obj.save()
-        return Response({}, status.HTTP_200_OK)
 
     @action(methods=['POST'], detail=True)
     def revert_exit(self, request, hash_id):

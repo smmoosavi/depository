@@ -9,7 +9,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from depository.apps.accounting.models import Pilgrim
-from depository.apps.reception.models import Delivery
+from depository.apps.reception.models import Delivery, Pack
 from depository.apps.structure.helpers import StructureHelper
 from depository.apps.structure.models import Cell, Cabinet, Row, Depository
 
@@ -69,15 +69,17 @@ class DeliveryTest(APITestCase):
     def setUp(self):
         self.user = User.objects.create(username="admin")
         self.user.set_password('a')
+        group = Group.objects.create(name="Admin")
+        self.user.groups.add(group)
         self.user.save()
         dep = Depository.objects.create(name='dep1')
         cabinet = Cabinet.objects.create(code=10, depository_id=1)
         row = Row.objects.create(code=1, cabinet=cabinet)
-        Cell.objects.create(code=1, row=row)
+        cell = Cell.objects.create(code=1, row=row)
         pilgrim = Pilgrim.objects.create(last_name='last_name', phone="091232313", country='IR')
         d = timezone.now() - timezone.timedelta(days=settings.STORE_DAYS + 1)
         self.delivery = Delivery.objects.create(pilgrim=pilgrim, taker=self.user, depository=dep, entered_at=d)
-
+        self.pack = Pack.objects.create(delivery=self.delivery, cell=cell)
         self.client.login(username='admin', password='a')
 
     def test_old_delivery(self):
@@ -86,7 +88,7 @@ class DeliveryTest(APITestCase):
         self.assertEqual(1, len(response.data))
 
     def test_deliver_to_store(self):
-        response = self.client.post(reverse('delivery-deliver-to-store', args=[self.delivery.hash_id]), )
+        response = self.client.post(reverse('cell-deliver-to-store', args=[self.pack.cell.get_code()]), )
         self.delivery.refresh_from_db()
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(self.delivery.exit_type, Delivery.DELIVERED_TO_STORE)
