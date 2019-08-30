@@ -5,7 +5,7 @@ from datetime import timedelta
 from io import StringIO
 import qrcode
 from django.conf import settings
-from django.db.models import Max, Min, Count
+from django.db.models import Max, Min, Count, Q
 from django.template.loader import render_to_string
 from django.utils import timezone
 from khayyam.jalali_datetime import JalaliDatetime
@@ -20,8 +20,9 @@ from depository.apps.utils.utils import Encryption
 class ReceptionHelper:
     def assign_cell(self, size):
         assert size in [Cell.SIZE_SMALL, Cell.SIZE_LARGE]
+        treshold = timezone.now() - timezone.timedelta(minutes=5)
         busy_cells = Pack.objects.filter(
-            delivery__exited_at__isnull=True
+            Q(delivery__exited_at__isnull=True) | Q(delivery__exited_at__gt=treshold)
         ).values_list('cell', flat=True)
         cabinet_order = Cell.objects.filter(
             is_healthy=True
