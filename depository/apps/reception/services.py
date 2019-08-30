@@ -1,15 +1,14 @@
 import random
 import string
+from datetime import datetime
 from datetime import timedelta
 
-from io import StringIO
 import qrcode
 from django.conf import settings
 from django.db.models import Max, Min, Count, Q
 from django.template.loader import render_to_string
 from django.utils import timezone
 from khayyam.jalali_datetime import JalaliDatetime
-from datetime import datetime
 
 from depository.apps.reception.models import Pack, Delivery
 from depository.apps.structure.models import Cell, Cabinet
@@ -90,7 +89,7 @@ class ReceptionHelper:
             html = render_to_string('badge.html', {
                 'name': pilgrim.get_full_name(), 'index': idx + 1, 'count': badge_count,
                 'country': pilgrim.country, 'phone': pilgrim.get_four_digit_phone(), 'entered_at': entered_at,
-                'code': pack.cell.get_code(), 'barcode': barcode, 'depository_name':depository.name
+                'code': pack.cell.get_code(), 'barcode': barcode, 'depository_name': depository.name
 
             })
             ph.print(html)
@@ -98,9 +97,10 @@ class ReceptionHelper:
         html = render_to_string('reciept.html', {
             'depository_name': depository.name, 'depository_address': depository.address,
             'social': settings.CONST_KEY_SOCIAL, 'phone': settings.CONST_KEY_PHONE,
-            'notice': 'You have only got 24 hours for borrowing your packages', 'entered_at': entered_at, 'barcode': barcode
+            'notice': 'You have only got 24 hours for borrowing your packages', 'entered_at': entered_at,
+            'barcode': barcode
         })
-        ph.print(html,height=120)
+        ph.print(html, height=120)
 
     def report(self):
         total_count = Delivery.objects.count()

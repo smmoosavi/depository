@@ -1,6 +1,5 @@
 from rest_framework.routers import DefaultRouter
 
-from depository.apps.accounting.views import AccountingViewSet
 from depository.apps.reception.views import ReceptionViewSet, ReportViewSet, \
     BackUpViewSet
 
