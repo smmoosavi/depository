@@ -1,10 +1,16 @@
 # Create your views here.
+from django.db.models import Max, Min
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from depository.apps.reception.models import Delivery, Pack
+from depository.apps.structure.helpers import CodeHelper
+from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.structure.serializers import CabinetCreateSerializer, \
     StatusSerializer, CabinetSerializer
 from depository.apps.utils.permissions import IsAdmin
@@ -20,9 +26,15 @@ class ChangeStatusMixin:
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin):
-    serializer_class = CabinetCreateSerializer
+class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin, ListModelMixin):
     permission_classes = [IsAdmin]
+    queryset = Cabinet.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CabinetCreateSerializer
+        else:
+            return CabinetSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)

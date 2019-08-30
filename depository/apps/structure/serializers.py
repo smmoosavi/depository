@@ -1,7 +1,9 @@
 from django.conf import settings
+from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
+from depository.apps.reception.models import Pack
 from depository.apps.structure.helpers import CodeHelper
 from depository.apps.structure.models import Cell, Cabinet, Row
 
@@ -57,6 +59,7 @@ class StatusSerializer(serializers.Serializer):
 
 class CellSerializer(serializers.ModelSerializer):
     code = serializers.SerializerMethodField()
+    age = serializers.SerializerMethodField()
 
     class Meta:
         model = Cell
@@ -64,6 +67,13 @@ class CellSerializer(serializers.ModelSerializer):
 
     def get_code(self, obj):
         return CodeHelper().to_str(obj.row.cabinet.code, obj.row.code, obj.code)
+
+    def get_age(self, obj):
+        pack = Pack.objects.filter(cell=obj).order_by('delivery__entered_at').first()
+        if not pack or pack.delivery.exited_at:
+            return -1
+        age = (timezone.now() - pack.delivery.entered_at).seconds // 3600
+        return age
 
 
 class RowSerializer(serializers.ModelSerializer):
