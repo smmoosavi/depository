@@ -80,22 +80,22 @@ class ReceptionHelper:
         pilgrim = pack.delivery.pilgrim
         entered_at = JalaliDatetime(pack.delivery.entered_at).strftime("%A %d %B %H:%M")
         barcode = self.barcode(pack)
+        depository = pack.cell.row.cabinet.depository
         for idx in range(badge_count):
             html = render_to_string('badge.html', {
                 'name': pilgrim.get_full_name(), 'index': idx + 1, 'count': badge_count,
                 'country': pilgrim.country, 'phone': pilgrim.get_four_digit_phone(), 'entered_at': entered_at,
-                'code': pack.cell.get_code(), 'barcode': barcode
+                'code': pack.cell.get_code(), 'barcode': barcode, 'depository_name':depository.name
 
             })
             ph.print(html)
 
-        depository = pack.cell.row.cabinet.depository
         html = render_to_string('reciept.html', {
             'depository_name': depository.name, 'depository_address': depository.address,
             'social': settings.CONST_KEY_SOCIAL, 'phone': settings.CONST_KEY_PHONE,
-            'notice': settings.CONST_KEY_NOTICE, 'entered_at': entered_at, 'barcode': barcode
+            'notice': 'You have only got 24 hours for borrowing your packages', 'entered_at': entered_at, 'barcode': barcode
         })
-        ph.print(html, height=100)
+        ph.print(html,height=120)
 
     def report(self):
         total_count = Delivery.objects.count()

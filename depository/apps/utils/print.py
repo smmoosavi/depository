@@ -9,9 +9,10 @@ from django.conf import settings
 
 
 class PrintHelper:
-    def generate_pdf(self, html, width=75, height=50):
+    def generate_pdf(self, html, width, height):
         options = {
             # 'page-size': "A4",
+            'orientation':'Portrait',
             'page-width': str(width),
             'page-height': str(height),
             'margin-bottom': "0",
@@ -26,8 +27,8 @@ class PrintHelper:
             html, path, configuration=config, options=options)
         return path
 
-    def print(self, html, width=75, height=50):
+    def print(self, html, width=73, height=90):
         path = self.generate_pdf(html, width, height)
-        # subprocess.run(["ls", "-l"])
+        subprocess.run(["lpr", "-P", "OSCAR-POS88F-USB", path])
         # os.remove(path) ?
         # TODO:

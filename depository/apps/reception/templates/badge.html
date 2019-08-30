@@ -6,36 +6,37 @@
     <style>
         @font-face {
             font-family: IranSans;
-            src: url({{ STATIC_URL }}fonts/iranian-sans.woff), Tahoma;
+            src: url(https://api.pushe.co/static/fonts/iranian-sans.woff);
         }
 
         .col {
             display: inline-block;
-            width: 49%;
+            width: 47%;
+            //border:solid 1px;
         }
 
         body {
             font-family: IranSans;
             direction: rtl;
-            width: 100%;
+            width: 95%;
+            //border: solid 1px;
         }
 
         .cell {
-            font-size: 12px;
+            font-size: 20px;
             direction: rtl;
             text-align: right;
+            line-height: 1em
         }
 
         .name {
-            font-size: 18px;
+            font-size: 30px;
             direction: rtl;
             text-align: center;
         }
-
-        .barcode {
-            height: 180px;
+        .big{
+            line-height:0.8em;
         }
-
     </style>
 </head>
 <body>
@@ -45,11 +46,12 @@
         <div class="cell">{{ country }}</div>
         <div class="cell" style="direction: ltr">00********{{ phone }}</div>
         <div class="cell">{{ entered_at }}</div>
-        <div class="cell" style="font-size: 40px">{{ code }}</div>
-        <div class="cell" style="font-size: 50px">{{ index }}/{{ count }}</div>
+        <div class="cell">{{ depository_name }}</div>
     </div>
     <div class="col">
-        <img src="{{ barcode }}" class="barcode">
+        <div class="cell big" style="font-size: 65px">{{ code }}</div>
+        <div class="cell big" style="font-size: 40px">{{ index }}/{{ count }}</div>
+
     </div>
 </div>
 </body>
