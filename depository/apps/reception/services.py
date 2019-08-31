@@ -1,3 +1,4 @@
+import base64
 import random
 import string
 from datetime import datetime
@@ -8,12 +9,12 @@ from django.conf import settings
 from django.db.models import Max, Min, Count, Q
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.encoding import force_bytes
 from khayyam.jalali_datetime import JalaliDatetime
 
 from depository.apps.reception.models import Pack, Delivery
 from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.utils.print import PrintHelper
-from depository.apps.utils.utils import Encryption
 
 
 class ReceptionHelper:
@@ -62,7 +63,7 @@ class ReceptionHelper:
     def barcode(self, pack):
         pilgrim = pack.delivery.pilgrim
         data = f'{pilgrim.get_full_name()}#{pilgrim.country}#{pack.delivery.hash_id}#{pilgrim.get_four_digit_phone()}'
-        data = Encryption().cesar(data)
+        data = base64.b64encode(force_bytes(data)).decode("utf-8")
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
