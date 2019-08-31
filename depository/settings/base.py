@@ -207,7 +207,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
         # 'app_server.utils.permissions.IsRollingV2',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 DEFAULT_DEPOSITORY_ID = 1
 CABINET_DIGITS = 2

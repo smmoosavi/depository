@@ -7,11 +7,11 @@ from depository.apps.reception.models import Delivery
 
 
 class DeliveryFilter(filters.FilterSet):
-    first_name = filters.CharFilter()
-    last_name = filters.CharFilter()
-    country = filters.CharFilter()
-    phone = filters.CharFilter()
-    passport_id = filters.CharFilter()
+    first_name = filters.CharFilter(method='filter_first_name')
+    last_name = filters.CharFilter(method='filter_last_name')
+    country = filters.CharFilter(method='filter_country')
+    phone = filters.CharFilter(method='filter_phone')
+    passport_id = filters.CharFilter(method='filter_passport_id')
 
     class Meta:
         model = Delivery
