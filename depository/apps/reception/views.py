@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from depository.apps.reception.filters import DeliveryFilter
-from depository.apps.reception.models import Delivery
+from depository.apps.reception.models import Delivery, Pack
 from depository.apps.reception.serializers import ReceptionTakeSerializer, \
     ReceptionGiveSerializer, DeliverySerializer
 from depository.apps.reception.services import ReceptionHelper
@@ -61,7 +61,6 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
         serializer = self.get_serializer(deliveries, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
     @action(methods=['POST'], detail=True)
     def revert_exit(self, request, hash_id):
         obj = self.get_object()
@@ -69,6 +68,13 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
         obj.exited_at = None
         obj.giver = None
         obj.save()
+        return Response({}, status.HTTP_200_OK)
+
+    @action(methods=['POST'], detail=False)
+    def print(self, request):
+        last_pack = Pack.objects.filter(delivery__taker=request.user).order_by('-delivery__entered_at').first()
+        rh = ReceptionHelper()
+        rh.print(last_pack)
         return Response({}, status.HTTP_200_OK)
 
 
