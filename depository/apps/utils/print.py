@@ -5,6 +5,9 @@ from datetime import datetime
 
 import pdfkit
 from django.conf import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class PrintHelper:
@@ -30,5 +33,8 @@ class PrintHelper:
 
     def print(self, html, width=73, height=90):
         path = self.generate_pdf(html, width, height)
-        subprocess.run(["lpr", "-P", "OSCAR-POS88F-USB", path])
+        try:
+            subprocess.run(["lpr", "-P", "OSCAR-POS88F-USB", path])
+        except Exception as e:
+            logger.exception(e)
         # os.remove(path) ?
