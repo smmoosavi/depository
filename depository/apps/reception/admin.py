@@ -8,6 +8,7 @@ from depository.apps.reception.models import Delivery, Pack
 class DeliveryAdmin(admin.ModelAdmin):
     list_display = ['pilgrim', 'taker', 'giver', 'hash_id', 'entered_at', 'exited_at', 'exit_type']
     search_fields = ['pilgrim__first_name', 'pilgrim__last_name', 'pilgrim__passport_id']
+    list_filter = ['exit_type']
 
 
 @admin.register(Pack)
