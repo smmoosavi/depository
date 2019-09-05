@@ -82,6 +82,7 @@ class PackSerializer(serializers.ModelSerializer):
 
 class DeliverySerializer(serializers.ModelSerializer):
     pack = serializers.SerializerMethodField()
+    pilgrim = serializers.SerializerMethodField
 
     class Meta:
         model = Delivery
@@ -92,3 +93,6 @@ class DeliverySerializer(serializers.ModelSerializer):
 
     def get_pack(self, obj):
         return PackSerializer(obj.packs, many=True).data
+
+    def get_pilgrim(self, obj):
+        return obj.pilgrim.get_full_name()
