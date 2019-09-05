@@ -82,7 +82,7 @@ class PackSerializer(serializers.ModelSerializer):
 
 class DeliverySerializer(serializers.ModelSerializer):
     pack = serializers.SerializerMethodField()
-    pilgrim = serializers.SerializerMethodField
+    pilgrim = serializers.SerializerMethodField()
 
     class Meta:
         model = Delivery
