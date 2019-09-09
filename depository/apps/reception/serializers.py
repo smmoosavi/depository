@@ -57,10 +57,14 @@ class ReceptionTakeSerializer(serializers.Serializer):
         return data
 
 
-class ReceptionGiveSerializer(serializers.Serializer):
+class ReceptionGiveSerializer(serializers.ModelSerializer):
     hash_id = serializers.CharField()
     exited_at = serializers.SerializerMethodField()
     pilgrim = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Delivery
+        fields = ('hash_id', 'exited_at', 'pilgrim')
 
     def validate(self, attrs):
         delivery = get_object_or_404(Delivery.objects.all(), hash_id=attrs['hash_id'])
@@ -74,7 +78,7 @@ class ReceptionGiveSerializer(serializers.Serializer):
         delivery.exit_type = Delivery.DELIVERED_TO_CUSTOMER
         delivery.exited_at = timezone.now()
         delivery.save()
-        return data
+        return delivery
 
     def get_exited_at(self, obj):
         if obj.exited_at:
