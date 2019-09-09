@@ -18,16 +18,16 @@ class DeliveryFilter(filters.FilterSet):
         fields = ()
 
     def filter_first_name(self, qs, name, value):
-        return qs.filter(pilgrim__first_name=value)
+        return qs.filter(pilgrim__first_name__icontains=value)
 
     def filter_last_name(self, qs, name, value):
-        return qs.filter(pilgrim__last_name=value)
+        return qs.filter(pilgrim__last_name__icontains=value)
 
     def filter_country(self, qs, name, value):
-        return qs.filter(pilgrim__country=value)
+        return qs.filter(pilgrim__country__icontains=value)
 
     def filter_phone(self, qs, name, value):
-        return qs.filter(pilgrim__phone=value)
+        return qs.filter(pilgrim__phone__icontains=value)
 
     def filter_passport_id(self, qs, name, value):
-        return qs.filter(pilgrim__passport_id=value)
+        return qs.filter(pilgrim__passport_id__icontains=value)

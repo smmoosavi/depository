@@ -1,4 +1,5 @@
 from django.utils import timezone
+from khayyam.jalali_datetime import JalaliDatetime
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
@@ -83,6 +84,8 @@ class PackSerializer(serializers.ModelSerializer):
 class DeliverySerializer(serializers.ModelSerializer):
     pack = serializers.SerializerMethodField()
     pilgrim = serializers.SerializerMethodField()
+    entered_at = serializers.SerializerMethodField()
+    exited_at = serializers.SerializerMethodField()
 
     class Meta:
         model = Delivery
@@ -96,3 +99,11 @@ class DeliverySerializer(serializers.ModelSerializer):
 
     def get_pilgrim(self, obj):
         return obj.pilgrim.get_full_name()
+
+    def get_entered_at(self, obj):
+        if obj.entered_at:
+            JalaliDatetime(obj.entered_at).strftime("%A %d %B %H:%M")
+
+    def get_exited_at(self, obj):
+        if obj.exited_at:
+            JalaliDatetime(obj.exited_at).strftime("%A %d %B %H:%M")
