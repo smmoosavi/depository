@@ -1,7 +1,10 @@
 from django.contrib import admin
 
 # Register your models here.
-from depository.apps.structure.models import Depository, Cabinet, Row, Cell
+from django.contrib.auth.models import Group
+from rest_framework.authtoken.models import Token
+
+from depository.apps.structure.models import Depository, Cabinet, Row, Cell, Constant
 
 
 @admin.register(Depository)
@@ -22,3 +25,13 @@ class RowAdmin(admin.ModelAdmin):
 @admin.register(Cell)
 class CellAdmin(admin.ModelAdmin):
     list_display = ['code', 'is_healthy']
+
+
+@admin.register(Constant)
+class ConstantAdmin(admin.ModelAdmin):
+    list_display = ['key', 'value']
+
+
+
+admin.site.unregister(Group)
+admin.site.unregister(Token)

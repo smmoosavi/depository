@@ -2,7 +2,8 @@
   {
     "model": "structure_depository",
     "fields": {
-      "name": "Depository1"
+      "name": "Depository1",
+      "address":"Depository1 Address"
     }
   }
 ]
