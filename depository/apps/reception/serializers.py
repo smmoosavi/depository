@@ -59,6 +59,8 @@ class ReceptionTakeSerializer(serializers.Serializer):
 
 class ReceptionGiveSerializer(serializers.Serializer):
     hash_id = serializers.CharField()
+    exited_at = serializers.SerializerMethodField()
+    pilgrim = serializers.SerializerMethodField()
 
     def validate(self, attrs):
         delivery = get_object_or_404(Delivery.objects.all(), hash_id=attrs['hash_id'])
@@ -73,6 +75,13 @@ class ReceptionGiveSerializer(serializers.Serializer):
         delivery.exited_at = timezone.now()
         delivery.save()
         return data
+
+    def get_exited_at(self, obj):
+        if obj.exited_at:
+            return JalaliDatetime(obj.exited_at).strftime("%A %d %B %H:%M")
+
+    def get_pilgrim(self, obj):
+        return obj.pilgrim.get_full_name()
 
 
 class PackSerializer(serializers.ModelSerializer):
