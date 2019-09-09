@@ -102,8 +102,8 @@ class DeliverySerializer(serializers.ModelSerializer):
 
     def get_entered_at(self, obj):
         if obj.entered_at:
-            JalaliDatetime(obj.entered_at).strftime("%A %d %B %H:%M")
+            return JalaliDatetime(obj.entered_at).strftime("%A %d %B %H:%M")
 
     def get_exited_at(self, obj):
         if obj.exited_at:
-            JalaliDatetime(obj.exited_at).strftime("%A %d %B %H:%M")
+            return JalaliDatetime(obj.exited_at).strftime("%A %d %B %H:%M")
