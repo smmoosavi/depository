@@ -1,33 +1,38 @@
 #!/usr/bin/env python
 # vim: ts=4 sw=4 et
+import logging
 
+logger = logging.getLogger(__name__)
 from django_filters import rest_framework as filters
 
 from depository.apps.reception.models import Delivery
 
 
 class DeliveryFilter(filters.FilterSet):
-    first_name = filters.CharFilter(method='filter_first_name')
-    last_name = filters.CharFilter(method='filter_last_name')
-    country = filters.CharFilter(method='filter_country')
-    phone = filters.CharFilter(method='filter_phone')
-    passport_id = filters.CharFilter(method='filter_passport_id')
+    first_name = filters.CharFilter(method='filter_field')
+    last_name = filters.CharFilter(method='filter_field')
+    country = filters.CharFilter(method='filter_field')
+    phone = filters.CharFilter(method='filter_field')
+    passport_id = filters.CharFilter(method='filter_field')
+    in_house = filters.BooleanFilter(method='filter_in_house')
+    in_store = filters.BooleanFilter(method='filter_in_store')
 
     class Meta:
         model = Delivery
         fields = ()
 
-    def filter_first_name(self, qs, name, value):
-        return qs.filter(pilgrim__first_name__icontains=value)
+    def filter_field(self, qs, name, value):
+        query = {f"pilgrim__{name}__icontains":value}
+        return qs.filter(**query)
 
-    def filter_last_name(self, qs, name, value):
-        return qs.filter(pilgrim__last_name__icontains=value)
+    def filter_in_house(self, qs, name, value):
+        if value:
+            return qs.filter(exited_at__isnull=True)
+        else:
+            return qs.filter(exited_at__isnull=False)
 
-    def filter_country(self, qs, name, value):
-        return qs.filter(pilgrim__country__icontains=value)
-
-    def filter_phone(self, qs, name, value):
-        return qs.filter(pilgrim__phone__icontains=value)
-
-    def filter_passport_id(self, qs, name, value):
-        return qs.filter(pilgrim__passport_id__icontains=value)
+    def filter_in_store(self, qs, name, value):
+        if value:
+            return qs.filter(exit_type=Delivery.DELIVERED_TO_STORE)
+        else:
+            return qs.exclude(exit_type=Delivery.DELIVERED_TO_STORE)

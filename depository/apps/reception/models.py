@@ -32,7 +32,7 @@ class Delivery(models.Model):
     giver = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name='givers', null=True, blank=True
     )
-    hash_id = models.CharField(max_length=4, default=hash_id_generator)
+    hash_id = models.CharField(max_length=32, default=hash_id_generator)
     depository = models.ForeignKey(Depository, on_delete=models.CASCADE, default=1)
     entered_at = models.DateTimeField(default=timezone.now)
     exited_at = models.DateTimeField(null=True, blank=True)

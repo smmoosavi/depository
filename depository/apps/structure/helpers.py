@@ -30,6 +30,5 @@ class StructureHelper:
         ch = CodeHelper()
         for row in cabinet.rows.all():
             for cell in row.cells.all():
-                code = ch.print_cell_code(cell)
-                html = render_to_string('number.html', {'number': code})
+                html = render_to_string('number.html', {'number': cell.get_code()})
                 ph.print(html)
