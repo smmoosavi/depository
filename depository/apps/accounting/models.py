@@ -27,3 +27,4 @@ class Pilgrim(models.Model):
         if self.phone:
             return self.phone[-4:]
         return ''
+

@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class ReceptionTest(APITestCase):
     def setUp(self):
         self.hash_id = "mg63x59lq8v0o29g"
-        self.user = User.objects.create(username="taker")
+        self.user = User.objects.create(username="taker",first_name="وحید",last_name='امین تبار')
         self.user.set_password('a')
         self.user.save()
         depository = Depository.objects.create(name='امانت داری شماره ۱', address='صحن حضرت فاطمه - سمت چپ')
@@ -49,7 +49,6 @@ class ReceptionTest(APITestCase):
 
     def test_give(self):
         response = self.client.post(reverse("reception-give"), {'hash_id': self.hash_id})
-
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertEqual(Delivery.objects.get(hash_id=self.hash_id).giver, self.user)
 

@@ -1,6 +1,9 @@
+import json
+
 from django.conf import settings
 from django.template.loader import render_to_string
 
+from depository.apps.structure.models import Constant
 from depository.apps.utils.print import PrintHelper
 
 
@@ -19,10 +22,6 @@ class CodeHelper:
             cell = int(code[settings.CABINET_DIGITS + settings.ROW_DIGITS:])
         return cabinet, row, cell
 
-    def print_cell_code(self, cell):
-        return ("{:0%s}" % settings.ROW_DIGITS).format(cell.row.code) + \
-               ("{:0%s}" % settings.CELL_DIGITS).format(cell.code)
-
 
 class StructureHelper:
     def print(self, cabinet):
@@ -32,3 +31,20 @@ class StructureHelper:
             for cell in row.cells.all():
                 html = render_to_string('number.html', {'number': cell.get_code()})
                 ph.print(html)
+
+
+class ConstantHelper:
+    def get(self, key, default=None):
+        try:
+            return Constant.objects.get(key=key).value
+        except Constant.DoesNotExist:
+            if default:
+                return default
+            else:
+                return key
+
+    def get_notice(self, country):
+        return self.get(
+            settings.CONST_KEY_NOTICE % settings.LANG_DICT[country][0],
+            default='You have only got 24 hours for borrowing your packages'
+        )

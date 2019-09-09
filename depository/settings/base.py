@@ -15,6 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from datetime import timedelta
 
+from rest_framework.utils import json
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/../'
 print(BASE_DIR)
 
@@ -226,6 +228,10 @@ WKHTMLTOPDF_PATH = None
 
 CONST_KEY_SOCIAL = 'social'
 CONST_KEY_PHONE = 'phone'
-CONST_KEY_NOTICE = 'notice'
+CONST_KEY_NOTICE = 'notice_%s'
 
 APPEND_SLASH = False
+
+f = open('lang.json')
+LANG_DICT = json.loads(f.read())
+f.close()

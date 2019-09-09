@@ -4,6 +4,7 @@ from unittest.mock import patch
 from django.conf import settings
 from django.contrib.auth.models import User, Group
 # Create your tests here.
+from django.test.testcases import TestCase
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import status
@@ -11,8 +12,8 @@ from rest_framework.test import APITestCase
 
 from depository.apps.accounting.models import Pilgrim
 from depository.apps.reception.models import Delivery, Pack
-from depository.apps.structure.helpers import StructureHelper
-from depository.apps.structure.models import Cell, Cabinet, Row, Depository
+from depository.apps.structure.helpers import StructureHelper, ConstantHelper
+from depository.apps.structure.models import Cell, Cabinet, Row, Depository, Constant
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,6 @@ class StructureTest(APITestCase):
         self.cabinet = Cabinet.objects.create(code=10, depository_id=1)
         row = Row.objects.create(code=1, cabinet=self.cabinet)
         Cell.objects.create(code=1, row=row)
-
         self.client.login(username='admin', password='a')
 
     def test_create(self):
@@ -61,11 +61,21 @@ class StructureTest(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertFalse(Cell.objects.first().is_healthy)
 
-    @patch.object(StructureHelper, 'print')
+    # @patch.object(StructureHelper, 'print')
     def test_print(self, *args):
         response = self.client.post(
             reverse('cabinet-print', args=[self.cabinet.code]))
         self.assertEqual(status.HTTP_200_OK, response.status_code)
+
+
+class ConstantTest(TestCase):
+    def setUp(self):
+        Constant.objects.create(key=settings.CONST_KEY_NOTICE % "fa", value="fa_notice")
+
+    def test_notice_lang(self):
+        ch = ConstantHelper()
+        result = ch.get_notice('Afghanistan')
+        self.assertEqual('fa_notice', result)
 
 
 class DeliveryTest(APITestCase):

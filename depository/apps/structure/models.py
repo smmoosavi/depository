@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext as _
 
 # Create your models here.
-from depository.apps.structure.helpers import CodeHelper
+
 
 
 class Depository(models.Model):
@@ -35,9 +35,10 @@ class Cell(models.Model):
     size = models.IntegerField(choices=SIZE_CHOICES, default=SIZE_SMALL)
 
     def get_code(self):
+        from depository.apps.structure.helpers import CodeHelper
         return CodeHelper().to_str(self.row.cabinet.code, self.row.code, self.code)
 
 
 class Constant(models.Model):
-    key = models.CharField(max_length=100)
+    key = models.CharField(max_length=100, unique=True)
     value = models.TextField()
