@@ -74,7 +74,7 @@ class CellSerializer(serializers.ModelSerializer):
             return -1
         age = (timezone.now() - pack.delivery.entered_at).seconds // 3600
         days = int(ConstantHelper().get(settings.CONST_KEY_STORE_THRESHOLD, "1"))
-        if 0 < age <= (days * 24):
+        if 0 <= age <= (days * 24):
             return 0
         else:
             return 1

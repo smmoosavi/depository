@@ -41,7 +41,7 @@ class StructureTest(APITestCase):
         }
         response = self.client.post(reverse('cabinet-list'), data)
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
-        self.assertEqual(16, Cell.objects.count())
+        self.assertEqual(17, Cell.objects.count())
         self.assertEqual(5, Cell.objects.filter(size=Cell.SIZE_LARGE).count())
 
     def test_change_status_cell(self):
