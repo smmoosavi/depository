@@ -105,7 +105,10 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         elif cell_code_min == cell.get_code():
             is_asc = True
         cabinet.is_asc = is_asc
+        cabinet.order = 0
         cabinet.save()
+        cell.is_fav = True
+        cell.save()
         return Response({}, status=status.HTTP_200_OK)
 
 

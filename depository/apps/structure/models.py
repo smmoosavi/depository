@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils.translation import ugettext as _
 
-# Create your models here.
 
+# Create your models here.
 
 
 class Depository(models.Model):
@@ -33,6 +33,7 @@ class Cell(models.Model):
     row = models.ForeignKey(Row, on_delete=models.CASCADE, related_name='cells')
     is_healthy = models.BooleanField(default=True)
     size = models.IntegerField(choices=SIZE_CHOICES, default=SIZE_SMALL)
+    is_fav = models.BooleanField(default=False)
 
     def get_code(self):
         from depository.apps.structure.helpers import CodeHelper
