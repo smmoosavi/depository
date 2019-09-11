@@ -63,7 +63,7 @@ class ReceptionHelper:
 
     def barcode(self, pack):
         pilgrim = pack.delivery.pilgrim
-        data = f'{pilgrim.get_full_name()}#{pilgrim.country}#{pack.delivery.hash_id}#{pilgrim.get_four_digit_phone()}'
+        data = f'{pilgrim.get_full_name()}#{pilgrim.country}#{pack.delivery.hash_id}#{pilgrim.get_four_digit_phone()}#{pack.cell.get_code()}'
         data = base64.b64encode(force_bytes(data)).decode("utf-8")
         qr = qrcode.QRCode(
             version=1,
@@ -109,7 +109,7 @@ class ReceptionHelper:
 
     def report(self):
         total_count = Delivery.objects.count()
-        distribution = {'total': total_count,}
+        distribution = {'total': total_count, }
         deliveries = Delivery.objects.values('exit_type').annotate(count=Count('pk'))
         for item in deliveries:
             distribution[item['exit_type']] = item['count']
