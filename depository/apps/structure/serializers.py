@@ -73,7 +73,12 @@ class CellSerializer(serializers.ModelSerializer):
         if not pack or pack.delivery.exited_at:
             return -1
         age = (timezone.now() - pack.delivery.entered_at).seconds // 3600
-        return age
+        if 0 < age <= 12:
+            return 0
+        elif 12 < age <= 24:
+            return 1
+        else:
+            return 2
 
 
 class RowSerializer(serializers.ModelSerializer):
