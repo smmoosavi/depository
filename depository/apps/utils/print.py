@@ -1,3 +1,4 @@
+import os
 import random
 import string
 import subprocess
@@ -35,6 +36,9 @@ class PrintHelper:
         path = self.generate_pdf(html, width, height)
         try:
             subprocess.run(["lpr", "-P", "OSCAR-POS88F-USB", path])
+            os.remove(path)
+            return True
         except Exception as e:
             logger.exception(e)
-        # os.remove(path) ?
+            return False
+

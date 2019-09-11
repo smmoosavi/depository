@@ -27,10 +27,12 @@ class StructureHelper:
     def print(self, cabinet):
         ph = PrintHelper()
         ch = CodeHelper()
+        numbers = []
         for row in cabinet.rows.all():
             for cell in row.cells.all():
-                html = render_to_string('number.html', {'number': cell.get_code()})
-                ph.print(html)
+                numbers.append(cell.get_code())
+        html = render_to_string('number.html', {'numbers': numbers})
+        ph.print(html)
 
 
 class ConstantHelper:

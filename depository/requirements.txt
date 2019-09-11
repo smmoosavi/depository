@@ -12,3 +12,4 @@ pdfkit
 ipython
 khayyam
 qrcode
+openpyxl

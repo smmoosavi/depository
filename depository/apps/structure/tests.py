@@ -29,6 +29,7 @@ class StructureTest(APITestCase):
         self.cabinet = Cabinet.objects.create(code=10, depository_id=1)
         row = Row.objects.create(code=1, cabinet=self.cabinet)
         Cell.objects.create(code=1, row=row)
+        Cell.objects.create(code=2, row=row)
         self.client.login(username='admin', password='a')
 
     def test_create(self):

@@ -18,10 +18,28 @@
             height: 100%;
             vertical-align: middle;
         }
+
+        @media print {
+            .keep-together {
+                page-break-inside: avoid;
+            }
+
+            .break-before {
+                page-break-before: always;
+            }
+
+            .break-after {
+                page-break-after: always;
+            }
+        }
     </style>
 </head>
 <body>
-{{ number }}
-<div style="text-align: center;font-size:3px;padding-top:30px">.</div>
+<div class="page-break-after">
+    {% for number in numbers %}
+        {{ number }}
+        <div style="text-align: center;font-size:3px;padding-top:30px">.</div>
+    {% endfor %}
+</div>
 </body>
 </html>
