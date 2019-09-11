@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
 from depository.apps.reception.models import Pack
-from depository.apps.structure.helpers import CodeHelper
+from depository.apps.structure.helpers import CodeHelper, ConstantHelper
 from depository.apps.structure.models import Cell, Cabinet, Row
 
 
@@ -73,12 +73,11 @@ class CellSerializer(serializers.ModelSerializer):
         if not pack or pack.delivery.exited_at:
             return -1
         age = (timezone.now() - pack.delivery.entered_at).seconds // 3600
-        if 0 < age <= 12:
+        days = int(ConstantHelper().get(settings.CONST_KEY_STORE_THRESHOLD, "1"))
+        if 0 < age <= (days * 24):
             return 0
-        elif 12 < age <= 24:
-            return 1
         else:
-            return 2
+            return 1
 
 
 class RowSerializer(serializers.ModelSerializer):

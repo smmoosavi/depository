@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from datetime import timedelta
 
@@ -229,7 +228,7 @@ WKHTMLTOPDF_PATH = None
 CONST_KEY_SOCIAL = 'social'
 CONST_KEY_PHONE = 'phone'
 CONST_KEY_NOTICE = 'notice_%s'
-
+CONST_KEY_STORE_THRESHOLD = 'store_threshold'
 APPEND_SLASH = False
 
 f = open('lang.json')
