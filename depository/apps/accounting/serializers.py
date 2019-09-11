@@ -35,9 +35,14 @@ class ImportUserSerializer(serializers.Serializer):
 
 
 class PilgrimSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
     class Meta:
         model = Pilgrim
-        fields = '__all__'
+        fields = ('phone', 'country', 'name')
+
+    def get_name(self, obj):
+        return obj.get_full_name()
 
 
 class SignInSerializer(serializers.Serializer):

@@ -1,0 +1,10 @@
+[
+  {
+    "model": "structure.depository",
+    "pk": 1,
+    "fields": {
+      "name": "depository1",
+      "address": ""
+    }
+  }
+]

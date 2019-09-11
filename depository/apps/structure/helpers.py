@@ -47,6 +47,6 @@ class ConstantHelper:
 
     def get_notice(self, country):
         return self.get(
-            settings.CONST_KEY_NOTICE % settings.LANG_DICT[country][0],
+            settings.CONST_KEY_NOTICE % settings.LANG_DICT.get(country, ['en'])[0],
             default='You have only got 24 hours for borrowing your packages'
         )

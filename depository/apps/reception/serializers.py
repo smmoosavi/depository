@@ -5,6 +5,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 
 from depository.apps.accounting.models import Pilgrim
+from depository.apps.accounting.serializers import PilgrimSerializer
 from depository.apps.reception.models import Delivery, Pack
 from depository.apps.reception.services import ReceptionHelper
 from depository.apps.structure.models import Cell
@@ -69,7 +70,10 @@ class ReceptionGiveSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         delivery = get_object_or_404(Delivery.objects.all(), hash_id=attrs['hash_id'])
         if delivery.giver or delivery.exited_at:
-            raise ValidationError(_("This pack has been given to the owner"))
+            if delivery.exit_type == Delivery.DELIVERED_TO_STORE:
+                raise ValidationError(_("This pack has been sent to store"))
+            else:
+                raise ValidationError(_("This pack has been given to the owner"))
         return attrs
 
     def create(self, data):
@@ -89,9 +93,14 @@ class ReceptionGiveSerializer(serializers.ModelSerializer):
 
 
 class PackSerializer(serializers.ModelSerializer):
+    cell = serializers.SerializerMethodField()
+
     class Meta:
         model = Pack
         fields = '__all__'
+
+    def get_cell(self, obj):
+        return obj.packs.all()[0].cell.get_code()
 
 
 class DeliverySerializer(serializers.ModelSerializer):
@@ -104,14 +113,14 @@ class DeliverySerializer(serializers.ModelSerializer):
         model = Delivery
         fields = (
             'pilgrim', 'taker', 'giver', 'hash_id', 'entered_at', 'exited_at',
-            'exit_type', 'pack'
+            'exit_type', 'pack', 'cell'
         )
 
     def get_pack(self, obj):
         return PackSerializer(obj.packs, many=True).data
 
     def get_pilgrim(self, obj):
-        return obj.pilgrim.get_full_name()
+        return PilgrimSerializer(obj.pilgrim).data
 
     def get_entered_at(self, obj):
         if obj.entered_at:
