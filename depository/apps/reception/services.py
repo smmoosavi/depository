@@ -84,7 +84,7 @@ class ReceptionHelper:
         badge_count = pack.bag_count + pack.pram_count + pack.suitcase_count
         ph = PrintHelper()
         pilgrim = pack.delivery.pilgrim
-        entered_at_jalali = JalaliDatetime(pack.delivery.entered_at).strftime("%A %d %B %H:%M")
+        entered_at_jalali = JalaliDatetime(timezone.localtime(pack.delivery.entered_at)).strftime("%A %d %B %H:%M")
         barcode = self.barcode(pack)
         depository = pack.cell.row.cabinet.depository
         for idx in range(badge_count):
@@ -101,7 +101,7 @@ class ReceptionHelper:
             'depository_name': depository.name, 'depository_address': depository.address,
             'social': ch.get(settings.CONST_KEY_SOCIAL), 'phone': ch.get(settings.CONST_KEY_PHONE),
             'notice': ch.get_notice(pack.delivery.pilgrim.country),
-            'entered_at': pack.delivery.entered_at.strftime("%A %d %B %H:%M"),
+            'entered_at': timezone.localtime(pack.delivery.entered_at).strftime("%A %d %B %H:%M"),
             'entered_at_jalali': entered_at_jalali,
             'barcode': barcode
         })

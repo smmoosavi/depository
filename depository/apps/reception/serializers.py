@@ -100,7 +100,7 @@ class PackSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_cell(self, obj):
-        return obj.packs.all()[0].cell.get_code()
+        return obj.cell.get_code()
 
 
 class DeliverySerializer(serializers.ModelSerializer):
@@ -113,7 +113,7 @@ class DeliverySerializer(serializers.ModelSerializer):
         model = Delivery
         fields = (
             'pilgrim', 'taker', 'giver', 'hash_id', 'entered_at', 'exited_at',
-            'exit_type', 'pack', 'cell'
+            'exit_type', 'pack',
         )
 
     def get_pack(self, obj):
@@ -124,8 +124,8 @@ class DeliverySerializer(serializers.ModelSerializer):
 
     def get_entered_at(self, obj):
         if obj.entered_at:
-            return JalaliDatetime(obj.entered_at).strftime("%A %d %B %H:%M")
+            return JalaliDatetime(timezone.localtime(obj.entered_at)).strftime("%A %d %B %H:%M")
 
     def get_exited_at(self, obj):
         if obj.exited_at:
-            return JalaliDatetime(obj.exited_at).strftime("%A %d %B %H:%M")
+            return JalaliDatetime(timezone.localtime(obj.exited_at)).strftime("%A %d %B %H:%M")
