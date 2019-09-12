@@ -107,6 +107,7 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         cabinet.is_asc = is_asc
         cabinet.order = 0
         cabinet.save()
+        Cell.objects.filter(row__cabinet=cabinet).update(is_fav=False)
         cell.is_fav = True
         cell.save()
         return Response({}, status=status.HTTP_200_OK)
