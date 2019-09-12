@@ -1,4 +1,5 @@
 # Create your views here.
+from django.conf import settings
 from django.db.models import Max, Min
 from django.utils import timezone
 from rest_framework import status
@@ -100,9 +101,9 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         cell_code_max = agg_cells.aggregate(m=Max('code'))['m']
         cell_code_min = agg_cells.aggregate(m=Min('code'))['m']
         is_asc = None
-        if cell_code_max == cell.get_code():
+        if cell_code_max[:settings.CELL_DIGITS] == cell.get_code()[:settings.CELL_DIGITS]:
             is_asc = False
-        elif cell_code_min == cell.get_code():
+        elif cell_code_min[:settings.CELL_DIGITS] == cell.get_code()[:settings.CELL_DIGITS]:
             is_asc = True
         cabinet.is_asc = is_asc
         cabinet.order = 0

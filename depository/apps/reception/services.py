@@ -16,6 +16,9 @@ from depository.apps.reception.models import Pack, Delivery
 from depository.apps.structure.helpers import ConstantHelper
 from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.utils.print import PrintHelper
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ReceptionHelper:
@@ -58,7 +61,12 @@ class ReceptionHelper:
                     cell_code = abs(cell.code - cell_code_mean)
                 return abs(cell.row.code - row_code_mean) * 100 + cell_code
 
-            return sorted(cells, key=compare)[0]
+            cells = sorted(cells, key=compare)
+            logger.info(
+                f"{row_code_max} {row_code_min} {row_code_mean} {cell_code_max} {cell_code_min} {cell_code_mean}"
+            )
+            logger.info(cells)
+            return cells[0]
         return None
 
     def barcode(self, pack):
