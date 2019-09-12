@@ -69,7 +69,7 @@ class CellSerializer(serializers.ModelSerializer):
         return CodeHelper().to_str(obj.row.cabinet.code, obj.row.code, obj.code)
 
     def get_age(self, obj):
-        pack = Pack.objects.filter(cell=obj).order_by('-delivery__entered_at').first()
+        pack = Pack.objects.filter(cell=obj, exited_at__isnull=True).last()
         if not pack or pack.delivery.exited_at:
             return -1
         age = (timezone.now() - pack.delivery.entered_at).total_seconds() // 3600
