@@ -101,9 +101,9 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         cell_code_max = agg_cells.aggregate(m=Max('code'))['m']
         cell_code_min = agg_cells.aggregate(m=Min('code'))['m']
         is_asc = None
-        if cell_code_max[:settings.CELL_DIGITS] == cell.get_code()[:settings.CELL_DIGITS]:
+        if cell_code_max == cell.code:
             is_asc = False
-        elif cell_code_min[:settings.CELL_DIGITS] == cell.get_code()[:settings.CELL_DIGITS]:
+        elif cell_code_min == cell.code:
             is_asc = True
         cabinet.is_asc = is_asc
         cabinet.order = 0
