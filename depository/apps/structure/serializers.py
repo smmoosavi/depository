@@ -72,7 +72,7 @@ class CellSerializer(serializers.ModelSerializer):
         pack = Pack.objects.filter(cell=obj).order_by('-delivery__entered_at').first()
         if not pack or pack.delivery.exited_at:
             return -1
-        age = (timezone.now() - pack.delivery.entered_at).seconds // 3600
+        age = (timezone.now() - pack.delivery.entered_at).total_seconds() // 3600
         days = int(ConstantHelper().get(settings.CONST_KEY_STORE_THRESHOLD, "1"))
         if 0 <= age <= (days * 24):
             return 0
