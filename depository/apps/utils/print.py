@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class PrintHelper:
-    def generate_pdf(self, html, width, height):
+    def generate_pdf(self, html, width=73, height=90):
         options = {
             # 'page-size': "A4",
             'orientation': 'Portrait',
@@ -32,11 +32,11 @@ class PrintHelper:
             html, path, configuration=config, options=options)
         return path
 
-    def print(self, html, width=73, height=90):
-        path = self.generate_pdf(html, width, height)
+    def print(self, pathes):
         try:
-            subprocess.run(["lpr", "-P", "OSCAR-POS88F-USB", path])
-            os.remove(path)
+            subprocess.run(["lpr", "-P", "OSCAR-POS88F-USB", *pathes])
+            for path in pathes:
+                os.remove(path)
             return True
         except Exception as e:
             logger.exception(e)

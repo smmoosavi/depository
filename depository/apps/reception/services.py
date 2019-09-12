@@ -95,6 +95,7 @@ class ReceptionHelper:
         entered_at_jalali = JalaliDatetime(timezone.localtime(pack.delivery.entered_at)).strftime("%A %d %B %H:%M")
         barcode = self.barcode(pack)
         depository = pack.cell.row.cabinet.depository
+        pathes = []
         for idx in range(badge_count):
             html = render_to_string('badge.html', {
                 'name': pilgrim.get_full_name(), 'index': idx + 1, 'count': badge_count,
@@ -103,7 +104,7 @@ class ReceptionHelper:
                 'taker': pack.delivery.taker.get_full_name()
 
             })
-            ph.print(html)
+            pathes.append(ph.generate_pdf(html))
         ch = ConstantHelper()
         html = render_to_string('reciept.html', {
             'depository_name': depository.name, 'depository_address': depository.address,
@@ -113,7 +114,9 @@ class ReceptionHelper:
             'entered_at_jalali': entered_at_jalali,
             'barcode': barcode
         })
-        ph.print(html, height=120)
+        pathes.append(ph.generate_pdf(html, height=120))
+
+        ph.print(pathes)
 
     def report(self):
         total_count = Delivery.objects.count()
