@@ -125,5 +125,5 @@ class DeliveryTest(APITestCase):
         response = self.client.get(reverse('cabinet-list'))
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         cells = response.data[0]['rows'][0]['cells']
-        self.assertEqual(0, cells[0]['age'])
+        self.assertEqual(1, cells[0]['age'])
         self.assertEqual(-1, cells[1]['age'])
