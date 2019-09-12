@@ -1,5 +1,3 @@
-import json
-
 from django.conf import settings
 from django.template.loader import render_to_string
 
@@ -26,13 +24,12 @@ class CodeHelper:
 class StructureHelper:
     def print(self, cabinet):
         ph = PrintHelper()
-        ch = CodeHelper()
-        numbers = []
+        pathes = []
         for row in cabinet.rows.all():
             for cell in row.cells.all():
-                numbers.append(cell.get_code())
-        html = render_to_string('number.html', {'numbers': numbers})
-        ph.print(html)
+                html = render_to_string('number.html', {'number': cell.get_code()})
+                pathes.append(ph.generate_pdf(html))
+        ph.print(pathes)
 
 
 class ConstantHelper:
