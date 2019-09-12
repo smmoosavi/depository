@@ -89,7 +89,7 @@ class ReceptionGiveSerializer(serializers.ModelSerializer):
             return JalaliDatetime(obj.exited_at).strftime("%A %d %B %H:%M")
 
     def get_pilgrim(self, obj):
-        return obj.pilgrim.get_full_name()
+        return PilgrimSerializer(obj.pilgrim).data
 
 
 class PackSerializer(serializers.ModelSerializer):
