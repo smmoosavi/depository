@@ -231,6 +231,6 @@ CONST_KEY_NOTICE = 'notice_%s'
 CONST_KEY_STORE_THRESHOLD = 'store_threshold'
 APPEND_SLASH = False
 
-f = open('lang.json')
+f = open(BASE_DIR+'lang.json')
 LANG_DICT = json.loads(f.read())
 f.close()
