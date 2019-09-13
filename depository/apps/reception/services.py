@@ -1,4 +1,5 @@
 import base64
+import logging
 import random
 import string
 from datetime import datetime
@@ -16,7 +17,6 @@ from depository.apps.reception.models import Pack, Delivery
 from depository.apps.structure.helpers import ConstantHelper
 from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.utils.print import PrintHelper
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -101,9 +101,9 @@ class ReceptionHelper:
                 'name': pilgrim.get_full_name(), 'index': idx + 1, 'count': badge_count,
                 'country': pilgrim.country, 'phone': pilgrim.get_four_digit_phone(), 'entered_at': entered_at_jalali,
                 'code': pack.cell.get_code(), 'barcode': barcode, 'depository_name': depository.name,
-                'taker': pack.delivery.taker.get_full_name()
+                'taker': pack.delivery.taker.get_full_name(), "BASE_DIR": settings.BASE_DIR
 
-            })
+            }, )
             pathes.append(ph.generate_pdf(html))
         ch = ConstantHelper()
         html = render_to_string('reciept.html', {
@@ -112,8 +112,8 @@ class ReceptionHelper:
             'notice': ch.get_notice(pack.delivery.pilgrim.country),
             'entered_at': timezone.localtime(pack.delivery.entered_at).strftime("%A %d %B %H:%M"),
             'entered_at_jalali': entered_at_jalali,
-            'barcode': barcode
-        })
+            'barcode': barcode, "BASE_DIR": settings.BASE_DIR
+        }, {"STATIC_URL": settings.STATIC_URL})
         pathes.append(ph.generate_pdf(html, height=120))
 
         ph.print(pathes)

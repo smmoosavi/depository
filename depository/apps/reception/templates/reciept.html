@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +7,7 @@
     <style>
         @font-face {
             font-family: IranSans;
-            src: url(https://api.pushe.co/static/fonts/iranian-sans.woff);
+            src: url("{{ BASE_DIR }}/static/fonts/iranian-sans.woff");
         }
 
         body {
@@ -50,9 +51,6 @@
 </div>
 <div class="en">
     {{ social }}
-</div>
-<div>
-    {{ phone }}
 </div>
 <div class="border">
 </div>

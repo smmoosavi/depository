@@ -17,7 +17,6 @@ from datetime import timedelta
 from rest_framework.utils import json
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/../'
-print(BASE_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -97,6 +96,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'django.template.context_processors.static',
             ],
         },
     },
@@ -223,6 +223,11 @@ JWT_AUTH = {
     'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=999),
 }
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+
+]
+
 WKHTMLTOPDF_PATH = None
 
 CONST_KEY_SOCIAL = 'social'
@@ -231,6 +236,6 @@ CONST_KEY_NOTICE = 'notice_%s'
 CONST_KEY_STORE_THRESHOLD = 'store_threshold'
 APPEND_SLASH = False
 
-f = open(BASE_DIR+'lang.json')
+f = open(BASE_DIR + 'lang.json')
 LANG_DICT = json.loads(f.read())
 f.close()
