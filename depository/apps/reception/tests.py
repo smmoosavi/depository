@@ -34,8 +34,9 @@ class ReceptionTest(APITestCase):
         self.pack = Pack.objects.create(delivery=delivery, pram_count=1, cell_id=1)
         self.client.login(username="taker", password="a")
 
+    @patch.object(PrintHelper, 'generate_pdf')
     @patch.object(PrintHelper, 'print')
-    def test_take(self, mock):
+    def test_take(self, mock,mock2):
         data = {
             'first_name': 'first_name',
             'last_name': 'last_name',
@@ -46,6 +47,7 @@ class ReceptionTest(APITestCase):
         response = self.client.post(reverse("reception-take"), data)
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertTrue(Pack.objects.filter(cell_id=2).exists())
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)
 
     def test_give(self):
         response = self.client.post(reverse("reception-give"), {'hash_id': self.hash_id})

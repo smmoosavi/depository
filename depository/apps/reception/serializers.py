@@ -36,8 +36,15 @@ class ReceptionTakeSerializer(serializers.Serializer):
         return attrs
 
     def get_pilgrim(self, data):
+        query = {
+            'first_name': "",
+            'last_name': "",
+            'phone': "",
+            'country': "", 'passport_id': ""
+        }
         pilgrim_data = sub_dict(data, ['first_name', 'last_name', 'phone', 'country', 'passport_id'])
-        pilgrim, is_created = Pilgrim.objects.get_or_create(**pilgrim_data)
+        query.update(pilgrim_data)
+        pilgrim, is_created = Pilgrim.objects.get_or_create(**query)
         return pilgrim
 
     def create(self, data):
