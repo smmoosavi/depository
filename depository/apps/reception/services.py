@@ -107,7 +107,8 @@ class ReceptionHelper:
             pathes.append(ph.generate_pdf(html))
         ch = ConstantHelper()
         html = render_to_string('reciept.html', {
-            'depository_name': depository.name, 'depository_address': depository.address,
+            'name': pilgrim.get_full_name(), 'depository_name': depository.name,
+            'depository_address': depository.address,
             'social': ch.get(settings.CONST_KEY_SOCIAL), 'phone': ch.get(settings.CONST_KEY_PHONE),
             'notice': ch.get_notice(pack.delivery.pilgrim.country),
             'entered_at': timezone.localtime(pack.delivery.entered_at).strftime("%A %d %B %H:%M"),
