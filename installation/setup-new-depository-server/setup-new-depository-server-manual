@@ -1,0 +1,12 @@
+1- install ubuntu 16.04 i386 (32 bits)
+
+2- Edit Connections:
+2.1- Rename "Wired connection..." to "DHCP" and disable "Automatically connect to this network ..."
+2.2- Add new "Ethernet" connction. Change it to manual and set the ip like this: "192.168.0.<PC-number>/24" and set the name same as ip address. Set gateway to "192.168.0.2". Set DNS server to "8.8.8.8"
+2.3- Disconnect and connect to new network connection (with static ip: 192.168.0.?).
+
+3- install ssh server:
+3.1- Make sure that network is available (ping google.com)
+3.2- Add your public key to "./authorized_keys"
+3.3- run "./install-ssh-server.sh"
+

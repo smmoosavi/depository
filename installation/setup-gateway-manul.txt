@@ -1,0 +1,15 @@
+Share wireless network by thin client
+
+Do this:
+https://askubuntu.com/questions/359856/share-wireless-internet-connection-through-ethernet 
+
+Then:
+The solution was adding the following line to my hotspot config file /etc/NetworkManager/system-connections/myHotspot in the ipv4 block:
+# under [ipv4] add following line;
+address1=192.168.0.1
+
+and in the command line run:
+sudo systemctl restart network-manager.service
+
+source:
+https://unix.stackexchange.com/questions/392472/set-hotspot-ip-address

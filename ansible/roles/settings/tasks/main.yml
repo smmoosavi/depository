@@ -1,0 +1,19 @@
+---
+- name: Commenting poweroff button defualt action
+  replace:
+    path: '/etc/acpi/events/powerbtn'
+    regexp: '^action=/etc/acpi/powerbtn\.sh'
+    replace: '#action=/etc/acpi/powerbtn.sh'
+
+
+- name: Set power button as shutdown
+  lineinfile:
+    path: '/etc/acpi/events/powerbtn'
+    line: 'action=/sbin/poweroff'
+    insertafter: '#action=/etc/acpi/powerbtn\.sh'
+
+
+- name: Restart acpid
+  command: acpid restart
+  become: yes
+  become_user: root

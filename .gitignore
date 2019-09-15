@@ -8,3 +8,6 @@ public/*
 
 *.sqlite3
 Oscar/*
+
+ansible/*.retry
+
