@@ -3,3 +3,4 @@
   roles:
     - role: python
     - role: nginx
+    - role: deploy

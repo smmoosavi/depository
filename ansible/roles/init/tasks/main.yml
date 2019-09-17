@@ -1,0 +1,55 @@
+---
+- name: Commenting poweroff button defualt action
+  replace:
+    path: '/etc/acpi/events/powerbtn'
+    regexp: '^action=/etc/acpi/powerbtn\.sh'
+    replace: '#action=/etc/acpi/powerbtn.sh'
+
+
+- name: Set power button as shutdown
+  lineinfile:
+    path: '/etc/acpi/events/powerbtn'
+    line: 'action=/sbin/poweroff'
+    insertafter: '#action=/etc/acpi/powerbtn\.sh'
+
+
+- name: Restart acpid
+  command: acpid restart
+  become: yes
+  become_user: root
+
+
+- name: "installing packages"
+  apt:
+    name: "{{ packages }}"
+    update_cache: yes
+  vars:
+    packages:
+    - git
+    - htop
+    - iotop
+    - vim
+    - gettext
+    - pkg-config
+    - supervisor
+    - wkhtmltopdf
+    - build-essential
+    - libssl-dev
+    - libffi-dev
+    - python3.6
+    - python3.6-venv
+    - python3.6-dev
+    - python3-pip
+
+- name: "uploading ssh key"
+  copy:
+    content: '{{ item.contents }}'
+    dest: '{{ item.dest }}'
+    mode: 0600
+  with_items:
+    - contents: '{{ ssh_key_public }}'
+      dest: ~/.ssh/id_rsa.pub
+    - contents: '{{ ssh_key }}'
+      dest: ~/.ssh/id_rsa
+  become: true
+  become_user: '{{ username }}'

@@ -13,3 +13,4 @@ ipython
 khayyam
 qrcode
 openpyxl
+gunicorn

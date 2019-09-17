@@ -3,12 +3,8 @@
   apt_repository:
     repo: "ppa:jonathonf/python-3.6"
     state: present
-
-- name: Ensure dependencies are installed
-  apt:
-    pkg: ["build-essential", "libssl-dev", "libffi-dev","python3.6", "python3.6-venv", "python3.6-dev", "python3-pip"]
-    state: latest
-    update_cache: yes
+  become_user: "{{ username }}"
+  become: yes
 
 - name: Install virtualenv via pip
   pip:

@@ -1,5 +1,5 @@
 ---
 - hosts: all
   roles:
-    - role: settings
+    - role: init
     - role: printer

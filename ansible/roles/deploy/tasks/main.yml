@@ -1,0 +1,68 @@
+---
+- name: Clean directory
+  file:
+    state: absent
+    path: "{{ base_directory }}/depository"
+  become_user: "{{ username }}"
+  become: yes
+
+- name: "cloning"
+  git:
+    repo: 'git@github.com:vahidamintabar/depository.git'
+    dest: '{{ base_directory }}/depository'
+    accept_hostkey: yes
+    version: 'master'
+    update: yes
+    force: yes
+  become_user: "{{ username }}"
+  become: yes
+
+- name: "create db directory"
+  file: path={{ base_directory }}/db/
+        state=directory
+  become_user: "{{ username }}"
+  become: yes
+
+- name: "installing requirements.txt"
+  pip:
+    requirements: ~/depository/depository/requirements.txt
+    virtualenv: "{{ venv_directory }}"
+    virtualenv_python: python3.6
+  become_user: "{{ username }}"
+  become: yes
+
+- name: "migrate"
+  django_manage:  command=migrate
+                  app_path="{{ base_directory}}/depository/"
+                  virtualenv="{{ venv_directory }}"
+  become_user: "{{ username }}"
+  become: yes
+
+- name: "creating directories"
+  file: path=~/depository/{{ item.dir }}/
+        state=directory
+  with_items:
+    - dir: temp
+    - dir: temp/pdf
+    - dir: temp/barcode
+    - dir: public
+    - dir: public/static
+    - dir: public/media
+  become_user: "{{ username }}"
+  become: yes
+
+- name: "collectstatic"
+  django_manage:  command=collectstatic
+                  app_path="{{ base_directory}}/depository/"
+                  virtualenv="{{ venv_directory }}"
+  become_user: "{{ username }}"
+  become: yes
+
+- name: setup gunicorn
+  gunicorn:
+    chdir: '{{ base_directory }}/depository/'
+    app: 'depository'
+    venv: "{{ venv_directory }}"
+    conf: '{{ base_directory }}/depository/gunicorn.cfg'
+  become: true
+  become_user: '{{ username }}'

@@ -1,6 +1,7 @@
 ---
 - name: ensure nginx is at the latest version
   apt: name=nginx state=latest
+
 - name: start nginx
   service:
       name: nginx
@@ -8,7 +9,6 @@
 
 - name: "nginx configuration"
   template: src=depository.conf
-            dest=/etc/nginx/site-enabled/default.conf
+            dest=/etc/nginx/sites-enabled/default.conf
             mode=0644
   notify: restart nginx
-  become: true
