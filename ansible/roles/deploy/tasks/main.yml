@@ -17,9 +17,13 @@
   become_user: "{{ username }}"
   become: yes
 
-- name: "create db directory"
-  file: path={{ base_directory }}/db/
+- name: "create home directories"
+  file: path={{ base_directory }}/{{ item.dir }}/
         state=directory
+  with_items:
+    - dir: db
+    - dir: logs
+
   become_user: "{{ username }}"
   become: yes
 
@@ -35,6 +39,15 @@
   django_manage:  command=migrate
                   app_path="{{ base_directory}}/depository/"
                   virtualenv="{{ venv_directory }}"
+  become_user: "{{ username }}"
+  become: yes
+
+- name: "loaddata"
+  django_manage:
+    command: loaddata
+    fixtures: initial_data
+    app_path: "{{ base_directory}}/depository/"
+    virtualenv: "{{ venv_directory }}"
   become_user: "{{ username }}"
   become: yes
 
@@ -58,11 +71,12 @@
   become_user: "{{ username }}"
   become: yes
 
-- name: setup gunicorn
-  gunicorn:
-    chdir: '{{ base_directory }}/depository/'
-    app: 'depository'
-    venv: "{{ venv_directory }}"
-    conf: '{{ base_directory }}/depository/gunicorn.cfg'
+- name: "creating supervisor config file"
+  template: src=supervisor.conf.j2
+            dest="/etc/supervisor/conf.d/depository.conf"
   become: true
-  become_user: '{{ username }}'
+
+- name: "restart supervisor"
+  service:  name=supervisor
+            state=restarted
+  become: true

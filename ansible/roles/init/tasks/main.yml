@@ -32,7 +32,6 @@
     - gettext
     - pkg-config
     - supervisor
-    - wkhtmltopdf
     - build-essential
     - libssl-dev
     - libffi-dev
@@ -40,6 +39,7 @@
     - python3.6-venv
     - python3.6-dev
     - python3-pip
+    - supervisor
 
 - name: "uploading ssh key"
   copy:
@@ -53,3 +53,13 @@
       dest: ~/.ssh/id_rsa
   become: true
   become_user: '{{ username }}'
+
+
+- name: download sources of wkhtmltopdf
+  get_url:
+    url: "https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.xenial_i386.deb"
+    dest: /tmp/
+
+- name: Install wkhtmltopdf
+  apt: deb="/tmp/wkhtmltox_0.12.5-1.xenial_i386.deb"
+

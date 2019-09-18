@@ -1,5 +1,5 @@
 username: "khat"
-venv_directory: "~/.venv/depository/"
+venv_directory: "/home/khat/.venv/depository/"
 base_directory: "/home/khat/"
 ssh_key_public: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+JXuwIR0eHAtBzr/9mQ+4PUJJfCZSuDsqIAZrx8fu6k0iJLbm8MS4gW4taSeKc5TxQmxUQEWqflcW4RgRRD5D6E4BbhxGdCfJwVe5uvsomgDLxqewFhsULcIHyHMKVxGXwGw+PG+drVktXNM2D/sTIym+r1CWW2u1puIwn0X42miTS049Pi8mnuUdL8mOSuCfPu2Pj6aTAZa4iuNRgW5a9VVzN5rdB5cnmlcPOjsKhV5Ien5uHeT4rHomR1U5ulNA2P13+0z0DnlWZ8uzjJo6TK5yfLrEYtxbFdKoAka3zqxMGYhctS4UDzPEZ/q6GUp4rEnh63t+7JOa0PYE3JQf khat@khat-desktop
 ssh_key: |

@@ -1,0 +1,15 @@
+pip intall --upgarade pip
+sudo apt-get install git
+sudo add-apt-repository ppa:jonathonf/python-3.6
+sudo apt-get install python3.6-venv
+sudo apt-get install build-essential libssl-dev libffi-dev python3.6-dev
+sudo apt install python3.6
+
+sudo apt install locales-all
+
+depo, groups
+
+
+
+
+
