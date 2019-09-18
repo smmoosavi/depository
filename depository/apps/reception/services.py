@@ -114,7 +114,7 @@ class ReceptionHelper:
             'entered_at': timezone.localtime(pack.delivery.entered_at).strftime("%A %d %B %H:%M"),
             'entered_at_jalali': entered_at_jalali,
             'barcode': barcode, "BASE_DIR": settings.BASE_DIR
-        }, {"STATIC_URL": settings.STATIC_URL})
+        })
         pathes.append(ph.generate_pdf(html, height=120))
 
         ph.print(pathes)
