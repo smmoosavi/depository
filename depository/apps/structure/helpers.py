@@ -27,7 +27,7 @@ class StructureHelper:
         pathes = []
         for row in cabinet.rows.all():
             for cell in row.cells.all():
-                html = render_to_string('number.html', {'number': cell.get_code()})
+                html = render_to_string('number.html', {'number': cell.get_code(),'BASE_DIR':settings.BASE_DIR})
                 pathes.append(ph.generate_pdf(html))
         ph.print(pathes)
 
