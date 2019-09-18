@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+[program:depository]
+command={{ venv_directory }}/bin/gunicorn depository.wsgi -c gunicorn.cfg
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+stdout_logfile_maxbytes=1000MB
+user={{ username }}
+directory=/home/{{ username }}/depository
+stdout_logfile={{ base_directory }}/logs/web.log
+stderr_logfile={{ base_directory }}/logs/web.log
+redirect_stderr=true
