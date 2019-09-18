@@ -57,9 +57,18 @@
 
 - name: download sources of wkhtmltopdf
   get_url:
-    url: "https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.xenial_i386.deb"
-    dest: /tmp/
+    url: "https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.3/wkhtmltox-0.12.3_linux-generic-i386.tar.xz"
+    dest: "/tmp/"
 
-- name: Install wkhtmltopdf
-  apt: deb="/tmp/wkhtmltox_0.12.5-1.xenial_i386.deb"
+- name: install wkhtmltopdf
+  shell: tar vxf wkhtmltox-0.12.3_linux-generic-i386.tar.xz
+  args:
+    chdir: "/tmp/"
+
+- name: "cp wkhtmltopdf"
+  shell: cp wkhtmltox/bin/wk* /usr/local/bin/
+  args:
+    chdir: "/tmp/"
+
+
 
