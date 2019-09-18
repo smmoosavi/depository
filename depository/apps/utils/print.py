@@ -34,7 +34,7 @@ class PrintHelper:
 
     def print(self, pathes):
         try:
-            subprocess.run(["lpr", "-P", "OSCAR-POS88F-USB", *pathes])
+            subprocess.run(["lpr", "-P", "OSCAR-POS88F-NET", *pathes])
             for path in pathes:
                 os.remove(path)
             return True
