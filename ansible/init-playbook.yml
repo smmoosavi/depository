@@ -3,3 +3,5 @@
   roles:
     - role: init
     - role: printer
+    - role: python
+    - role: nginx

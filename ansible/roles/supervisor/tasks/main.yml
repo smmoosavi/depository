@@ -1,0 +1,10 @@
+---
+- name: "creating supervisor config file"
+  template: src=supervisor.conf.j2
+            dest="/etc/supervisor/conf.d/depository.conf"
+  become: true
+
+- name: "restart supervisor"
+  service:  name=supervisor
+            state=restarted
+  become: true
