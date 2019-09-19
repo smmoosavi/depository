@@ -4,8 +4,9 @@ from django.db.models import Max, Min
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, DestroyModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -28,7 +29,7 @@ class ChangeStatusMixin:
 
 
 class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
-                     ListModelMixin):
+                     ListModelMixin, DestroyModelMixin):
     permission_classes = [IsAdmin]
     queryset = Cabinet.objects.all()
     lookup_field = 'code'
@@ -54,6 +55,12 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
         sh = StructureHelper()
         sh.print(obj)
         return Response({}, status=status.HTTP_200_OK)
+
+    def perform_destroy(self, instance):
+        if not Pack.objects.filter(cell__row__cabinet=instance).exists():
+            instance.delete()
+        else:
+            raise ValidationError("You can't delete it because this cabinet is used while ago")
 
 
 class CellViewSet(GenericViewSet, ChangeStatusMixin):

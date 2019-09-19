@@ -65,7 +65,8 @@ class ReceptionHelper:
             logger.info(
                 f"{row_code_max} {row_code_min} {row_code_mean} {cell_code_max} {cell_code_min} {cell_code_mean}"
             )
-            logger.info(cells)
+            logger.info(f"empty cells: {cells}")
+            logger.info(f"busy cells: {busy_cells}")
             return cells[0]
         return None
 

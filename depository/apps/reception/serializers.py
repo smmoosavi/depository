@@ -49,7 +49,7 @@ class ReceptionTakeSerializer(serializers.Serializer):
 
     def create(self, data):
         pilgrim = self.get_pilgrim(data)
-        size = Cell.SIZE_LARGE if data.get('pram_count') else Cell.SIZE_SMALL
+        size = Cell.SIZE_SMALL if data.get('bag_count') else Cell.SIZE_LARGE
         free_cell = ReceptionHelper().assign_cell(size)
         if not free_cell:
             raise ValidationError(_("All spaces are busy"))
