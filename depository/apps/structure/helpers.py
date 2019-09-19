@@ -46,13 +46,13 @@ class ConstantHelper:
 
     def get_notice(self, country):
         return self.get(
-            settings.CONST_KEY_NOTICE % settings.LANG_DICT.get(country.lower(), {}).get('language', ['en'])[0],
+            settings.CONST_KEY_NOTICE % settings.LANG_DICT.get(country.lower(), {}).get('languages', ['en'])[0],
             default='You have only got 24 hours for borrowing your packages'
         )
 
     def set_locale(self, country):
         country_brief_name = settings.LANG_DICT.get(country, {}).get('brief_name', '')
-        locale_name = settings.LANG_DICT.get(country, {}).get('language', ['en'])[0]
+        locale_name = settings.LANG_DICT.get(country, {}).get('languages', ['en'])[0]
         if country_brief_name:
-            locale_name = f"{locale}_{country_brief_name}"
+            locale_name = f"{locale_name}_{country_brief_name}"
         locale.setlocale(locale.LC_ALL, locale_name)
