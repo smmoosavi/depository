@@ -1,3 +1,5 @@
+import locale
+
 from django.conf import settings
 from django.template.loader import render_to_string
 
@@ -27,7 +29,7 @@ class StructureHelper:
         pathes = []
         for row in cabinet.rows.all():
             for cell in row.cells.all():
-                html = render_to_string('number.html', {'number': cell.get_code(),'BASE_DIR':settings.BASE_DIR})
+                html = render_to_string('number.html', {'number': cell.get_code(), 'BASE_DIR': settings.BASE_DIR})
                 pathes.append(ph.generate_pdf(html))
         ph.print(pathes)
 
@@ -44,6 +46,13 @@ class ConstantHelper:
 
     def get_notice(self, country):
         return self.get(
-            settings.CONST_KEY_NOTICE % settings.LANG_DICT.get(country.lower(), ['en'])[0],
+            settings.CONST_KEY_NOTICE % settings.LANG_DICT.get(country.lower(), {}).get('language', ['en'])[0],
             default='You have only got 24 hours for borrowing your packages'
         )
+
+    def set_locale(self, country):
+        country_brief_name = settings.LANG_DICT.get(country, {}).get('brief_name', '')
+        locale_name = settings.LANG_DICT.get(country, {}).get('language', ['en'])[0]
+        if country_brief_name:
+            locale_name = f"{locale}_{country_brief_name}"
+        locale.setlocale(locale.LC_ALL, locale_name)
