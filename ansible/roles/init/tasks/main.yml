@@ -35,11 +35,8 @@
     - build-essential
     - libssl-dev
     - libffi-dev
-    - python3.6
-    - python3.6-venv
-    - python3.6-dev
-    - python3-pip
     - supervisor
+    - locales-all
 
 - name: "uploading ssh key"
   copy:
