@@ -4,16 +4,14 @@
 
 - name: Clean directory
   file:
+    path: "{{ item.path }}"
     state: absent
-    path: "/etc/nginx/sites-enabled/*"
+  with_items:
+    - path: "/etc/nginx/sites-enabled/default"
+    - path: "/etc/nginx/sites-enabled/default.conf"
 
 - name: "nginx configuration"
   template: src=depository.conf
             dest=/etc/nginx/sites-enabled/default.conf
             mode=0644
   notify: restart nginx
-
-- name: start nginx
-  service:
-    name: nginx
-    state: started

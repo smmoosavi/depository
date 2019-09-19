@@ -18,6 +18,16 @@
   become: yes
   become_user: root
 
+- name: delete lock
+  file:
+    state: absent
+    path: "{{ item.path }}"
+  with_items:
+    - path: "/var/lib/dpkg/lock-frontend"
+    - path: "/var/lib/dpkg/lock"
+- name: reconfigure
+  shell: dpkg --configure -a
+
 
 - name: "installing packages"
   apt:
