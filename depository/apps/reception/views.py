@@ -86,6 +86,7 @@ class ReportViewSet(GenericViewSet):
         result = ReceptionHelper().report()
         return Response(result, status=status.HTTP_200_OK)
 
+    @action(methods=['GET'], detail=False)
     def start(self, request, *args, **kwargs):
         result = ReceptionHelper().report()
         return Response(result, status=status.HTTP_200_OK)
