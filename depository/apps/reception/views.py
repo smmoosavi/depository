@@ -15,7 +15,6 @@ from depository.apps.reception.models import Delivery, Pack
 from depository.apps.reception.serializers import ReceptionTakeSerializer, \
     ReceptionGiveSerializer, DeliverySerializer
 from depository.apps.reception.services import ReceptionHelper
-from depository.apps.utils.permissions import IsAdmin
 
 logger = logging.getLogger(__name__)
 
@@ -86,8 +85,11 @@ class ReportViewSet(GenericViewSet):
         result = ReceptionHelper().report()
         return Response(result, status=status.HTTP_200_OK)
 
-    @action(methods=['GET'], detail=False)
-    def start(self, request, *args, **kwargs):
+
+class StartReportViewSet(GenericViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request, *args, **kwargs):
         result = ReceptionHelper().report()
         return Response(result, status=status.HTTP_200_OK)
 
