@@ -145,7 +145,7 @@ class ReceptionHelper:
         total_cells = Cell.objects.count()
         busy_cells = Pack.objects.filter(
             Q(delivery__exited_at__isnull=True) | Q(delivery__exited_at__gt=timezone.now())
-        ).values_list('cell', flat=True)
+        ).count()
         empty_cells = Cell.objects.filter(is_healthy=True).count() - busy_cells
         total_deliveries = Delivery.objects.count()
         return {
