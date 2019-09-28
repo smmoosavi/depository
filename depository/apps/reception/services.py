@@ -139,3 +139,16 @@ class ReceptionHelper:
             'distribution': distribution
         }
         return result
+
+    def admin_report(self):
+        total_cabinets = Cabinet.objects.count()
+        total_cells = Cell.objects.count()
+        busy_cells = Pack.objects.filter(
+            Q(delivery__exited_at__isnull=True) | Q(delivery__exited_at__gt=timezone.now())
+        ).values_list('cell', flat=True)
+        empty_cells = Cell.objects.filter(is_healthy=True).count() - busy_cells
+        total_deliveries = Delivery.objects.count()
+        return {
+            'total_cabinets': total_cabinets, 'total_cells': total_cells,
+            'empty_cells': empty_cells, 'total_deliveries': total_deliveries
+        }
