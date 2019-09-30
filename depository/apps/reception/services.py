@@ -1,5 +1,6 @@
 import base64
 import logging
+import os
 import random
 import string
 from datetime import datetime
@@ -119,6 +120,7 @@ class ReceptionHelper:
         pathes.append(ph.generate_pdf(html, height=120))
 
         ph.print(pathes)
+        os.remove(barcode)
 
     def report(self):
         total_count = Delivery.objects.count()
