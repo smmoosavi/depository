@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-09-30 07:10+0330\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: depository/apps/accounting/serializers.py:61
+msgid "Unable to log in with provided credentials."
+msgstr "نام کاربری یا کلمه عبور غلط است"
+
+#: depository/apps/accounting/serializers.py:64
+msgid "Must include \"email\" and \"password\"."
+msgstr "نام کاربری و کلمه عبور اجباری است"
+
+#: depository/apps/reception/models.py:24
+msgid "delivered to customer"
+msgstr "تحویل به زائر"
+
+#: depository/apps/reception/models.py:25
+msgid "delivered to store"
+msgstr "انتقال به انبار"
+
+#: depository/apps/reception/models.py:26
+msgid "Missed"
+msgstr "گم شده"
+
+#: depository/apps/reception/serializers.py:30
+msgid ""
+"At least one of following fields is required: bag_count,'pram_count, "
+"suitcase_count"
+msgstr "حداقل یکی از موارد کیف، چمدان یا کالسکه باید وجود داشته باشد."
+
+#: depository/apps/reception/serializers.py:34
+msgid ""
+"The given combination of packs isn't valid, because size of bag and para/"
+"suitcase isn't equal."
+msgstr "چمدان و کالسکه ابعاد بزرگی دارند و نمی توانند با کیف باشند."
+
+#: depository/apps/reception/serializers.py:55
+msgid "All spaces are busy"
+msgstr "فضای خالی وجود ندارد"
+
+#: depository/apps/reception/serializers.py:81
+msgid "This pack has been sent to store"
+msgstr "این امانتی به انبار انتقال داده شده است."
+
+#: depository/apps/reception/serializers.py:83
+msgid "This pack has been given to the owner"
+msgstr "این امانتی قبلا به صاحبش تحویل داده شده است."
+
+#: depository/apps/structure/models.py:29
+msgid "Small"
+msgstr "کوچک"
+
+#: depository/apps/structure/models.py:30
+msgid "Large"
+msgstr "بزرگ"
+
+#: depository/apps/structure/views.py:116
+msgid "You should select a cell from first or last column"
+msgstr "شما باید یک فضا از ستون ابتدا یا انتها انتخاب کنید"
+
+#: depository/apps/utils/permissions.py:6
+msgid "You are not Admin"
+msgstr "شما کاربر ادمین نیستید."
