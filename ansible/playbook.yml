@@ -1,5 +1,6 @@
 ---
 - hosts: all
   roles:
-    - role: django
-    - role: supervisor
+#    - role: django
+#    - role: supervisor
+     - role: backup

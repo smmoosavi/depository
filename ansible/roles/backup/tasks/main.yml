@@ -1,0 +1,7 @@
+---
+- name: Creates backup cronjob
+  cron: minute="*/5"
+        name="Backup Database"
+        cron_file="depository-backup"
+        user="root"
+        job="cp {{ base_directory }}db/db.sqlite3 /media/{{ username }}/backup/db.sqlite3"
