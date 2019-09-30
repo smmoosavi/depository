@@ -52,6 +52,7 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
     filter_class = DeliveryFilter
     lookup_field = 'hash_id'
     queryset = Delivery.objects.all()
+    permission_classes = [IsAuthenticated]
 
     @action(methods=['GET'], detail=False)
     def old(self, request):
@@ -71,16 +72,16 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
         obj.save()
         return Response({}, status.HTTP_200_OK)
 
-    @action(methods=['POST'], detail=False)
-    def print(self, request):
-        last_pack = Pack.objects.filter(delivery__taker=request.user).order_by('-delivery__entered_at').first()
+    @action(methods=['POST'], detail=True)
+    def reprint(self, request, hash_id):
+        pack = Pack.objects.get(delivery__taker=request.user, hash_id=hash_id)
         rh = ReceptionHelper()
-        rh.print(last_pack)
+        rh.print(pack)
         return Response({}, status.HTTP_200_OK)
 
 
 class ReportViewSet(GenericViewSet):
-    permission_classes = [IsAuthenticated, IsAdmin]
+    permission_classes = [IsAdmin]
 
     def list(self, request, *args, **kwargs):
         result = ReceptionHelper().report()

@@ -1,10 +1,9 @@
 # Create your views here.
-from django.contrib.auth.models import User
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_jwt.settings import api_settings
@@ -14,11 +13,12 @@ from depository.apps.accounting.filters import PilgrimFilter
 from depository.apps.accounting.models import Pilgrim
 from depository.apps.accounting.serializers import UserSerializer, \
     PilgrimSerializer, SignInSerializer, ImportUserSerializer
-from depository.apps.utils.excel import ExcelUtil
+from depository.apps.utils.permissions import IsAdmin
 
 
 class AccountingViewSet(GenericViewSet, CreateModelMixin):
     serializer_class = UserSerializer
+    permission_classes = [IsAdmin, ]
 
     def get_serializer_class(self):
         if self.action == 'import_users':
@@ -38,6 +38,7 @@ class AccountingViewSet(GenericViewSet, CreateModelMixin):
 
 
 class PilgrimViewSet(GenericViewSet, ListModelMixin):
+    permission_classes = [IsAuthenticated, ]
     serializer_class = PilgrimSerializer
     filter_class = PilgrimFilter
     queryset = Pilgrim.objects.all()

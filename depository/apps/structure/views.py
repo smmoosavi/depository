@@ -16,10 +16,10 @@ from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.structure.serializers import CabinetCreateSerializer, \
     StatusSerializer, CabinetSerializer
 from depository.apps.utils.permissions import IsAdmin
+from django.utils.translation import ugettext as _
 
 
 class ChangeStatusMixin:
-
     @action(methods=['POST'], detail=False)
     def change_status(self, request):
         serializer = StatusSerializer(data=request.data)
@@ -74,10 +74,10 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
 
         assert lookup_url_kwarg in self.kwargs, (
-                'Expected view %s to be called with a URL keyword argument '
-                'named "%s". Fix your URL conf, or set the `.lookup_field` '
-                'attribute on the view correctly.' %
-                (self.__class__.__name__, lookup_url_kwarg)
+            'Expected view %s to be called with a URL keyword argument '
+            'named "%s". Fix your URL conf, or set the `.lookup_field` '
+            'attribute on the view correctly.' %
+            (self.__class__.__name__, lookup_url_kwarg)
         )
 
         cabinet, row, cell = CodeHelper().to_code(
@@ -112,6 +112,8 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
             is_asc = False
         elif cell_code_min == cell.code:
             is_asc = True
+        else:
+            raise ValueError(_("You should select a cell from first of last column"))
         cabinet.is_asc = is_asc
         cabinet.order = 0
         cabinet.save()
