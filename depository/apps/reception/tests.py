@@ -29,7 +29,7 @@ class ReceptionTest(APITestCase):
         row = Row.objects.create(code="1", cabinet=cabinet)
         Cell.objects.create(code="1", row=row)
         cell = Cell.objects.create(code="2", row=row)
-        Pilgrim.objects.create(last_name='امین تبار', phone='09123456789', country='ایران')
+        Pilgrim.objects.create(last_name='امین تبار', phone='09123456789', country='iran')
         delivery = Delivery.objects.create(pilgrim_id=1, taker_id=1, hash_id=self.hash_id, entered_at=timezone.now())
         self.pack = Pack.objects.create(delivery=delivery, pram_count=1, cell_id=1)
         self.client.login(username="taker", password="a")

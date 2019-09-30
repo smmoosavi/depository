@@ -113,7 +113,7 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         elif cell_code_min == cell.code:
             is_asc = True
         else:
-            raise ValueError(_("You should select a cell from first of last column"))
+            raise ValueError(_("You should select a cell from first or last column"))
         cabinet.is_asc = is_asc
         cabinet.order = 0
         cabinet.save()
