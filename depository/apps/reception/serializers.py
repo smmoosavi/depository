@@ -99,6 +99,19 @@ class ReceptionGiveSerializer(serializers.ModelSerializer):
         return PilgrimSerializer(obj.pilgrim).data
 
 
+class ReceptionGiveListSerializer(serializers.Serializer):
+    hash_ids = serializers.ListField()
+
+    def create(self, data):
+        deliveries = Delivery.objects.filter(hash_id__in=data['hash_ids'], giver__isnull=True, exited_at__isnull=True)
+        for delivery in deliveries:
+            delivery.giver = self.context['request'].user
+            delivery.exit_type = Delivery.DELIVERED_TO_CUSTOMER
+            delivery.exited_at = timezone.now()
+            delivery.save()
+        return deliveries
+
+
 class PackSerializer(serializers.ModelSerializer):
     cell = serializers.SerializerMethodField()
 

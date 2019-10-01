@@ -13,7 +13,7 @@ from rest_framework.viewsets import GenericViewSet
 from depository.apps.reception.filters import DeliveryFilter
 from depository.apps.reception.models import Delivery, Pack
 from depository.apps.reception.serializers import ReceptionTakeSerializer, \
-    ReceptionGiveSerializer, DeliverySerializer
+    ReceptionGiveSerializer, DeliverySerializer, ReceptionGiveListSerializer
 from depository.apps.reception.services import ReceptionHelper
 from depository.apps.utils.permissions import IsAdmin
 
@@ -27,6 +27,8 @@ class ReceptionViewSet(GenericViewSet, CreateModelMixin):
     def get_serializer_class(self):
         if self.action == 'take':
             return ReceptionTakeSerializer
+        elif self.action == 'give_list':
+            return ReceptionGiveListSerializer
         else:
             return ReceptionGiveSerializer
 
@@ -46,12 +48,22 @@ class ReceptionViewSet(GenericViewSet, CreateModelMixin):
     def take(self, request):
         return self._create(request)
 
+    @action(methods=['POST'], detail=False)
+    def give_list(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        deliveries = serializer.save()
+        response_serializer = ReceptionGiveSerializer(deliveries, many=True)
+        headers = self.get_success_headers(response_serializer.data)
+        return Response(response_serializer.data, status=status.HTTP_201_CREATED,
+                        headers=headers)
+
 
 class DeliveryViewSet(GenericViewSet, ListModelMixin):
     serializer_class = DeliverySerializer
     filter_class = DeliveryFilter
     lookup_field = 'hash_id'
-    queryset = Delivery.objects.all()
+    queryset = Delivery.objects.all().order_by('-entered_at')
     permission_classes = [IsAuthenticated]
 
     @action(methods=['GET'], detail=False)
