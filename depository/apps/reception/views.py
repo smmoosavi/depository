@@ -70,8 +70,11 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         limit = request.GET.get('limit', None)
-        if limit:
-            queryset = queryset[:limit]
+        try:
+            if limit:
+                queryset = queryset[:int(limit)]
+        except TypeError:
+            pass
 
         page = self.paginate_queryset(queryset)
         if page is not None:
