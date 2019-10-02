@@ -29,7 +29,7 @@ class CabinetCreateSerializer(serializers.Serializer):
                 cabinet_code = 10
         cabinet = Cabinet.objects.create(code=cabinet_code, depository_id=settings.DEFAULT_DEPOSITORY_ID)
         for row_idx in range(data['num_of_rows']):
-            row = Row.objects.create(code=str(row_idx + 1), cabinet=cabinet)
+            row = Row.objects.create(code=str(row_idx), cabinet=cabinet)
             for col_idx in range(data['num_of_cols']):
                 size = Cell.SIZE_SMALL
                 if row_idx == 0 and data['first_row_size'] == Cell.SIZE_LARGE:

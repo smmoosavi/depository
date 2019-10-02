@@ -86,7 +86,7 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
 
     @action(methods=['POST'], detail=True)
     def reprint(self, request, hash_id):
-        pack = Pack.objects.get(delivery__taker=request.user, hash_id=hash_id)
+        pack = Pack.objects.get(delivery__taker=request.user, delivery__hash_id=hash_id)
         rh = ReceptionHelper()
         rh.print(pack)
         return Response({}, status.HTTP_200_OK)
