@@ -6,6 +6,7 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
+from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -65,6 +66,7 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
     lookup_field = 'hash_id'
     queryset = Delivery.objects.all().order_by('-entered_at')
     permission_classes = [IsAuthenticated]
+    pagination_class = LimitOffsetPagination
 
     @action(methods=['GET'], detail=False)
     def old(self, request):
