@@ -66,7 +66,20 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
     lookup_field = 'hash_id'
     queryset = Delivery.objects.all().order_by('-entered_at')
     permission_classes = [IsAuthenticated]
-    pagination_serializer_class = LimitOffsetPagination
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        limit = request.GET.get('limit', None)
+        if limit:
+            queryset = queryset[:limit]
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     @action(methods=['GET'], detail=False)
     def old(self, request):
