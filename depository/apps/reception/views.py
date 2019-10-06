@@ -111,7 +111,7 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
 
 
 class ReportViewSet(GenericViewSet):
-    permission_classes = [IsAdmin]
+    permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
         result = ReceptionHelper().report()

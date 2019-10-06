@@ -9,10 +9,6 @@
             src: url("{{ BASE_DIR }}/static/fonts/iranian-sans.woff");
         }
 
-        .name {
-            font-size: 16px;
-        }
-
         body {
             font-family: IranSans;
             direction: rtl;
@@ -27,23 +23,24 @@
         }
 
         .logo {
-            height: 80px;
+            height: 107px;
         }
 
         .col {
             display: inline-block;
             width: 47%;
+            border: solid 1px;
+            vertical-align: top;
         }
 
         .en {
             font-family: Tahoma;
-            font-size: 18px;
+            font-size: 14px;
             direction: ltr;
         }
 
         .notice {
             font-family: Tahoma;
-            font-size: 16px;
 
         }
 
@@ -71,6 +68,8 @@
 <div class="name">
     {{ name }}
 </div>
+<div>{{ entered_at_jalali }}</div>
+<div class="en">{{ entered_at }}</div>
 <div class="border"></div>
 <div>
     <div class="col">
@@ -83,18 +82,13 @@
         <div class="en">
             {{ social }}
         </div>
-
-        {{ entered_at_jalali }}
-        <div class="en">
-            {{ entered_at }}
-        </div>
     </div>
     <div class="col">
         <img src="{{ barcode }}" class="barcode">
     </div>
 </div>
 <div class="border"></div>
-<div class="notice">
+<div class="notice small">
     {{ notice }}
 </div>
 

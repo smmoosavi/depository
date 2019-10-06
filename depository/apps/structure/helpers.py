@@ -51,8 +51,8 @@ class ConstantHelper:
         )
 
     def set_locale(self, country):
-        country_brief_name = settings.LANG_DICT.get(country, {}).get('brief_name', 'US')
-        locale_name = settings.LANG_DICT.get(country, {}).get('languages', ['en'])[0]
+        country_brief_name = settings.LANG_DICT.get(country.lower(), {}).get('brief_name', 'US')
+        locale_name = settings.LANG_DICT.get(country.lower(), {}).get('languages', ['en'])[0]
         if country_brief_name:
             locale_name = f"{locale_name}_{country_brief_name}"
         locale.setlocale(locale.LC_ALL, locale_name)
