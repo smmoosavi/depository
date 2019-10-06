@@ -109,18 +109,25 @@ class ReceptionHelper:
             }, )
             pathes.append(ph.generate_pdf(html))
         ch = ConstantHelper()
-        data={
+        data = {
             'name': pilgrim.get_full_name(), 'depository_name': depository.name,
             'depository_address': depository.address,
             'social': ch.get(settings.CONST_KEY_SOCIAL), 'phone': ch.get(settings.CONST_KEY_PHONE),
             'notice': ch.get_notice(pack.delivery.pilgrim.country),
-
             'barcode': barcode, "BASE_DIR": settings.BASE_DIR
         }
         if pilgrim.is_iranian():
-            data.update({'entered_at_jalali': JalaliDatetime(timezone.localtime(pack.delivery.entered_at)).strftime("%A %d %B %H:%M")})
+            data.update({
+                'entered_at': JalaliDatetime(timezone.localtime(pack.delivery.entered_at)).strftime("%A %d %B %H:%M"),
+                'font': 'IranSans'
+            })
+
         else:
-            data.update({'entered_at': timezone.localtime(pack.delivery.entered_at).strftime("%A %d %B %H:%M")})
+            data.update({
+                'entered_at': timezone.localtime(pack.delivery.entered_at).strftime("%A %d %B %H:%M"),
+                'font': "Calibri Light"
+
+            })
         html = render_to_string('reciept.html', data)
         pathes.append(ph.generate_pdf(html, height=120))
 

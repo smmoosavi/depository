@@ -9,8 +9,13 @@
             src: url("{{ BASE_DIR }}/static/fonts/iranian-sans.woff");
         }
 
+        @font-face {
+            font-family: "Calibri Light";
+            src: url("{{ BASE_DIR }}/static/fonts/calibril.woff");
+        }
+
         body {
-            font-family: IranSans;
+            font-family: "{{ font }}";
             direction: rtl;
             width: 95%;
             font-size: 20px;
@@ -29,7 +34,6 @@
         .col {
             display: inline-block;
             width: 47%;
-            border: solid 1px;
             vertical-align: top;
         }
 
@@ -37,11 +41,6 @@
             font-family: Tahoma;
             font-size: 14px;
             direction: ltr;
-        }
-
-        .notice {
-            font-family: Tahoma;
-
         }
 
         div {
@@ -68,8 +67,7 @@
 <div class="name">
     {{ name }}
 </div>
-<div>{{ entered_at_jalali }}</div>
-<div class="en">{{ entered_at }}</div>
+<div>{{ entered_at }}</div>
 <div class="border"></div>
 <div>
     <div class="col">
