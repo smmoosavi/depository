@@ -12,7 +12,7 @@ from rest_framework.test import APITestCase
 from depository.apps.accounting.models import Pilgrim
 from depository.apps.reception.models import Pack, Delivery
 from depository.apps.reception.services import ReceptionHelper
-from depository.apps.structure.models import Cabinet, Row, Cell, Depository
+from depository.apps.structure.models import Cabinet, Row, Cell, Depository, Constant
 from depository.apps.utils.print import PrintHelper
 
 logger = logging.getLogger(__name__)
@@ -24,12 +24,13 @@ class ReceptionTest(APITestCase):
         self.user = User.objects.create(username="taker", first_name="وحید", last_name='امین تبار')
         self.user.set_password('a')
         self.user.save()
+        Constant.objects.create(key='social',value='@baghiatallah')
         depository = Depository.objects.create(name='امانت داری شماره ۱', address='صحن حضرت فاطمه - سمت چپ')
         cabinet = Cabinet.objects.create(code="1", depository=depository)
         row = Row.objects.create(code="1", cabinet=cabinet)
         Cell.objects.create(code="1", row=row)
         cell = Cell.objects.create(code="2", row=row)
-        Pilgrim.objects.create(last_name='امین تبار', phone='09123456789', country='iran')
+        Pilgrim.objects.create(last_name='وحید امین تبار اصل تهراینی منطقه ۵ سومی', phone='09123456789', country='iraq')
         delivery = Delivery.objects.create(pilgrim_id=1, taker_id=1, hash_id=self.hash_id, entered_at=timezone.now())
         self.pack = Pack.objects.create(delivery=delivery, pram_count=1, cell_id=1)
         self.client.login(username="taker", password="a")

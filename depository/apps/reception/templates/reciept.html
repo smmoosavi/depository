@@ -9,6 +9,10 @@
             src: url("{{ BASE_DIR }}/static/fonts/iranian-sans.woff");
         }
 
+        .name {
+            font-size: 16px;
+        }
+
         body {
             font-family: IranSans;
             direction: rtl;
@@ -22,14 +26,25 @@
             font-size: 16px;
         }
 
+        .logo {
+            height: 80px;
+        }
+
+        .col {
+            display: inline-block;
+            width: 47%;
+        }
+
         .en {
             font-family: Tahoma;
             font-size: 18px;
+            direction: ltr;
         }
 
         .notice {
             font-family: Tahoma;
             font-size: 16px;
+
         }
 
         div {
@@ -37,44 +52,51 @@
         }
 
         .barcode {
-            height: 180px;
+            height: 150px;
         }
 
         .border {
             border-top: solid 1px;
         }
+
     </style>
 </head>
 <body>
-<div>
-    {{ name }}
-</div>
-<div>
+<div class="name">
     {{ depository_name }}
 </div>
 <div class="small">
     {{ depository_address }}
 </div>
-<div class="border">
+<div class="name">
+    {{ name }}
 </div>
+<div class="border"></div>
 <div>
-    {{ entered_at_jalali }}
+    <div class="col">
+        <div>
+            عجل لولیک الفرج
+        </div>
+        <div>
+            <img src="{{ BASE_DIR }}/static/logo.jpg" class="logo"/>
+        </div>
+        <div class="en">
+            {{ social }}
+        </div>
+
+        {{ entered_at_jalali }}
+        <div class="en">
+            {{ entered_at }}
+        </div>
+    </div>
+    <div class="col">
+        <img src="{{ barcode }}" class="barcode">
+    </div>
 </div>
-<div class="en">
-    {{ entered_at }}
-</div>
-<div>
-    <img src="{{ barcode }}" class="barcode">
-</div>
+<div class="border"></div>
 <div class="notice">
     {{ notice }}
 </div>
-<div class="border"></div>
-<div class="en">
-    {{ social }}
-</div>
-<div>
-    عجل لولیک الفرج
-</div>
+
 </body>
 </html>
