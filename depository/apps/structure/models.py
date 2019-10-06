@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 
 class Depository(models.Model):
     name = models.CharField(max_length=100)
-    address = models.TextField()
+    address = models.TextField(null=True, blank=True)
 
 
 class Cabinet(models.Model):
