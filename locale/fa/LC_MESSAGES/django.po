@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-30 07:10+0330\n"
+"POT-Creation-Date: 2019-10-07 14:46+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,15 +50,19 @@ msgid ""
 "suitcase isn't equal."
 msgstr "چمدان و کالسکه ابعاد بزرگی دارند و نمی توانند با کیف باشند."
 
-#: depository/apps/reception/serializers.py:55
+#: depository/apps/reception/serializers.py:52
+msgid "You should specify one of bag, suitcase, pram"
+msgstr "حداثل یکی از کیف، چمدان و کالسکه مقداری غیر از صفر باشد داشته باشد."
+
+#: depository/apps/reception/serializers.py:60
 msgid "All spaces are busy"
 msgstr "فضای خالی وجود ندارد"
 
-#: depository/apps/reception/serializers.py:81
+#: depository/apps/reception/serializers.py:86
 msgid "This pack has been sent to store"
 msgstr "این امانتی به انبار انتقال داده شده است."
 
-#: depository/apps/reception/serializers.py:83
+#: depository/apps/reception/serializers.py:88
 msgid "This pack has been given to the owner"
 msgstr "این امانتی قبلا به صاحبش تحویل داده شده است."
 
@@ -70,7 +74,7 @@ msgstr "کوچک"
 msgid "Large"
 msgstr "بزرگ"
 
-#: depository/apps/structure/views.py:116
+#: depository/apps/structure/views.py:115
 msgid "You should select a cell from first or last column"
 msgstr "شما باید یک فضا از ستون ابتدا یا انتها انتخاب کنید"
 

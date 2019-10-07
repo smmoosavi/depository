@@ -47,6 +47,11 @@ class ReceptionTakeSerializer(serializers.Serializer):
         pilgrim, is_created = Pilgrim.objects.get_or_create(**query)
         return pilgrim
 
+    def validate(self, attrs):
+        if attrs.get('bag_count', 0) == 0 and attrs.get('pram_count', 0) == 0 and attrs.get('suitcase_count', 0) == 0:
+            raise ValidationError(_("You should specify one of bag, suitcase, pram"))
+        return attrs
+
     def create(self, data):
         pilgrim = self.get_pilgrim(data)
         size = Cell.SIZE_SMALL if data.get('bag_count') else Cell.SIZE_LARGE
