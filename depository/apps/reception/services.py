@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 class ReceptionHelper:
     def assign_cell(self, size):
         assert size in [Cell.SIZE_SMALL, Cell.SIZE_LARGE]
-        treshold = timezone.now() - timezone.timedelta(minutes=5)
+        treshold = timezone.now() - timezone.timedelta(minutes=2)
         busy_cells = Pack.objects.filter(
             Q(delivery__exited_at__isnull=True) | Q(delivery__exited_at__gt=treshold)
         ).values_list('cell', flat=True)
