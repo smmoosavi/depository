@@ -33,6 +33,8 @@ class ReceptionTakeSerializer(serializers.Serializer):
             raise ValidationError(
                 _("The given combination of packs isn't valid, because size of bag and para/suitcase isn't equal.")
             )
+        if attrs.get('bag_count', 0) == 0 and attrs.get('pram_count', 0) == 0 and attrs.get('suitcase_count', 0) == 0:
+            raise ValidationError(_("You should specify one of bag, suitcase, pram"))
         return attrs
 
     def get_pilgrim(self, data):
@@ -46,11 +48,6 @@ class ReceptionTakeSerializer(serializers.Serializer):
         query.update(pilgrim_data)
         pilgrim, is_created = Pilgrim.objects.get_or_create(**query)
         return pilgrim
-
-    def validate(self, attrs):
-        if attrs.get('bag_count', 0) == 0 and attrs.get('pram_count', 0) == 0 and attrs.get('suitcase_count', 0) == 0:
-            raise ValidationError(_("You should specify one of bag, suitcase, pram"))
-        return attrs
 
     def create(self, data):
         pilgrim = self.get_pilgrim(data)
