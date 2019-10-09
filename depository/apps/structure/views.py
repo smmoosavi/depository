@@ -121,6 +121,21 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         cell.save()
         return Response({}, status=status.HTTP_200_OK)
 
+    @action(methods=['POST'], detail=True)
+    def free(self, request, pk):
+        cell = self.get_object()
+        packs = Pack.objects.filter(
+            cell=cell,
+            delivery__exited_at__isnull=True
+        )
+        for pack in packs:
+            delivery = pack.delivery
+            delivery.exited_at = timezone.now()
+            delivery.exit_type = 0
+            delivery.giver_id = 1
+            delivery.save()
+        return Response({}, status=status.HTTP_200_OK)
+
 
 class RowViewSet(CellViewSet, ChangeStatusMixin):
     permission_classes = [IsAdmin]

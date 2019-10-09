@@ -113,6 +113,13 @@ class DeliveryTest(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(self.delivery.exit_type, Delivery.DELIVERED_TO_STORE)
 
+    def test_free(self):
+        response = self.client.post(reverse('cell-free', args=[
+            self.pack.cell.get_code()]), )
+        self.delivery.refresh_from_db()
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(self.delivery.exit_type, Delivery.DELIVERED_TO_CUSTOMER)
+
     def test_favorites(self):
         assert self.cabinet.is_asc, True
         response = self.client.post(
