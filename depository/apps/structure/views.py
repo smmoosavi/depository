@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, DestroyModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, DestroyModelMixin, RetrieveModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -14,7 +14,7 @@ from depository.apps.reception.models import Delivery, Pack
 from depository.apps.structure.helpers import CodeHelper, StructureHelper, CellHelper
 from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.structure.serializers import CabinetCreateSerializer, \
-    StatusSerializer, CabinetSerializer
+    StatusSerializer, CabinetSerializer, CellSerializer
 from depository.apps.utils.permissions import IsAdmin
 
 
@@ -62,9 +62,10 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
             raise ValidationError("You can't delete it because this cabinet is used while ago")
 
 
-class CellViewSet(GenericViewSet, ChangeStatusMixin):
+class CellViewSet(GenericViewSet, ChangeStatusMixin, RetrieveModelMixin):
     permission_classes = [IsAdmin]
     queryset = Cell.objects.all()
+    serializer_class = CellSerializer
 
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
