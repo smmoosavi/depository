@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
+        @media print {
+            @page {
+                size: 78mm 50mm;
+                margin: 0;
+            }
+        }
+
         @font-face {
             font-family: IranSans;
             src: url("{{ BASE_DIR }}/static/fonts/iranian-sans.woff");
@@ -23,14 +30,14 @@
         }
 
         .cell {
-            font-size: 20px;
+            font-size: 16px;
             direction: rtl;
             text-align: right;
             line-height: 1em
         }
 
         .name {
-            font-size: 20px;
+            font-size: 16px;
             direction: rtl;
             text-align: center;
         }
@@ -51,11 +58,11 @@
         <div class="cell">{{ taker }}</div>
     </div>
     <div class="col">
-        <div class="cell big" style="font-size: 95px">{{ code }}</div>
-        <div class="cell big" style="font-size: 30px">{{ index }}/{{ count }}</div>
+        <div class="cell big" style="font-size: 75px">{{ code }}</div>
+        <div class="cell big" style="font-size: 25px">{{ index }}/{{ count }}</div>
 
     </div>
 </div>
-<div style="text-align: center;font-size:3px;padding-top:50px">.</div>
+{#<div style="text-align: center;font-size:3px;padding-top:50px">.</div>#}
 </body>
 </html>

@@ -11,7 +11,7 @@
 
         body {
             font-family: IranSans;
-            font-size: 180px;
+            font-size: 150px;
             text-align: center;
             direction: rtl;
             width: 100%;
@@ -20,16 +20,9 @@
         }
 
         @media print {
-            .keep-together {
-                page-break-inside: avoid;
-            }
-
-            .break-before {
-                page-break-before: always;
-            }
-
-            .break-after {
-                page-break-after: always;
+            @page {
+                size: 78mm 45mm;
+                margin: 0;
             }
         }
     </style>
