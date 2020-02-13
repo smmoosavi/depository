@@ -4,6 +4,7 @@ import random
 import string
 import subprocess
 from datetime import datetime
+from django.conf import settings
 
 from weasyprint import HTML
 
@@ -15,8 +16,7 @@ class PrintHelper:
         file_name = ''.join(
             random.choices(string.ascii_uppercase + string.digits, k=5))
         time_str = datetime.now().strftime("%H:%M")
-        path = f
-        "{settings.TEMP_ROOT}/pdf/{time_str}-{file_name}.pdf"
+        path = f"{settings.TEMP_ROOT}/pdf/{time_str}-{file_name}.pdf"
         HTML(string=html, base_url="file://").write_pdf(path)
         return path
 

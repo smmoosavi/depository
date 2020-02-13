@@ -66,7 +66,7 @@ class StructureTest(APITestCase):
     def test_print(self, *args):
         response = self.client.post(
             reverse('cabinet-print', args=[self.cabinet.code]))
-        # self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
 
 
 class ConstantTest(TestCase):
