@@ -9,38 +9,27 @@
             src: url("{{ BASE_DIR }}/static/fonts/iranian-sans.woff");
         }
 
-        @font-face {
-            font-family: "Calibri Light";
-            src: url("{{ BASE_DIR }}/static/fonts/calibril.ttf");
-        }
-
         body {
-            font-family: "{{ font }}";
+            font-family: IranSans;
             direction: rtl;
             width: 95%;
-            font-size: 20px;
+            font-size: 16px;
             line-height: 1em;
             text-align: center;
         }
 
         .small {
-            font-size: 16px;
-        }
-
-        .logo {
-            height: 107px;
-        }
-
-        .col {
-            display: inline-block;
-            width: 47%;
-            vertical-align: top;
+            font-size: 12px;
         }
 
         .en {
             font-family: Tahoma;
             font-size: 14px;
-            direction: ltr;
+        }
+
+        .notice {
+            font-family: Tahoma;
+            font-size: 12px;
         }
 
         div {
@@ -48,47 +37,51 @@
         }
 
         .barcode {
-            height: 150px;
+            height: 90px;
         }
 
         .border {
             border-top: solid 1px;
         }
 
+        @media print {
+            @page {
+                size: 78mm 120mm;
+                margin: 0;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="name">
+<div>
+    {{ name }}
+</div>
+<div>
     {{ depository_name }}
 </div>
 <div class="small">
     {{ depository_address }}
 </div>
-<div class="name">
-    {{ name }}
+<div class="border">
 </div>
-<div>{{ entered_at }}</div>
-<div class="border"></div>
 <div>
-    <div class="col">
-        <div>
-            عجل لولیک الفرج
-        </div>
-        <div>
-            <img src="{{ BASE_DIR }}/static/logo.jpg" class="logo"/>
-        </div>
-        <div class="en">
-            {{ social }}
-        </div>
-    </div>
-    <div class="col">
-        <img src="{{ barcode }}" class="barcode">
-    </div>
+    {{ entered_at_jalali }}
 </div>
-<div class="border"></div>
-<div class="notice small">
+<div class="en">
+    {{ entered_at }}
+</div>
+<div>
+    <img src="{{ barcode }}" class="barcode">
+</div>
+<div class="notice">
     {{ notice }}
 </div>
-
+<div class="border"></div>
+<div class="en">
+    {{ social }}
+</div>
+<div>
+    عجل لولیک الفرج
+</div>
 </body>
 </html>

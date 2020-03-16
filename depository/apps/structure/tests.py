@@ -134,3 +134,4 @@ class DeliveryTest(APITestCase):
         cells = response.data[0]['rows'][0]['cells']
         self.assertEqual(1, cells[0]['age'])
         self.assertEqual(-1, cells[1]['age'])
+        self.assertTrue(cells[0]['pilgrim'])

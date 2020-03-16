@@ -8,9 +8,9 @@ drf-yasg
 djangorestframework
 djangorestframework-jwt
 gunicorn
-pdfkit
 ipython
 khayyam
 qrcode
 openpyxl
 gunicorn
+weasyprint

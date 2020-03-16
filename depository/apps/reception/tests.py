@@ -67,7 +67,9 @@ class ReceptionTest(APITestCase):
     # @patch.object(PrintHelper, 'print')
     def test_print(self):
         rh = ReceptionHelper()
+        t = timezone.now()
         rh.print(self.pack)
+        print((timezone.now() - t))
         # self.assertEqual(2, mock.call_count)
 
 

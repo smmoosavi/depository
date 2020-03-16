@@ -33,6 +33,12 @@ class StructureHelper:
                 pathes.append(ph.generate_pdf(html))
         ph.print(pathes)
 
+class CellHelper:
+    def print(self,cell):
+        html = render_to_string('number.html', {'number': cell.get_code(), 'BASE_DIR': settings.BASE_DIR})
+        ph = PrintHelper()
+        ph.print([ph.generate_pdf(html)])
+
 
 class ConstantHelper:
     def get(self, key, default=None):

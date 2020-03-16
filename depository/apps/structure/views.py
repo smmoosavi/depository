@@ -6,15 +6,15 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, DestroyModelMixin
+from rest_framework.mixins import CreateModelMixin, ListModelMixin, DestroyModelMixin, RetrieveModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from depository.apps.reception.models import Delivery, Pack
-from depository.apps.structure.helpers import CodeHelper, StructureHelper
+from depository.apps.structure.helpers import CodeHelper, StructureHelper, CellHelper
 from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.structure.serializers import CabinetCreateSerializer, \
-    StatusSerializer, CabinetSerializer
+    StatusSerializer, CabinetSerializer, CellSerializer
 from depository.apps.utils.permissions import IsAdmin
 
 
@@ -62,9 +62,10 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
             raise ValidationError("You can't delete it because this cabinet is used while ago")
 
 
-class CellViewSet(GenericViewSet, ChangeStatusMixin):
+class CellViewSet(GenericViewSet, ChangeStatusMixin, RetrieveModelMixin):
     permission_classes = [IsAdmin]
     queryset = Cell.objects.all()
+    serializer_class = CellSerializer
 
     def get_object(self):
         queryset = self.filter_queryset(self.get_queryset())
@@ -73,10 +74,10 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
 
         assert lookup_url_kwarg in self.kwargs, (
-                'Expected view %s to be called with a URL keyword argument '
-                'named "%s". Fix your URL conf, or set the `.lookup_field` '
-                'attribute on the view correctly.' %
-                (self.__class__.__name__, lookup_url_kwarg)
+            'Expected view %s to be called with a URL keyword argument '
+            'named "%s". Fix your URL conf, or set the `.lookup_field` '
+            'attribute on the view correctly.' %
+            (self.__class__.__name__, lookup_url_kwarg)
         )
 
         cabinet, row, cell = CodeHelper().to_code(
@@ -119,6 +120,12 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin):
         Cell.objects.filter(row__cabinet=cabinet).update(is_fav=False)
         cell.is_fav = True
         cell.save()
+        return Response({}, status=status.HTTP_200_OK)
+
+    @action(methods=['POST'], detail=True)
+    def print(self, request, pk):
+        cell = self.get_object()
+        CellHelper().print(cell)
         return Response({}, status=status.HTTP_200_OK)
 
     @action(methods=['POST'], detail=True)

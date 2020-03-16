@@ -5,6 +5,7 @@ from django.utils.translation import ugettext as _
 # Create your models here.
 
 
+
 class Depository(models.Model):
     name = models.CharField(max_length=100)
     address = models.TextField(null=True, blank=True)
@@ -34,6 +35,13 @@ class Cell(models.Model):
     is_healthy = models.BooleanField(default=True)
     size = models.IntegerField(choices=SIZE_CHOICES, default=SIZE_SMALL)
     is_fav = models.BooleanField(default=False)
+
+    @property
+    def pack(self):
+        if not hasattr(self, '_pack'):
+            from depository.apps.reception.models import Pack
+            self._pack = Pack.objects.filter(cell=self, delivery__exited_at__isnull=True).last()
+        return self._pack
 
     def get_code(self):
         from depository.apps.structure.helpers import CodeHelper
