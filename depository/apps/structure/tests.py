@@ -26,6 +26,7 @@ class StructureTest(APITestCase):
         self.user.groups.add(group)
         self.user.save()
 
+        Depository.objects.create(name="dep")
         self.cabinet = Cabinet.objects.create(code=10, depository_id=1)
         row = Row.objects.create(code=1, cabinet=self.cabinet)
         Cell.objects.create(code=1, row=row)
@@ -67,6 +68,20 @@ class StructureTest(APITestCase):
         response = self.client.post(
             reverse('cabinet-print', args=[self.cabinet.code]))
         self.assertEqual(status.HTTP_200_OK, response.status_code)
+
+    def test_extend(self):
+        data = {
+            'num_of_rows': 3,
+            'num_of_cols': 4
+        }
+        old_row = self.cabinet.rows.all().count()
+        old_column = self.cabinet.rows.all()[0].cells.all().count()
+        response = self.client.post(
+            reverse('cabinet-extend', args=[self.cabinet.code]), data)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.cabinet.refresh_from_db()
+        self.assertEqual(self.cabinet.rows.all().count(), old_row + 3)
+        self.assertEqual(self.cabinet.rows.all()[0].cells.all().count(), old_column + 4)
 
 
 class ConstantTest(TestCase):

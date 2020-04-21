@@ -14,7 +14,7 @@ from depository.apps.reception.models import Delivery, Pack
 from depository.apps.structure.helpers import CodeHelper, StructureHelper, CellHelper
 from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.structure.serializers import CabinetCreateSerializer, \
-    StatusSerializer, CabinetSerializer, CellSerializer
+    StatusSerializer, CabinetSerializer, CellSerializer, CabinetExtendSerializer
 from depository.apps.utils.permissions import IsAdmin
 
 
@@ -36,6 +36,8 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
     def get_serializer_class(self):
         if self.action == 'create':
             return CabinetCreateSerializer
+        elif self.action == 'extend':
+            return CabinetExtendSerializer
         else:
             return CabinetSerializer
 
@@ -45,8 +47,22 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
         serializer.save()
         cabinet_serializer = CabinetSerializer(instance=serializer.instance)
         headers = self.get_success_headers(cabinet_serializer.data)
-        return Response(cabinet_serializer.data,
-                        status=status.HTTP_201_CREATED, headers=headers)
+        return Response(
+            cabinet_serializer.data,                        status=status.HTTP_201_CREATED, headers=headers
+        )
+
+    @action(methods=['POST'], detail=True)
+    def extend(self, request, code):
+        obj = self.get_object()
+        serializer = self.get_serializer(data=request.data, cabinet=obj)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        obj.refresh_from_db()
+        cabinet_serializer = CabinetSerializer(instance=obj)
+        headers = self.get_success_headers(cabinet_serializer.data)
+        return Response(
+            cabinet_serializer.data, status=status.HTTP_200_OK, headers=headers
+        )
 
     @action(methods=['POST'], detail=True)
     def print(self, request, code):
@@ -74,10 +90,10 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin, RetrieveModelMixin):
         lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
 
         assert lookup_url_kwarg in self.kwargs, (
-            'Expected view %s to be called with a URL keyword argument '
-            'named "%s". Fix your URL conf, or set the `.lookup_field` '
-            'attribute on the view correctly.' %
-            (self.__class__.__name__, lookup_url_kwarg)
+                'Expected view %s to be called with a URL keyword argument '
+                'named "%s". Fix your URL conf, or set the `.lookup_field` '
+                'attribute on the view correctly.' %
+                (self.__class__.__name__, lookup_url_kwarg)
         )
 
         cabinet, row, cell = CodeHelper().to_code(

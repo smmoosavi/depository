@@ -3,7 +3,7 @@ import locale
 from django.conf import settings
 from django.template.loader import render_to_string
 
-from depository.apps.structure.models import Constant
+from depository.apps.structure.models import Constant, Cell, Row
 from depository.apps.utils.print import PrintHelper
 
 
@@ -33,8 +33,33 @@ class StructureHelper:
                 pathes.append(ph.generate_pdf(html))
         ph.print(pathes)
 
+    def extend(self, cabinet, data):
+        print(data)
+        if data['num_of_cols']:
+            cell = Cell.objects.filter(row__cabinet=cabinet).order_by('-code').first()
+            first_index = 0
+            if cell:
+                first_index = cell.code + 1
+            for row in cabinet.rows:
+                size = row.cells[0].size
+                for index in range(data['num_of_cols']):
+                    Cell.objects.create(row=row, code=index + first_index, size=size)
+        if data['num_of_rows']:
+            cells_count = cabinet.rows[0].cells.count()
+            first_index = 0
+            one_row = cabinet.rows.order_by('-code').first()
+            if one_row:
+                first_index = one_row.code + 1
+            for index in range(data['num_of_rows']):
+                row = Row.objects.create(cabinet=cabinet, code=index + first_index)
+                for i in range(cells_count):
+                    Cell.objects.create(row=row, code=i)
+        cabinet.refresh_from_db()
+        return cabinet
+
+
 class CellHelper:
-    def print(self,cell):
+    def print(self, cell):
         html = render_to_string('number.html', {'number': cell.get_code(), 'BASE_DIR': settings.BASE_DIR})
         ph = PrintHelper()
         ph.print([ph.generate_pdf(html)])

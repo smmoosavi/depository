@@ -2,8 +2,9 @@ from django.conf import settings
 from django.db.models import QuerySet
 from django.utils import timezone
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
-
+from django.utils.translation import ugettext as _
 from depository.apps.accounting.serializers import PilgrimSerializer
 from depository.apps.reception.models import Pack
 from depository.apps.structure.helpers import CodeHelper, ConstantHelper
@@ -12,8 +13,8 @@ from depository.apps.structure.models import Cell, Cabinet, Row
 
 class CabinetCreateSerializer(serializers.Serializer):
     code = serializers.IntegerField(required=False)
-    num_of_rows = serializers.IntegerField()
-    num_of_cols = serializers.IntegerField()
+    num_of_rows = serializers.IntegerField(max_value=9, min_value=1)
+    num_of_cols = serializers.IntegerField(max_value=9, min_value=1)
     size = serializers.ChoiceField(
         Cell.SIZE_CHOICES, default=Cell.SIZE_SMALL
     )
@@ -68,7 +69,6 @@ class CellSerializer(serializers.ModelSerializer):
         model = Cell
         fields = '__all__'
 
-
     def get_code(self, obj):
         return CodeHelper().to_str(obj.row.cabinet.code, obj.row.code, obj.code)
 
@@ -86,6 +86,48 @@ class CellSerializer(serializers.ModelSerializer):
         if not obj.pack or obj.pack.delivery.exited_at:
             return {}
         return PilgrimSerializer(obj.pack.delivery.pilgrim).data
+
+
+class CabinetExtendSerializer(serializers.Serializer):
+    num_of_rows = serializers.IntegerField()
+    num_of_cols = serializers.IntegerField()
+
+    def __init__(self, *args, **kwargs):
+        self.cabinet = kwargs.pop('cabinet', None)
+        super(CabinetExtendSerializer, self).__init__(*args, **kwargs)
+
+    def validate_num_of_rows(self, data):
+        if self.cabinet.rows.count() + data > 9:
+            raise ValidationError(_('num_of_rows should be lower than %s') % (9 - data))
+        return data
+
+    def validate_num_of_cols(self, data):
+        if self.cabinet.rows.count() + data > 9:
+            raise ValidationError(_('num_of_cols should be lower than %s') % (9 - data))
+        return data
+
+    def create(self, data):
+        if self.validated_data['num_of_cols']:
+            cell = Cell.objects.filter(row__cabinet=self.cabinet).order_by('-code').first()
+            first_index = 0
+            if cell:
+                first_index = cell.code + 1
+            for row in self.cabinet.rows.all():
+                size = row.cells.all()[0].size
+                for index in range(self.validated_data['num_of_cols']):
+                    Cell.objects.create(row=row, code=index + first_index, size=size)
+        if self.validated_data['num_of_rows']:
+            cells_count = self.cabinet.rows.all()[0].cells.count()
+            first_index = 0
+            one_row = self.cabinet.rows.order_by('-code').first()
+            if one_row:
+                first_index = one_row.code + 1
+            for index in range(self.validated_data['num_of_rows']):
+                row = Row.objects.create(cabinet=self.cabinet, code=index + first_index)
+                for i in range(cells_count):
+                    Cell.objects.create(row=row, code=i)
+        self.cabinet.refresh_from_db()
+        return self.cabinet
 
 
 class RowSerializer(serializers.ModelSerializer):
