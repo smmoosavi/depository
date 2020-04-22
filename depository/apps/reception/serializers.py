@@ -54,7 +54,7 @@ class ReceptionTakeSerializer(serializers.Serializer):
         size = Cell.SIZE_SMALL if data.get('bag_count') else Cell.SIZE_LARGE
         free_cell = ReceptionHelper().assign_cell(size)
         if not free_cell:
-            raise ValidationError(_("All spaces are busy"))
+            raise ValidationError(_("All spaces are busy"), code='no_space')
         delivery_data = {'pilgrim': pilgrim, 'taker': self.context['request'].user}
         delivery = Delivery.objects.create(**delivery_data)
         pack_data = sub_dict(data, ['bag_count', 'suitcase_count', 'pram_count'])
