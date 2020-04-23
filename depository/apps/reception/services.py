@@ -157,7 +157,7 @@ class ReceptionHelper:
     def admin_report(self):
         total_cabinets = Cabinet.objects.count()
         total_cells = Cell.objects.count()
-        busy_cells = Pack.objects.filter(
+        busy_cells = Pack.objects.filter(cell__is_healthy=True).filter(
             Q(delivery__exited_at__isnull=True) | Q(delivery__exited_at__gt=timezone.now())
         ).count()
         empty_cells = Cell.objects.filter(is_healthy=True).count() - busy_cells
