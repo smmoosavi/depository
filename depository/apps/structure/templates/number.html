@@ -7,37 +7,44 @@
 
         @media print {
             @page {
-                size: 78mm 35mm;
+                size: 78mm 30mm;
                 margin: 0;
             }
         }
 
         @font-face {
-            font-family: IranSans;
-            src: url("{{ BASE_DIR }}/static/fonts/iranian-sans.woff");
+            font-family: Btitr;
+            src: url("{{ BASE_DIR }}/static/fonts/btitr.ttf");
         }
 
         body {
-            font-family: IranSans;
-            font-size: 160px;
+            font-family: Btitr;
+            font-size: 120px;
             text-align: center;
-            direction: rtl;
             width: 100%;
-            height: 100%;
+        }
 
+        .container {
+            font-size: 0;
+            text-align: center;
         }
 
         .num {
-            vertical-align: top;
-            position:relative;
-            top:-60px;
+            font-size: 100px;
+            text-align: right;
+        }
+
+        .alphabet {
+            font-size: 100px;
+            text-align: left;
         }
 
     </style>
 </head>
 <body>
-<div class="num">
-    {{ number }}
-</div>
+    <div class="container">
+        <span class="num">{{ number }}</span>
+        <span class="alphabet">چ</span>
+    </div>
 </body>
 </html>
