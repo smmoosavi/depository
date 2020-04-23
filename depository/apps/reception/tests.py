@@ -26,7 +26,7 @@ class ReceptionTest(APITestCase):
         self.user.save()
         Constant.objects.create(key='social', value='@baghiatallah')
         depository = Depository.objects.create(name='امانت داری شماره ۱', address='صحن حضرت فاطمه - سمت چپ')
-        cabinet = Cabinet.objects.create(code="1", depository=depository)
+        cabinet = Cabinet.objects.create(code="آ", depository=depository)
         row = Row.objects.create(code="1", cabinet=cabinet)
         Cell.objects.create(code="1", row=row)
         cell = Cell.objects.create(code="2", row=row)

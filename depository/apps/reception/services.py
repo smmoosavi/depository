@@ -124,7 +124,7 @@ class ReceptionHelper:
 
         else:
             data.update({
-                'entered_at': timezone.localtime(pack.delivery.entered_at).strftime("%A %d %B %H:%M"),
+                'entered_at': timezone.localtime(pack.delivery.entered_at).strftime("%A %d %B %H:%M:%S"),
                 'font': "Calibri Light"
 
             })
