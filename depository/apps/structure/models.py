@@ -1,9 +1,9 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext as _
 
 
 # Create your models here.
-
 
 
 class Depository(models.Model):
@@ -12,14 +12,14 @@ class Depository(models.Model):
 
 
 class Cabinet(models.Model):
-    code = models.PositiveIntegerField()
+    code = models.CharField(max_length=settings.CABINET_DIGITS)
     depository = models.ForeignKey(Depository, on_delete=models.CASCADE)
     order = models.FloatField(default=1)
     is_asc = models.NullBooleanField(default=True)
 
 
 class Row(models.Model):
-    code = models.PositiveIntegerField(default=1)
+    code = models.PositiveIntegerField(default=settings.ROW_DIGITS)
     cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE, related_name='rows')
 
 
@@ -30,7 +30,7 @@ class Cell(models.Model):
         (SIZE_SMALL, _('Small')),
         (SIZE_LARGE, _('Large'))
     )
-    code = models.PositiveIntegerField(default=1)
+    code = models.PositiveIntegerField(default=settings.CELL_DIGITS)
     row = models.ForeignKey(Row, on_delete=models.CASCADE, related_name='cells')
     is_healthy = models.BooleanField(default=True)
     size = models.IntegerField(choices=SIZE_CHOICES, default=SIZE_SMALL)

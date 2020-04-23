@@ -12,7 +12,7 @@ from depository.apps.structure.models import Cell, Cabinet, Row
 
 
 class CabinetCreateSerializer(serializers.Serializer):
-    code = serializers.IntegerField(required=False)
+    code = serializers.CharField(required=False)
     num_of_rows = serializers.IntegerField(max_value=9, min_value=1)
     num_of_cols = serializers.IntegerField(max_value=9, min_value=1)
     size = serializers.ChoiceField(
@@ -27,9 +27,9 @@ class CabinetCreateSerializer(serializers.Serializer):
         if not cabinet_code:
             last_cabinet = Cabinet.objects.order_by('-code').first()
             if last_cabinet:
-                cabinet_code = last_cabinet.code + 1
+                cabinet_code = settings[settings.FARSI_CHARS.index(last_cabinet.code) + 1]
             else:
-                cabinet_code = 10
+                cabinet_code = 'آ'
         cabinet = Cabinet.objects.create(code=cabinet_code, depository_id=settings.DEFAULT_DEPOSITORY_ID)
         for row_idx in range(data['num_of_rows']):
             row = Row.objects.create(code=str(row_idx), cabinet=cabinet)

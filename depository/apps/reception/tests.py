@@ -24,7 +24,7 @@ class ReceptionTest(APITestCase):
         self.user = User.objects.create(username="taker", first_name="وحید", last_name='امین تبار')
         self.user.set_password('a')
         self.user.save()
-        Constant.objects.create(key='social',value='@baghiatallah')
+        Constant.objects.create(key='social', value='@baghiatallah')
         depository = Depository.objects.create(name='امانت داری شماره ۱', address='صحن حضرت فاطمه - سمت چپ')
         cabinet = Cabinet.objects.create(code="1", depository=depository)
         row = Row.objects.create(code="1", cabinet=cabinet)
@@ -90,12 +90,12 @@ class AssignmentTest(TestCase):
     def test_assign_small(self):
         cell = ReceptionHelper().assign_cell(Cell.SIZE_SMALL)
         code = (cell.row.cabinet.code, cell.row.code, cell.code)
-        self.assertEqual(code, (2, 2, 3))
+        self.assertEqual(code, ('2', 2, 3))
 
     def test_assign_large(self):
         cell = ReceptionHelper().assign_cell(Cell.SIZE_LARGE)
         code = (cell.row.cabinet.code, cell.row.code, cell.code)
-        self.assertEqual(code, (2, 2, 2))
+        self.assertEqual(code, ('2', 2, 2))
 
 
 class ReportTest(TestCase):
@@ -104,6 +104,7 @@ class ReportTest(TestCase):
         self.user = User.objects.create(username="taker")
         self.user.set_password('a')
         self.user.save()
+        depository = Depository.objects.create(name='dep')
         cabinet = Cabinet.objects.create(code="1", depository_id=1)
         row = Row.objects.create(code="1", cabinet=cabinet)
         Cell.objects.create(code="1", row=row)

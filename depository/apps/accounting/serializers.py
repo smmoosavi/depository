@@ -27,7 +27,7 @@ class ImportUserSerializer(serializers.Serializer):
         f.close()
 
         users_data = ExcelUtil().import_file(tup[1])
-        for user_data in users_data:
+        for user_data in users_data[1:]:
             user = User.objects.create(username=user_data['username'])
             user.set_password(user_data['password'])
             user.save()

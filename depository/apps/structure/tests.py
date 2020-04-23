@@ -27,7 +27,7 @@ class StructureTest(APITestCase):
         self.user.save()
 
         Depository.objects.create(name="dep")
-        self.cabinet = Cabinet.objects.create(code=10, depository_id=1)
+        self.cabinet = Cabinet.objects.create(code='آ', depository_id=1)
         row = Row.objects.create(code=1, cabinet=self.cabinet)
         Cell.objects.create(code=1, row=row)
         Cell.objects.create(code=2, row=row)
@@ -46,19 +46,19 @@ class StructureTest(APITestCase):
         self.assertEqual(5, Cell.objects.filter(size=Cell.SIZE_LARGE).count())
 
     def test_change_status_cell(self):
-        data = {'code': '1011', 'is_healthy': False}
+        data = {'code': 'آ11', 'is_healthy': False}
         response = self.client.post(reverse('cell-change-status'), data)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertFalse(Cell.objects.first().is_healthy)
 
     def test_change_status_row(self):
-        data = {'code': '101', 'is_healthy': False}
+        data = {'code': 'آ1', 'is_healthy': False}
         response = self.client.post(reverse('cell-change-status'), data)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertFalse(Cell.objects.first().is_healthy)
 
     def test_change_status_cabinet(self):
-        data = {'code': '10', 'is_healthy': False}
+        data = {'code': 'آ', 'is_healthy': False}
         response = self.client.post(reverse('cell-change-status'), data)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertFalse(Cell.objects.first().is_healthy)
@@ -102,7 +102,7 @@ class DeliveryTest(APITestCase):
         self.user.groups.add(group)
         self.user.save()
         dep = Depository.objects.create(name='dep1')
-        self.cabinet = Cabinet.objects.create(code=10, depository_id=1)
+        self.cabinet = Cabinet.objects.create(code='آ', depository_id=1)
         row = Row.objects.create(code=1, cabinet=self.cabinet)
         cell = Cell.objects.create(code=1, row=row)
         self.cell2 = Cell.objects.create(code=2, row=row)

@@ -9,13 +9,13 @@ from depository.apps.utils.print import PrintHelper
 
 class CodeHelper:
     def to_str(self, cabinet_code, row_code, cell_code):
-        return ("{:0%s}" % settings.CABINET_DIGITS).format(cabinet_code) + \
+        return ("%s" % cabinet_code) + \
                ("{:0%s}" % settings.ROW_DIGITS).format(row_code) + \
-               ("{:0%s}" % settings.CELL_DIGITS).format(cell_code)
+               ("%s" % cell_code)
 
     def to_code(self, code):
         row, cell = None, None
-        cabinet = int(code[:settings.CABINET_DIGITS])
+        cabinet = code[:settings.CABINET_DIGITS]
         if len(code) > settings.CABINET_DIGITS:
             row = int(code[settings.CABINET_DIGITS:settings.CABINET_DIGITS + settings.ROW_DIGITS])
         if len(code) > (settings.CABINET_DIGITS + settings.ROW_DIGITS):
