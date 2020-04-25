@@ -12,7 +12,7 @@ class Depository(models.Model):
 
 
 class Cabinet(models.Model):
-    code = models.CharField(max_length=settings.CABINET_DIGITS)
+    code = models.CharField(max_length=settings.CABINET_DIGITS, unique=True)
     depository = models.ForeignKey(Depository, on_delete=models.CASCADE)
     order = models.FloatField(default=1)
     is_asc = models.NullBooleanField(default=True)

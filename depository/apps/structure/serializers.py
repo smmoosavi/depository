@@ -25,9 +25,12 @@ class CabinetCreateSerializer(serializers.Serializer):
     def create(self, data):
         cabinet_code = data.get('code')
         if not cabinet_code:
-            last_cabinet = Cabinet.objects.order_by('-code').first()
-            if last_cabinet:
-                cabinet_code = settings.FARSI_CHARS[settings.FARSI_CHARS.index(last_cabinet.code) + 1]
+            codes = list(map(
+                lambda x: settings.FARSI_CHARS.index(x), Cabinet.objects.values_list('code', flat=True)
+            ))
+
+            if codes:
+                cabinet_code = settings.FARSI_CHARS[max(codes) + 1]
             else:
                 cabinet_code = 'آ'
         cabinet = Cabinet.objects.create(code=cabinet_code, depository_id=settings.DEFAULT_DEPOSITORY_ID)

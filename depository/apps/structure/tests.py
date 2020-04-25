@@ -35,7 +35,6 @@ class StructureTest(APITestCase):
 
     def test_create(self):
         data = {
-            'code': 1,
             'num_of_rows': 3,
             'num_of_cols': 5,
             'first_row_size': 1
