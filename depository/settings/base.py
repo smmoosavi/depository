@@ -213,7 +213,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 DEFAULT_DEPOSITORY_ID = 1
-CABINET_DIGITS = 1
+CABINET_DIGITS = 2
 ROW_DIGITS = 1
 CELL_DIGITS = 1
 STORE_DAYS = 1
@@ -244,5 +244,3 @@ APPEND_SLASH = False
 f = open(BASE_DIR + 'lang.json')
 LANG_DICT = json.loads(f.read())
 f.close()
-
-FARSI_CHARS = 'آبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی'

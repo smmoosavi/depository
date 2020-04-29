@@ -6,13 +6,14 @@ from django.utils.translation import ugettext as _
 # Create your models here.
 
 
+
 class Depository(models.Model):
     name = models.CharField(max_length=100)
     address = models.TextField(null=True, blank=True)
 
 
 class Cabinet(models.Model):
-    code = models.CharField(max_length=settings.CABINET_DIGITS, unique=True)
+    code = models.PositiveIntegerField()
     depository = models.ForeignKey(Depository, on_delete=models.CASCADE)
     order = models.FloatField(default=1)
     is_asc = models.NullBooleanField(default=True)
