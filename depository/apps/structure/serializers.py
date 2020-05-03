@@ -14,7 +14,7 @@ from depository.apps.structure.models import Cell, Cabinet, Row
 class CabinetCreateSerializer(serializers.Serializer):
     code = serializers.IntegerField(required=False)
     num_of_rows = serializers.IntegerField(max_value=9, min_value=1)
-    num_of_cols = serializers.IntegerField(max_value=9, min_value=1)
+    num_of_cols = serializers.IntegerField(min_value=1)
     size = serializers.ChoiceField(
         Cell.SIZE_CHOICES, default=Cell.SIZE_SMALL
     )
