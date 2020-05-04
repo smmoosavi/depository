@@ -239,7 +239,10 @@ CONST_KEY_SOCIAL = 'social'
 CONST_KEY_PHONE = 'phone'
 CONST_KEY_NOTICE = 'notice_%s'
 CONST_KEY_STORE_THRESHOLD = 'store_threshold'
+CONST_BLINKID_TOKEN = 'blinkid_token'
 APPEND_SLASH = False
+FARSI_CHARS = 'آبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی'
+
 
 f = open(BASE_DIR + 'lang.json')
 LANG_DICT = json.loads(f.read())

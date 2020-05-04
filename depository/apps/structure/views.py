@@ -1,4 +1,5 @@
 # Create your views here.
+from django.conf import settings
 from django.db.models import Max, Min
 from django.utils import timezone
 from django.utils.translation import ugettext as _
@@ -7,11 +8,12 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, DestroyModelMixin, RetrieveModelMixin
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from depository.apps.reception.models import Delivery, Pack
-from depository.apps.structure.helpers import CodeHelper, StructureHelper, CellHelper
+from depository.apps.structure.helpers import CodeHelper, StructureHelper, CellHelper, ConstantHelper
 from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.structure.serializers import CabinetCreateSerializer, \
     StatusSerializer, CabinetSerializer, CellSerializer, CabinetExtendSerializer
@@ -48,7 +50,7 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
         cabinet_serializer = CabinetSerializer(instance=serializer.instance)
         headers = self.get_success_headers(cabinet_serializer.data)
         return Response(
-            cabinet_serializer.data,                        status=status.HTTP_201_CREATED, headers=headers
+            cabinet_serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
 
     @action(methods=['POST'], detail=True)
@@ -167,3 +169,18 @@ class RowViewSet(CellViewSet, ChangeStatusMixin):
 class StructureViewSet(GenericViewSet, ListModelMixin):
     serializer_class = CabinetSerializer
     permission_classes = [IsAdmin]
+
+
+class ConfigViewSet(GenericViewSet):
+    permission_classes = [AllowAny]
+
+    @action(methods=['GET'], detail=False)
+    def blinkid_token(self, request):
+        return Response({'token': ConstantHelper().get(settings.CONST_BLINKID_TOKEN, "")})
+
+    @action(methods=['GET'], detail=False)
+    def row_code_mapping(self, request):
+        result = {}
+        for idx, item in enumerate(settings.FARSI_CHARS):
+            result[idx] = item
+        return Response(result)

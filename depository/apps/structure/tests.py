@@ -149,3 +149,20 @@ class DeliveryTest(APITestCase):
         self.assertEqual(1, cells[0]['age'])
         self.assertEqual(-1, cells[1]['age'])
         self.assertTrue(cells[0]['pilgrim'])
+
+
+class ConfigTest(APITestCase):
+
+    def setUp(self):
+        Constant.objects.create(key=settings.CONST_BLINKID_TOKEN, value="token")
+
+    def test_blinkid_token(self):
+        response = self.client.get(reverse('config-blinkid-token'))
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual('token', response.data['token'])
+
+    def test_row_code_mapping(self):
+        response = self.client.get(reverse('config-row-code-mapping'))
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual('آ', response.data[0])
+
