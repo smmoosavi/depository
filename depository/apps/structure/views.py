@@ -174,13 +174,11 @@ class StructureViewSet(GenericViewSet, ListModelMixin):
 class ConfigViewSet(GenericViewSet):
     permission_classes = [AllowAny]
 
-    @action(methods=['GET'], detail=False)
-    def blinkid_token(self, request):
-        return Response({'token': ConstantHelper().get(settings.CONST_BLINKID_TOKEN, "")})
-
-    @action(methods=['GET'], detail=False)
-    def row_code_mapping(self, request):
+    def list(self, request):
         result = {}
         for idx, item in enumerate(settings.FARSI_CHARS):
             result[idx] = item
-        return Response(result)
+        return Response({
+            'token': ConstantHelper().get(settings.CONST_BLINKID_TOKEN, ""),
+            'row_code_mapping': result
+        })
