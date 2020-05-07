@@ -125,6 +125,21 @@ class PackSerializer(serializers.ModelSerializer):
         return obj.cell.get_code()
 
 
+class PilgrimPackSerializer(serializers.ModelSerializer):
+    taker = serializers.SerializerMethodField()
+    entered_at = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Pack
+        fields = ('bag_count', 'suitcase_count', 'pram_count', 'taker', 'entered_at')
+
+    def get_taker(self, obj):
+        return obj.delivery.taker.get_full_name()
+
+    def get_entered_at(self, obj):
+        return obj.delivery.entered_at
+
+
 class DeliverySerializer(serializers.ModelSerializer):
     pack = serializers.SerializerMethodField()
     pilgrim = serializers.SerializerMethodField()

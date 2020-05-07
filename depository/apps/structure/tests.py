@@ -95,7 +95,7 @@ class ConstantTest(TestCase):
 
 class DeliveryTest(APITestCase):
     def setUp(self):
-        self.user = User.objects.create(username="admin")
+        self.user = User.objects.create(username="admin", last_name='user')
         self.user.set_password('a')
         group = Group.objects.create(name="Admin")
         self.user.groups.add(group)
@@ -105,14 +105,14 @@ class DeliveryTest(APITestCase):
         row = Row.objects.create(code=1, cabinet=self.cabinet)
         cell = Cell.objects.create(code=1, row=row)
         self.cell2 = Cell.objects.create(code=2, row=row)
-        pilgrim = Pilgrim.objects.create(
+        self.pilgrim = Pilgrim.objects.create(
             last_name='last_name', phone="091232313", country='IR'
         )
         d = timezone.now() - timezone.timedelta(days=settings.STORE_DAYS + 1)
         self.delivery = Delivery.objects.create(
-            pilgrim=pilgrim, taker=self.user, depository=dep, entered_at=d
+            pilgrim=self.pilgrim, taker=self.user, depository=dep, entered_at=d
         )
-        self.pack = Pack.objects.create(delivery=self.delivery, cell=cell)
+        self.pack = Pack.objects.create(delivery=self.delivery, cell=cell, bag_count=1)
         self.client.login(username='admin', password='a')
 
     def test_old_delivery(self):
@@ -148,7 +148,13 @@ class DeliveryTest(APITestCase):
         cells = response.data[0]['rows'][0]['cells']
         self.assertEqual(1, cells[0]['age'])
         self.assertEqual(-1, cells[1]['age'])
-        self.assertTrue(cells[0]['pilgrim'])
+
+    def test_cell(self):
+        response = self.client.get(reverse('cabinet-list'))
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        cells = response.data[0]['rows'][0]['cells']
+        self.assertEqual(cells[0]['pack']['taker'], self.user.get_full_name())
+        self.assertEqual(cells[0]['pilgrim']['name'], self.pilgrim.get_full_name())
 
 
 class ConfigTest(APITestCase):
@@ -161,5 +167,3 @@ class ConfigTest(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual('token', response.data['token'])
         self.assertEqual('آ', response.data['row_code_mapping'][0])
-
-

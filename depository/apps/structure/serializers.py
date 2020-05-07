@@ -7,6 +7,7 @@ from rest_framework.generics import get_object_or_404
 from django.utils.translation import ugettext as _
 from depository.apps.accounting.serializers import PilgrimSerializer
 from depository.apps.reception.models import Pack
+from depository.apps.reception.serializers import PilgrimPackSerializer
 from depository.apps.structure.helpers import CodeHelper, ConstantHelper
 from depository.apps.structure.models import Cell, Cabinet, Row
 
@@ -64,6 +65,7 @@ class CellSerializer(serializers.ModelSerializer):
     code = serializers.SerializerMethodField()
     age = serializers.SerializerMethodField()
     pilgrim = serializers.SerializerMethodField()
+    pack = serializers.SerializerMethodField()
 
     class Meta:
         model = Cell
@@ -87,6 +89,11 @@ class CellSerializer(serializers.ModelSerializer):
         if not obj.pack or obj.pack.delivery.exited_at:
             return {}
         return PilgrimSerializer(obj.pack.delivery.pilgrim).data
+
+    def get_pack(self, obj):
+        if not obj.pack or obj.pack.delivery.exited_at:
+            return {}
+        return PilgrimPackSerializer(obj.pack).data
 
 
 class CabinetExtendSerializer(serializers.Serializer):
