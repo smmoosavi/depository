@@ -48,14 +48,14 @@ class StatusSerializer(serializers.Serializer):
 
     def create(self, data):
         cabinet, row, cell = CodeHelper().to_code(data['code'])
-        if cell:
+        if cell is not None:
             cell = get_object_or_404(Cell.objects.all(), code=cell, row__code=row, row__cabinet__code=cabinet)
             cell.is_healthy = data['is_healthy']
             cell.save()
-        elif row:
+        elif row is not None:
             row = get_object_or_404(Row.objects.all(), code=row, cabinet__code=cabinet)
             row.cells.update(is_healthy=data['is_healthy'])
-        elif cabinet:
+        elif cabinet is not None:
             cabinet = get_object_or_404(Cabinet.objects.all(), code=cabinet)
             Cell.objects.filter(row__cabinet=cabinet).update(is_healthy=data['is_healthy'])
         return data
