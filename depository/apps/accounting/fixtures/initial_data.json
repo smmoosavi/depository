@@ -70,7 +70,7 @@
   {
     "model": "accounting.user",
     "fields": {
-      "password": "pbkdf2_sha256$150000$sOBVxlRmCeKe$oBLtSgPrQdDJp9dwzvwHkbLEhOhHiDTuP04iSINi3Ac=",
+      "password": "pbkdf2_sha256$180000$T8d4rRl7Yqdg$hNMrq82BjTw3Ue3QAOhqD5uYPZvZcu7zP0lRfNK0IQI=",
       "last_login": null,
       "is_superuser": false,
       "username": "admin",
