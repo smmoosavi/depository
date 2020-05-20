@@ -60,6 +60,7 @@ class SignInSerializer(serializers.Serializer):
             if user:
                 new_data = {
                     'token': AccountHelper().generate_jwt_token(user),
+                    'user': user
                 }
                 if 'depository_id' in data:
                     try:

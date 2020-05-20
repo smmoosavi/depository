@@ -52,10 +52,13 @@ class SignInViewSet(GenericViewSet):
         serializer = self.get_serializer(data=request.data)
 
         if serializer.is_valid():
-            token = serializer.validated_data['token']
-            # response_data = jwt_response_payload_handler(token, user, request)
+            user = serializer.validated_data['user']
 
-            response = Response(serializer.validated_data)
+            token = serializer.validated_data['token']
+            response_data = jwt_response_payload_handler(token, user, request)
+            response_data['depository'] = serializer.validated_data.get('depository', '')
+
+            response = Response(response_data)
             if api_settings.JWT_AUTH_COOKIE:
                 expiration = (timezone.now() + api_settings.JWT_EXPIRATION_DELTA)
                 response.set_cookie(
