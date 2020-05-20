@@ -12,6 +12,9 @@ logger = logging.getLogger(__name__)
 
 
 class PrintHelper:
+    def __init__(self, printer_id):
+        self.printer_id = printer_id
+
     def generate_pdf(self, html, width=73, height=90):
         file_name = ''.join(
             random.choices(string.ascii_uppercase + string.digits, k=5))
@@ -22,7 +25,8 @@ class PrintHelper:
 
     def print(self, pathes):
         try:
-            subprocess.run(["lpr", "-P", "OSCAR-POS88F-NET", *pathes])
+            subprocess.run(["lpr", "-P", f"OSCAR-POS88F-NET{self.printer_id}", *pathes])
+            # subprocess.run(["lpr", "-P", "OSCAR-POS88F-NET", *pathes])
             for path in pathes:
                 os.remove(path)
             return True

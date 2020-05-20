@@ -25,8 +25,10 @@ class ReceptionTest(APITestCase):
         self.user = User.objects.create(username="taker", first_name="وحید", last_name='امین تبار')
         self.user.set_password('a')
         self.user.save()
-        Constant.objects.create(key='social',value='@baghiatallah')
-        depository = Depository.objects.create(name='امانت داری شماره ۱', address='صحن حضرت فاطمه - سمت چپ')
+        Constant.objects.create(key='social', value='@baghiatallah')
+        depository = Depository.objects.create(
+            name='امانت داری شماره ۱', address='صحن حضرت فاطمه - سمت چپ', code=14, printer_id=14
+        )
         cabinet = Cabinet.objects.create(code=10, depository=depository)
         row = Row.objects.create(code="1", cabinet=cabinet)
         Cell.objects.create(code="1", row=row)
@@ -76,7 +78,7 @@ class ReceptionTest(APITestCase):
 
 class AssignmentTest(TestCase):
     def setUp(self):
-        depository = Depository.objects.create(name="d1")
+        depository = Depository.objects.create(name="d1", code=14, printer_id=14)
         c1 = Cabinet.objects.create(depository=depository, code='2', order=1, is_asc=False)
         c2 = Cabinet.objects.create(depository=depository, code='1', order=2)
         for cabinet in [c1, c2]:
@@ -105,7 +107,7 @@ class ReportTest(TestCase):
         self.user = User.objects.create(username="taker")
         self.user.set_password('a')
         self.user.save()
-        depository = Depository.objects.create(name='dep')
+        depository = Depository.objects.create(name='dep', code=14, printer_id=14)
         cabinet = Cabinet.objects.create(code="1", depository_id=1)
         row = Row.objects.create(code="1", cabinet=cabinet)
         Cell.objects.create(code="1", row=row)

@@ -6,10 +6,11 @@ from django.utils.translation import ugettext as _
 # Create your models here.
 
 
-
 class Depository(models.Model):
     name = models.CharField(max_length=100)
     address = models.TextField(null=True, blank=True)
+    code = models.IntegerField()
+    printer_id = models.IntegerField(blank=True)
 
 
 class Cabinet(models.Model):

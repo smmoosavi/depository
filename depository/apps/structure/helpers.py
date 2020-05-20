@@ -25,7 +25,7 @@ class CodeHelper:
 
 class StructureHelper:
     def print(self, cabinet):
-        ph = PrintHelper()
+        ph = PrintHelper(cabinet.depository.printer_id)
         pathes = []
         for row in cabinet.rows.all():
             for cell in row.cells.all():
@@ -65,7 +65,7 @@ class StructureHelper:
 class CellHelper:
     def print(self, cell):
         html = render_to_string('number.html', {'number': cell.get_code(), 'BASE_DIR': settings.BASE_DIR})
-        ph = PrintHelper()
+        ph = PrintHelper(cell.row.cabinet.depository.printer_id)
         ph.print([ph.generate_pdf(html)])
 
 

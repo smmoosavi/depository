@@ -28,7 +28,7 @@ class StructureTest(APITestCase):
         self.user.groups.add(group)
         self.user.save()
 
-        Depository.objects.create(name="dep")
+        Depository.objects.create(name="dep", code=14, printer_id=14)
         self.cabinet = Cabinet.objects.create(code=10, depository_id=1)
         row = Row.objects.create(code=1, cabinet=self.cabinet)
         Cell.objects.create(code=1, row=row)
@@ -102,7 +102,7 @@ class DeliveryTest(APITestCase):
         group = Group.objects.create(name="Admin")
         self.user.groups.add(group)
         self.user.save()
-        dep = Depository.objects.create(name='dep1')
+        dep = Depository.objects.create(name='dep1', code=14, printer_id=14)
         self.cabinet = Cabinet.objects.create(code=10, depository_id=1)
         row = Row.objects.create(code=1, cabinet=self.cabinet)
         cell = Cell.objects.create(code=1, row=row)

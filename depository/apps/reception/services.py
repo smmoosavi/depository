@@ -92,12 +92,12 @@ class ReceptionHelper:
 
     def print(self, pack):
         badge_count = pack.bag_count + pack.pram_count + pack.suitcase_count
-        ph = PrintHelper()
         pilgrim = pack.delivery.pilgrim
         ConstantHelper().set_locale(pilgrim.country)
         entered_at_jalali = JalaliDatetime(timezone.localtime(pack.delivery.entered_at)).strftime("%A %d %B %H:%M")
         barcode = self.barcode(pack)
         depository = pack.cell.row.cabinet.depository
+        ph = PrintHelper(depository.printer_id)
         pathes = []
         for idx in range(badge_count):
             html = render_to_string('badge.html', {
