@@ -11,17 +11,17 @@
         ],
         [
           "add_user",
-          "auth",
+          "accounting",
           "user"
         ],
         [
           "change_user",
-          "auth",
+          "accounting",
           "user"
         ],
         [
           "view_user",
-          "auth",
+          "accounting",
           "user"
         ],
         [
@@ -68,7 +68,7 @@
     }
   },
   {
-    "model": "auth.user",
+    "model": "accounting.user",
     "fields": {
       "password": "pbkdf2_sha256$150000$sOBVxlRmCeKe$oBLtSgPrQdDJp9dwzvwHkbLEhOhHiDTuP04iSINi3Ac=",
       "last_login": null,
