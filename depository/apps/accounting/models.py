@@ -1,7 +1,12 @@
+from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
 # Create your models here.
+from django.db.models import CASCADE, PROTECT
+
+from depository.apps.structure.models import Depository
+
 
 class Pilgrim(models.Model):
     first_name = models.CharField(max_length=254, null=True, blank=True)
@@ -32,3 +37,7 @@ class Pilgrim(models.Model):
         if self.country.lower() == 'iran':
             return True
         return False
+
+
+class User(AbstractUser):
+    last_depository = models.ForeignKey(Depository, null=True, blank=True, on_delete=PROTECT)

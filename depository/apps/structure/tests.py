@@ -2,7 +2,7 @@ import logging
 from unittest.mock import patch
 
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 # Create your tests here.
 from django.test.testcases import TestCase
 from django.urls import reverse
@@ -14,7 +14,9 @@ from depository.apps.accounting.models import Pilgrim
 from depository.apps.reception.models import Delivery, Pack
 from depository.apps.structure.helpers import StructureHelper, ConstantHelper
 from depository.apps.structure.models import Cell, Cabinet, Row, Depository, Constant
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 logger = logging.getLogger(__name__)
 
 

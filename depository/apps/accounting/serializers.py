@@ -2,13 +2,17 @@ import os
 import tempfile
 
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+
 from django.utils.translation import ugettext_lazy
 from rest_framework import serializers
 
 from depository.apps.accounting.helper import AccountHelper
 from depository.apps.accounting.models import Pilgrim
+from depository.apps.structure.models import Depository
 from depository.apps.utils.excel import ExcelUtil
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -48,15 +52,25 @@ class PilgrimSerializer(serializers.ModelSerializer):
 class SignInSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
+    depository_code = serializers.IntegerField(required=False)
 
     def validate(self, data):
         if all(data.values()):
             user = authenticate(username=data['username'], password=data['password'])
             if user:
-                return {
+                new_data = {
                     'token': AccountHelper().generate_jwt_token(user),
-                    'user': user,
                 }
+                if 'depository_id' in data:
+                    try:
+                        depository = Depository.objects.get(code=data['depository_code'])
+                        new_data.update({'depository': depository.name})
+                        user.last_depository = depository
+                        user.save()
+                    except Depository.DoesNotExist:
+                        msg = ugettext_lazy('Depository Does not exists')
+                        raise serializers.ValidationError(msg)
+                return new_data
             else:
                 msg = ugettext_lazy('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg)

@@ -1,9 +1,12 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 
 # Create your tests here.
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class SignInTest(APITestCase):

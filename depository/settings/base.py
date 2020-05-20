@@ -55,6 +55,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = get_env_list("ALLOWED_HOSTS", ["*"])
 
+
+AUTH_USER_MODEL = 'accounting.User'
 # Application definition
 
 INSTALLED_APPS = [
