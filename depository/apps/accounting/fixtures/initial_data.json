@@ -1,0 +1,92 @@
+[
+  {
+    "model": "auth.group",
+    "fields": {
+      "name": "Admin",
+      "permissions": [
+        [
+          "view_pilgrim",
+          "accounting",
+          "pilgrim"
+        ],
+        [
+          "add_user",
+          "auth",
+          "user"
+        ],
+        [
+          "change_user",
+          "auth",
+          "user"
+        ],
+        [
+          "view_user",
+          "auth",
+          "user"
+        ],
+        [
+          "view_delivery",
+          "reception",
+          "delivery"
+        ],
+        [
+          "view_cabinet",
+          "structure",
+          "cabinet"
+        ],
+        [
+          "add_constant",
+          "structure",
+          "constant"
+        ],
+        [
+          "change_constant",
+          "structure",
+          "constant"
+        ],
+        [
+          "delete_constant",
+          "structure",
+          "constant"
+        ],
+        [
+          "view_constant",
+          "structure",
+          "constant"
+        ],
+        [
+          "change_depository",
+          "structure",
+          "depository"
+        ],
+        [
+          "view_depository",
+          "structure",
+          "depository"
+        ]
+      ]
+    }
+  },
+  {
+    "model": "auth.user",
+    "fields": {
+      "password": "pbkdf2_sha256$150000$sOBVxlRmCeKe$oBLtSgPrQdDJp9dwzvwHkbLEhOhHiDTuP04iSINi3Ac=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "admin",
+      "first_name": "admin",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2019-09-09T13:02:27Z",
+      "groups": [
+        [
+          "Admin"
+        ]
+      ],
+      "user_permissions": [
+      ]
+    }
+  }
+]
