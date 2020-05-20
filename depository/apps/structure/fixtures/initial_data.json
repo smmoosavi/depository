@@ -4,7 +4,9 @@
     "pk": 1,
     "fields": {
       "name": "depository1",
-      "address": ""
+      "address": "",
+      "code": 14,
+      "printer_id": 14
     }
   },
   {
