@@ -93,7 +93,7 @@ class ReceptionHelper:
     def print(self, pack):
         badge_count = pack.bag_count + pack.pram_count + pack.suitcase_count
         pilgrim = pack.delivery.pilgrim
-        ConstantHelper().set_locale(pilgrim.country)
+        ch = ConstantHelper(country=pilgrim.country)
         entered_at_jalali = JalaliDatetime(timezone.localtime(pack.delivery.entered_at)).strftime("%A %d %B %H:%M")
         barcode = self.barcode(pack)
         depository = pack.cell.row.cabinet.depository
@@ -103,17 +103,17 @@ class ReceptionHelper:
             html = render_to_string('badge.html', {
                 'name': pilgrim.get_full_name(), 'index': idx + 1, 'count': badge_count,
                 'country': pilgrim.country, 'phone': pilgrim.get_four_digit_phone(), 'entered_at': entered_at_jalali,
-                'code': pack.cell.get_code(), 'barcode': barcode, 'depository_name': depository.name,
+                'code': pack.cell.get_code(), 'barcode': barcode, 'depository_name': ch.get_depository_name(depository),
                 'taker': pack.delivery.taker.get_full_name(), "BASE_DIR": settings.BASE_DIR
 
             }, )
             pathes.append(ph.generate_pdf(html))
-        ch = ConstantHelper()
+
         data = {
             'name': pilgrim.get_full_name(), 'depository_name': depository.name,
-            'depository_address': depository.address,
+            'depository_address': ch.get_depository_address(depository),
             'social': ch.get(settings.CONST_KEY_SOCIAL), 'phone': ch.get(settings.CONST_KEY_PHONE),
-            'notice': ch.get_notice(pack.delivery.pilgrim.country),
+            'notice': ch.get_notice(),
             'barcode': barcode, "BASE_DIR": settings.BASE_DIR
         }
         if pilgrim.is_iranian():

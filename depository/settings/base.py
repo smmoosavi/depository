@@ -242,6 +242,8 @@ CONST_KEY_PHONE = 'phone'
 CONST_KEY_NOTICE = 'notice_%s'
 CONST_KEY_STORE_THRESHOLD = 'store_threshold'
 CONST_BLINKID_TOKEN = 'blinkid_token'
+CONST_KEY_DEPOSITORY_ADDRESS = 'depository_address_%s_%s'
+CONST_KEY_DEPOSITORY_NAME = 'depository_name_%s_%s'
 APPEND_SLASH = False
 FARSI_CHARS = 'آبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی'
 

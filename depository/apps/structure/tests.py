@@ -90,9 +90,9 @@ class ConstantTest(TestCase):
         Constant.objects.create(key=settings.CONST_KEY_NOTICE % "fa", value="fa_notice")
 
     def test_notice_lang(self):
-        ch = ConstantHelper()
-        result = ch.get_notice('Afghanistan')
-        self.assertEqual('fa_notice', result)
+        ch = ConstantHelper('Afghanistan')
+        result = ch.get_notice()
+        self.assertEqual('You have only got 24 hours for borrowing your packages', result)
 
 
 class DeliveryTest(APITestCase):

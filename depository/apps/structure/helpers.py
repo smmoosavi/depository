@@ -70,6 +70,14 @@ class CellHelper:
 
 
 class ConstantHelper:
+
+    def __init__(self, country='en'):
+        self.country = country
+        self.set_locale(self.country)
+
+    def get_lang_brief(self):
+        return settings.LANG_DICT.get(self.country.lower(), {}).get('languages', ['en'])[0]
+
     def get(self, key, default=None):
         try:
             return Constant.objects.get(key=key).value
@@ -79,13 +87,26 @@ class ConstantHelper:
             else:
                 return key
 
-    def get_notice(self, country):
+    def get_notice(self):
         return self.get(
-            settings.CONST_KEY_NOTICE % settings.LANG_DICT.get(country.lower(), {}).get('languages', ['en'])[0],
+            settings.CONST_KEY_NOTICE % self.get_lang_brief(),
             default='You have only got 24 hours for borrowing your packages'
         )
 
+    def get_depository_address(self, depository):
+        return self.get(
+            settings.CONST_KEY_DEPOSITORY_ADDRESS % (depository.id, self.get_lang_brief()),
+            default=depository.address
+        )
+
+    def get_depository_name(self, depository):
+        return self.get(
+            settings.CONST_KEY_DEPOSITORY_NAME % (depository.id, self.get_lang_brief()),
+            default=depository.name
+        )
+
     def set_locale(self, country):
+        self.country = country
         country_brief_name = settings.LANG_DICT.get(country.lower(), {}).get('brief_name', 'US')
         locale_name = settings.LANG_DICT.get(country.lower(), {}).get('languages', ['en'])[0]
         if country_brief_name:
