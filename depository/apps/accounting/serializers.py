@@ -62,7 +62,7 @@ class SignInSerializer(serializers.Serializer):
                     'token': AccountHelper().generate_jwt_token(user),
                     'user': user
                 }
-                if 'depository_id' in data:
+                if 'depository_code' in data:
                     try:
                         depository = Depository.objects.get(code=data['depository_code'])
                         new_data.update({'depository': depository.name})
