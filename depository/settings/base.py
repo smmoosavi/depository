@@ -55,7 +55,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = get_env_list("ALLOWED_HOSTS", ["*"])
 
-
 AUTH_USER_MODEL = 'accounting.User'
 # Application definition
 
@@ -157,6 +156,8 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'public', 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'public', 'media')
 TEMP_ROOT = os.path.join(BASE_DIR, 'temp', )
+EXPORT_ROOT = os.path.join(BASE_DIR, 'public', 'media', 'export')
+EXPORT_URL = '/media/export/'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -228,6 +229,7 @@ JWT_AUTH = {
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+    # os.path.join(BASE_DIR, "public", "static"),
 
 ]
 
@@ -246,7 +248,6 @@ CONST_KEY_DEPOSITORY_ADDRESS = 'depository_address_%s_%s'
 CONST_KEY_DEPOSITORY_NAME = 'depository_name_%s_%s'
 APPEND_SLASH = False
 FARSI_CHARS = 'آبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی'
-
 
 f = open(BASE_DIR + 'lang.json')
 LANG_DICT = json.loads(f.read())

@@ -169,6 +169,7 @@ class RowViewSet(CellViewSet, ChangeStatusMixin):
 class StructureViewSet(GenericViewSet, ListModelMixin):
     serializer_class = CabinetSerializer
     permission_classes = [IsAdmin]
+    queryset = Cabinet.objects.none()
 
 
 class ConfigViewSet(GenericViewSet):

@@ -17,6 +17,7 @@ from khayyam.jalali_datetime import JalaliDatetime
 from depository.apps.reception.models import Pack, Delivery
 from depository.apps.structure.helpers import ConstantHelper
 from depository.apps.structure.models import Cell, Cabinet
+from depository.apps.utils.excel import ExcelUtil
 from depository.apps.utils.print import PrintHelper
 
 logger = logging.getLogger(__name__)
@@ -166,3 +167,24 @@ class ReceptionHelper:
             'total_cabinets': total_cabinets, 'total_cells': total_cells,
             'empty_cells': empty_cells, 'total_deliveries': total_deliveries
         }
+
+    def export_data(self):
+        data = []
+        for delivery in Delivery.objects.all():
+            packs = delivery.packs.all()
+            data.append({
+                'enter': JalaliDatetime(delivery.entered_at).strftime("%Y/%m/%d %H:%M") if delivery.entered_at else '-',
+                'exit': JalaliDatetime(delivery.exited_at).strftime("%Y/%m/%d %H:%M") if delivery.exited_at else '-',
+                'taker': delivery.taker.get_full_name() if delivery.taker else '-',
+                'giver': delivery.giver.get_fll_name() if delivery.giver else '-',
+                'first_name': delivery.pilgrim.first_name,
+                'last_name': delivery.pilgrim.last_name,
+                'phone': delivery.pilgrim.phone,
+                'country': delivery.pilgrim.country,
+                'bag': sum([item.bag_count for item in packs]),
+                'suitcase_count': sum([item.suitcase_count for item in packs]),
+                'pram_count': sum([item.pram_count for item in packs])
+            })
+        if data:
+            header = list(data[0].keys())
+            return ExcelUtil().export_file(header, data)

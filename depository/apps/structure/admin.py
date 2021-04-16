@@ -34,4 +34,4 @@ class ConstantAdmin(admin.ModelAdmin):
 
 
 admin.site.unregister(Group)
-admin.site.unregister(Token)
+# admin.site.unregister(Token)

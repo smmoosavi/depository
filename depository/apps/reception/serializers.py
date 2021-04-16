@@ -17,7 +17,7 @@ from depository.apps.utils.utils import sub_dict
 class ReceptionTakeSerializer(serializers.Serializer):
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    phone = serializers.CharField(required=False)
+    phone = serializers.CharField(required=True)
     country = serializers.CharField()
     passport_id = serializers.CharField(required=False)
     bag_count = serializers.IntegerField(required=False)

@@ -1,5 +1,8 @@
+import os
+from uuid import uuid4
+
+from django.conf import settings
 from openpyxl import load_workbook, Workbook
-import tempfile
 
 
 class ExcelUtil(object):
@@ -45,8 +48,8 @@ class ExcelUtil(object):
                 cell_value = row.get(col_name, '')
                 _ = sheet.cell(column=col_idx, row=row_idx, value=str(cell_value))
 
-        tmp_file = tempfile.NamedTemporaryFile(suffix='.xlsx', delete=False)
-        tmp_file.close()
-        wb.save(tmp_file.name)
+        file_name = f'{uuid4().hex}.csv'
+        path = os.path.join(settings.EXPORT_ROOT, file_name)
+        wb.save(path)
 
-        return tmp_file.name
+        return file_name

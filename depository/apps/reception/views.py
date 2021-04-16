@@ -1,12 +1,14 @@
 # Create your views here.
+import csv
 import logging
+import os
 
 from django.conf import settings
+from django.http import HttpResponse
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
@@ -16,7 +18,6 @@ from depository.apps.reception.models import Delivery, Pack
 from depository.apps.reception.serializers import ReceptionTakeSerializer, \
     ReceptionGiveSerializer, DeliverySerializer, ReceptionGiveListSerializer
 from depository.apps.reception.services import ReceptionHelper
-from depository.apps.utils.permissions import IsAdmin
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,7 @@ logger = logging.getLogger(__name__)
 class ReceptionViewSet(GenericViewSet, CreateModelMixin):
     serializer_class = ReceptionTakeSerializer
     permission_classes = [IsAuthenticated]
+    queryset = Delivery.objects.none()
 
     def get_serializer_class(self):
         if self.action == 'take':
@@ -121,6 +123,15 @@ class ReportViewSet(GenericViewSet):
     def start(self, request, *args, **kwargs):
         result = ReceptionHelper().admin_report()
         return Response(result, status=status.HTTP_200_OK)
+
+
+class AdministrationViewSet(GenericViewSet):
+    permission_classes = [IsAuthenticated]
+
+    @action(methods=['GET'], detail=False)
+    def export(self, *args, **kwargs):
+        path = ReceptionHelper().export_data()
+        return Response({'url': os.path.join(settings.EXPORT_URL, path)})
 
 
 class BackUpViewSet(GenericViewSet):

@@ -75,6 +75,10 @@ class ReceptionTest(APITestCase):
         print((timezone.now() - t))
         # self.assertEqual(2, mock.call_count)
 
+    def test_export(self):
+        path = ReceptionHelper().export_data()
+        logger.info(path)
+
 
 class AssignmentTest(TestCase):
     def setUp(self):
