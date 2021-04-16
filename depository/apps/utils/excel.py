@@ -48,7 +48,7 @@ class ExcelUtil(object):
                 cell_value = row.get(col_name, '')
                 _ = sheet.cell(column=col_idx, row=row_idx, value=str(cell_value))
 
-        file_name = f'{uuid4().hex}.csv'
+        file_name = f'{uuid4().hex}.xlsx'
         path = os.path.join(settings.EXPORT_ROOT, file_name)
         wb.save(path)
 

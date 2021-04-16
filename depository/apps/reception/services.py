@@ -176,7 +176,7 @@ class ReceptionHelper:
                 'enter': JalaliDatetime(delivery.entered_at).strftime("%Y/%m/%d %H:%M") if delivery.entered_at else '-',
                 'exit': JalaliDatetime(delivery.exited_at).strftime("%Y/%m/%d %H:%M") if delivery.exited_at else '-',
                 'taker': delivery.taker.get_full_name() if delivery.taker else '-',
-                'giver': delivery.giver.get_fll_name() if delivery.giver else '-',
+                'giver': delivery.giver.get_full_name() if delivery.giver else '-',
                 'first_name': delivery.pilgrim.first_name,
                 'last_name': delivery.pilgrim.last_name,
                 'phone': delivery.pilgrim.phone,
