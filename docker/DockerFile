@@ -1,8 +1,10 @@
 FROM python:3.6
 EXPOSE 8000
 WORKDIR /depository
-RUN sudo apt-get install wkhtmltopdf -y && mkdir temp && mkdir temp/pdf && mkdir temp/barcode
+RUN sudo apt-get install wkhtmltopdf libpangocairo-1.0-0 -y && mkdir temp && mkdir temp/pdf && mkdir temp/barcode && \
+mkdir public && mkdir public/static && mkdir public/media
 ADD depository/requirements.txt /
+
 RUN pip install -r requirements.txt
 #RUN python manage.py migrate
 #RUN python manage.py collectstatic --noinput
