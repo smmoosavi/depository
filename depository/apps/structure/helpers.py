@@ -13,6 +13,11 @@ class CodeHelper:
                ("{:0%s}" % settings.ROW_DIGITS).format(row_code) + \
                ("{:0%s}" % settings.CELL_DIGITS).format(cell_code)
 
+    def to_print(self, cabinet_code, row_code, cell_code):
+        return ("{:0%s}" % settings.CELL_DIGITS).format(cell_code) + \
+               settings.FARSI_CHARS[row_code] + \
+               ("{:0%s}" % settings.CABINET_DIGITS).format(cabinet_code)
+
     def to_code(self, code):
         row, cell = None, None
         cabinet = int(code[:settings.CABINET_DIGITS])

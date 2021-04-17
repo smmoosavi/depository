@@ -104,9 +104,9 @@ class ReceptionHelper:
             html = render_to_string('badge.html', {
                 'name': pilgrim.get_full_name(), 'index': idx + 1, 'count': badge_count,
                 'country': pilgrim.country, 'phone': pilgrim.get_four_digit_phone(), 'entered_at': entered_at_jalali,
-                'code': pack.cell.get_code(), 'barcode': barcode, 'depository_name': ch.get_depository_name(depository),
-                'taker': pack.delivery.taker.get_full_name(), "BASE_DIR": settings.BASE_DIR
-
+                'code': pack.cell.get_printable_code(), 'barcode': barcode,
+                'depository_name': ch.get_depository_name(depository), 'taker': pack.delivery.taker.get_full_name(),
+                "BASE_DIR": settings.BASE_DIR
             }, )
             pathes.append(ph.generate_pdf(html))
 

@@ -49,6 +49,10 @@ class Cell(models.Model):
         from depository.apps.structure.helpers import CodeHelper
         return CodeHelper().to_str(self.row.cabinet.code, self.row.code, self.code)
 
+    def get_printable_code(self):
+        from depository.apps.structure.helpers import CodeHelper
+        return CodeHelper().to_print(self.row.cabinet.code, self.row.code, self.code)
+
 
 class Constant(models.Model):
     key = models.CharField(max_length=100, unique=True)
