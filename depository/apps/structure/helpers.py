@@ -34,11 +34,9 @@ class StructureHelper:
         pathes = []
         for row in cabinet.rows.all():
             for cell in row.cells.all():
-                code = cell.get_code()
-                alphabet = code[:settings.CABINET_DIGITS]
-                number = code[settings.CABINET_DIGITS:]
-                html = render_to_string('number.html',
-                                        {'number': number, 'alphabet': alphabet, 'BASE_DIR': settings.BASE_DIR})
+                html = render_to_string(
+                    'number.html', {'number': cell.get_printable_code(), 'BASE_DIR': settings.BASE_DIR}
+                )
                 pathes.append(ph.generate_pdf(html))
         ph.print(pathes)
 
@@ -69,7 +67,7 @@ class StructureHelper:
 
 class CellHelper:
     def print(self, cell):
-        html = render_to_string('number.html', {'number': cell.get_code(), 'BASE_DIR': settings.BASE_DIR})
+        html = render_to_string('number.html', {'number': cell.get_printable_code(), 'BASE_DIR': settings.BASE_DIR})
         ph = PrintHelper(cell.row.cabinet.depository.printer_id)
         ph.print([ph.generate_pdf(html)])
 

@@ -247,7 +247,7 @@ CONST_BLINKID_TOKEN = 'blinkid_token'
 CONST_KEY_DEPOSITORY_ADDRESS = 'depository_address_%s_%s'
 CONST_KEY_DEPOSITORY_NAME = 'depository_name_%s_%s'
 APPEND_SLASH = False
-FARSI_CHARS = 'آبپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی'
+FARSI_CHARS = 'آبجدهورحطیکلمنسعف'
 
 f = open(BASE_DIR + 'lang.json')
 LANG_DICT = json.loads(f.read())

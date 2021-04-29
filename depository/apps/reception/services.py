@@ -74,7 +74,8 @@ class ReceptionHelper:
 
     def barcode(self, pack):
         pilgrim = pack.delivery.pilgrim
-        data = f'{pilgrim.get_full_name()}#{pilgrim.country}#{pack.delivery.hash_id}#{pilgrim.get_four_digit_phone()}#{pack.cell.get_code()}'
+        data = f'https://gbaghiyatallah.ir/?data={pilgrim.get_full_name()}#{pilgrim.country}#{pack.delivery.hash_id}#' \
+               f'{pilgrim.get_four_digit_phone()}#{pack.cell.get_code()}'
         data = base64.b64encode(force_bytes(data)).decode("utf-8")
         qr = qrcode.QRCode(
             version=1,

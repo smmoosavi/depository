@@ -1,11 +1,13 @@
 FROM python:3.6
 EXPOSE 8000
 WORKDIR /depository
-RUN sudo apt-get install wkhtmltopdf libpangocairo-1.0-0 -y && mkdir temp && mkdir temp/pdf && mkdir temp/barcode && \
-mkdir public && mkdir public/static && mkdir public/media
-ADD depository/requirements.txt /
+RUN apt-get update && apt-get install wkhtmltopdf locales-all build-essential python3-dev python3-pip \
+    python3-setuptools python3-wheel python3-cffi libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 \
+    libffi-dev shared-mime-info -y && \
+    mkdir temp && mkdir temp/pdf && mkdir temp/barcode && mkdir public && mkdir public/static && mkdir public/media
 
-RUN pip install -r requirements.txt
+ADD depository/requirements.txt /
+RUN pip install -r /requirements.txt
 #RUN python manage.py migrate
 #RUN python manage.py collectstatic --noinput
 CMD gunicorn depository.wsgi --log-level info --bind 0.0.0.0:8000
