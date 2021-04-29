@@ -32,12 +32,18 @@ class StructureHelper:
     def print(self, cabinet):
         ph = PrintHelper(cabinet.depository.printer_id)
         pathes = []
+        numbers = []
         for row in cabinet.rows.all():
             for cell in row.cells.all():
+                # numbers.append(cell.get_printable_code())
                 html = render_to_string(
-                    'number.html', {'number': cell.get_printable_code(), 'BASE_DIR': settings.BASE_DIR}
+                    'number.html', {'numbers': cell.get_printable_code(), 'BASE_DIR': settings.BASE_DIR}
                 )
                 pathes.append(ph.generate_pdf(html))
+        # html = render_to_string(
+        #     'numbers.html', {'numbers': numbers, 'BASE_DIR': settings.BASE_DIR}
+        # )
+        # pathes.append(ph.generate_pdf(html))
         ph.print(pathes)
 
     def extend(self, cabinet, data):

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @media all {
+            .page-break {
+                display: none;
+            }
+        }
+
+        @media print {
+            @page {
+                size: 78mm 80mm;
+                margin: 0;
+            }
+
+            .page-break {
+                display: block;
+                page-break-before: always;
+            }
+
+        }
+
+        @font-face {
+            font-family: Btitr;
+            src: url("{{ BASE_DIR }}/static/fonts/btitr.ttf");
+        }
+
+        body {
+            font-family: Btitr;
+            font-size: 120px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .container {
+            font-size: 0;
+            text-align: center;
+        }
+
+        .num {
+            font-size: 100px;
+            text-align: right;
+        }
+
+        .alphabet {
+            font-size: 100px;
+            text-align: left;
+        }
+
+    </style>
+</head>
+<body>
+{% for number in numbers %}
+    <div class="container">
+        <span class="num">{{ number }}</span>
+    </div>
+    <div class="page-break"></div>
+{% endfor %}
+
+</body>
+</html>
