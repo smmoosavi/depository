@@ -133,6 +133,11 @@ class AdministrationViewSet(GenericViewSet):
         path = ReceptionHelper().export_data()
         return Response({'url': os.path.join(settings.EXPORT_URL, path)})
 
+    @action(methods=['GET'], detail=False)
+    def export_store(self, *args, **kwargs):
+        path = ReceptionHelper().export_data(exit_type=Delivery.DELIVERED_TO_STORE)
+        return Response({'url': os.path.join(settings.EXPORT_URL, path)})
+
 
 class BackUpViewSet(GenericViewSet):
     # TODO: import and export whole database

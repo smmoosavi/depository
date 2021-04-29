@@ -110,7 +110,7 @@ class ReceptionHelper:
                 "BASE_DIR": settings.BASE_DIR
             }, )
             pathes.append(ph.generate_pdf(html))
-
+        ####################################### Print Receipt #########################################
         data = {
             'name': pilgrim.get_full_name(), 'depository_name': depository.name,
             'depository_address': ch.get_depository_address(depository),
@@ -169,9 +169,9 @@ class ReceptionHelper:
             'empty_cells': empty_cells, 'total_deliveries': total_deliveries
         }
 
-    def export_data(self):
+    def export_data(self, **kwargs):
         data = []
-        for delivery in Delivery.objects.all():
+        for delivery in Delivery.objects.filter(**kwargs).all():
             packs = delivery.packs.all()
             data.append({
                 'enter': JalaliDatetime(delivery.entered_at).strftime("%Y/%m/%d %H:%M") if delivery.entered_at else '-',

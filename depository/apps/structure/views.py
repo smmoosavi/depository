@@ -10,6 +10,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, DestroyModelMixin, RetrieveModelMixin
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework.viewsets import GenericViewSet
 
 from depository.apps.reception.models import Delivery, Pack
@@ -77,7 +78,9 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
         if not Pack.objects.filter(cell__row__cabinet=instance).exists():
             instance.delete()
         else:
-            raise ValidationError("You can't delete it because this cabinet is used while ago")
+            raise ValidationError({
+                api_settings.NON_FIELD_ERRORS_KEY: [_("You can't delete it because this cabinet is used while ago")]
+            })
 
 
 class CellViewSet(GenericViewSet, ChangeStatusMixin, RetrieveModelMixin):
@@ -131,7 +134,9 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin, RetrieveModelMixin):
         elif cell_code_min == cell.code:
             is_asc = True
         else:
-            raise ValidationError(_("You should select a cell from first or last column"))
+            raise ValidationError({
+                api_settings.NON_FIELD_ERRORS_KEY: [_("You should select a cell from first or last column")]
+            })
         cabinet.is_asc = is_asc
         cabinet.order = 0
         cabinet.save()

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-07 14:46+0300\n"
+"POT-Creation-Date: 2021-04-29 05:34+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: depository/apps/accounting/serializers.py:61
+#: depository/apps/accounting/serializers.py:72
+msgid "Depository Does not exists"
+msgstr ""
+
+#: depository/apps/accounting/serializers.py:76
 msgid "Unable to log in with provided credentials."
 msgstr "نام کاربری یا کلمه عبور غلط است"
 
-#: depository/apps/accounting/serializers.py:64
+#: depository/apps/accounting/serializers.py:79
 msgid "Must include \"email\" and \"password\"."
 msgstr "نام کاربری و کلمه عبور اجباری است"
 
@@ -50,31 +54,45 @@ msgid ""
 "suitcase isn't equal."
 msgstr "چمدان و کالسکه ابعاد بزرگی دارند و نمی توانند با کیف باشند."
 
-#: depository/apps/reception/serializers.py:52
+#: depository/apps/reception/serializers.py:37
 msgid "You should specify one of bag, suitcase, pram"
-msgstr "حداثل یکی از کیف، چمدان و کالسکه مقداری غیر از صفر باشد داشته باشد."
+msgstr "حداقل یکی از کیف، چمدان و کالسکه مقداری غیر از صفر باشد داشته باشد."
 
-#: depository/apps/reception/serializers.py:60
+#: depository/apps/reception/serializers.py:57
 msgid "All spaces are busy"
 msgstr "فضای خالی وجود ندارد"
 
-#: depository/apps/reception/serializers.py:86
+#: depository/apps/reception/serializers.py:83
 msgid "This pack has been sent to store"
 msgstr "این امانتی به انبار انتقال داده شده است."
 
-#: depository/apps/reception/serializers.py:88
+#: depository/apps/reception/serializers.py:85
 msgid "This pack has been given to the owner"
 msgstr "این امانتی قبلا به صاحبش تحویل داده شده است."
 
-#: depository/apps/structure/models.py:29
+#: depository/apps/structure/models.py:32
 msgid "Small"
 msgstr "کوچک"
 
-#: depository/apps/structure/models.py:30
+#: depository/apps/structure/models.py:33
 msgid "Large"
 msgstr "بزرگ"
 
-#: depository/apps/structure/views.py:115
+#: depository/apps/structure/serializers.py:109
+#, python-format
+msgid "num_of_rows should be lower than %s"
+msgstr "عدد ردیف باید کم تر از %s باشد"
+
+#: depository/apps/structure/serializers.py:114
+#, python-format
+msgid "num_of_cols should be lower than %s"
+msgstr "عدد ستون باید کم تر از %s باشد"
+
+#: depository/apps/structure/views.py:80
+msgid "You can't delete it because this cabinet is used while ago"
+msgstr "امکان حذف قفسه وجود ندارد، زیرا قبلا از این قفسه در تحویل استفاده شده است."
+
+#: depository/apps/structure/views.py:134
 msgid "You should select a cell from first or last column"
 msgstr "شما باید یک فضا از ستون ابتدا یا انتها انتخاب کنید"
 

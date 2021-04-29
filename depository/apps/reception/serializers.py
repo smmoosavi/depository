@@ -3,6 +3,7 @@ from khayyam.jalali_datetime import JalaliDatetime
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import get_object_or_404
+from rest_framework.settings import api_settings
 
 from depository.apps.accounting.models import Pilgrim
 from depository.apps.accounting.serializers import PilgrimSerializer
@@ -54,7 +55,7 @@ class ReceptionTakeSerializer(serializers.Serializer):
         size = Cell.SIZE_SMALL if data.get('bag_count') else Cell.SIZE_LARGE
         free_cell = ReceptionHelper().assign_cell(size)
         if not free_cell:
-            raise ValidationError(_("All spaces are busy"), code='no_space')
+            raise ValidationError({api_settings.NON_FIELD_ERRORS_KEY: [_("All spaces are busy")]}, code='no_space')
         delivery_data = {'pilgrim': pilgrim, 'taker': self.context['request'].user}
         delivery = Delivery.objects.create(**delivery_data)
         pack_data = sub_dict(data, ['bag_count', 'suitcase_count', 'pram_count'])
