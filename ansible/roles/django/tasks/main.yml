@@ -31,7 +31,7 @@
   pip:
     requirements: ~/depository/depository/requirements.txt
     virtualenv: "{{ venv_directory }}"
-    virtualenv_python: python3.6
+    virtualenv_python: python3.7
   become_user: "{{ username }}"
   become: yes
 
