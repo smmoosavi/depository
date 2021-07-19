@@ -35,6 +35,7 @@
   command: chdir=/home/khat/Desktop/resources/Oscar/printer/cupsprintdrv-1.1.0_linux/install/ ./uninstall.sh
   become: yes
   become_user: root
+  ignore_errors: yes
 
 
 - name: Install Oscar driver

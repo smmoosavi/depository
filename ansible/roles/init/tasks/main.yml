@@ -1,23 +1,4 @@
 ---
-- name: Commenting poweroff button defualt action
-  replace:
-    path: '/etc/acpi/events/powerbtn'
-    regexp: '^action=/etc/acpi/powerbtn\.sh'
-    replace: '#action=/etc/acpi/powerbtn.sh'
-
-
-- name: Set power button as shutdown
-  lineinfile:
-    path: '/etc/acpi/events/powerbtn'
-    line: 'action=/sbin/poweroff'
-    insertafter: '#action=/etc/acpi/powerbtn\.sh'
-
-
-- name: Restart acpid
-  command: acpid restart
-  become: yes
-  become_user: root
-
 - name: delete lock
   file:
     state: absent
@@ -60,22 +41,3 @@
       dest: ~/.ssh/id_rsa
   become: true
   become_user: '{{ username }}'
-
-
-- name: download sources of wkhtmltopdf
-  get_url:
-    url: "https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.3/wkhtmltox-0.12.3_linux-generic-i386.tar.xz"
-    dest: "/tmp/"
-
-- name: install wkhtmltopdf
-  shell: tar vxf wkhtmltox-0.12.3_linux-generic-i386.tar.xz
-  args:
-    chdir: "/tmp/"
-
-- name: "cp wkhtmltopdf"
-  shell: cp wkhtmltox/bin/wk* /usr/local/bin/
-  args:
-    chdir: "/tmp/"
-
-
-

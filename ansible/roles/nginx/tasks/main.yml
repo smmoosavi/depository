@@ -1,4 +1,11 @@
 ---
+- name: Disable apache2
+  ansible.builtin.service:
+    name: apache2
+    enabled: no
+    state: stopped
+  ignore_errors: yes
+
 - name: ensure nginx is at the latest version
   apt: name=nginx state=latest
 
