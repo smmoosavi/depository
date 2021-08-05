@@ -9,6 +9,9 @@
 - name: reconfigure
   shell: dpkg --configure -a
 
+- name: Set timezone to Asia/Baghdad
+  community.general.timezone:
+    name: Asia/Baghdad
 
 - name: "installing packages"
   apt:
