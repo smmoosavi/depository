@@ -28,6 +28,7 @@
     - libffi-dev
     - supervisor
     - locales-all
+    - wkhtmltopdf
 
 - name: "uploading ssh key"
   copy:
