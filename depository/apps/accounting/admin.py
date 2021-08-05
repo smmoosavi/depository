@@ -15,8 +15,3 @@ class PilgrimAdmin(admin.ModelAdmin):
 @admin.register(User)
 class UserAdmin(UserAdmin):
     pass
-
-
-@admin.register(Group)
-class GroupAdmin(GroupAdmin):
-    pass
