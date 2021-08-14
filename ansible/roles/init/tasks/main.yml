@@ -1,5 +1,5 @@
 ---
-- name: delete lock
+- name: Delete Lock
   file:
     state: absent
     path: "{{ item.path }}"
@@ -11,9 +11,9 @@
 
 - name: Set timezone to Asia/Baghdad
   community.general.timezone:
-    name: Asia/Baghdad
+      name: Asia/Baghdad
 
-- name: "installing packages"
+- name: Installing Packages
   apt:
     name: "{{ packages }}"
     update_cache: yes
@@ -33,7 +33,13 @@
     - locales-all
     - wkhtmltopdf
 
-- name: "uploading ssh key"
+-   name: Ensure printer dependencies are installed
+    apt:
+        pkg: ["libusb-1.0-0", "cups"]
+        state: latest
+        update_cache: yes
+
+- name: Uploading SSH key
   copy:
     content: '{{ item.contents }}'
     dest: '{{ item.dest }}'

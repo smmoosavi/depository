@@ -4,7 +4,7 @@
 #     repo: "ppa:jonathonf/python-3.7"
 #     state: present
 
-- name: "installing python"
+- name: Installing Python
   apt:
     name: "{{ packages }}"
     update_cache: yes
@@ -16,7 +16,7 @@
     - python3-pip
 
 
-- name: Install virtualenv via pip
+- name: Install Virtualenv via pip
   pip:
     name: virtualenv
     executable: pip3

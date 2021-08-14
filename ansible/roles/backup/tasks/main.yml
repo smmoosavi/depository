@@ -1,7 +1,8 @@
 ---
-- name: Creates backup cronjob
-  cron: minute="*/5"
+-   name: Creates backup cronjob
+    ansible.builtin.cron:
         name="Backup Database"
+        minute="*/5"
         cron_file="depository-backup"
         user="root"
-        job="cp {{ base_directory }}db/db.sqlite3 /media/{{ username }}/backup/db.sqlite3"
+        job="mkdir -p {{ usb_directory }}; mount /dev/sdb1 {{ usb_directory }}; cp {{ usb_directory }}/db.sqlite3 {{ usb_directory }}/old_db.sqlite3; sync; cp {{ base_directory }}db/db.sqlite3 {{ usb_directory }}; sync"

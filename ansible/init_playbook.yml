@@ -1,0 +1,6 @@
+---
+-   hosts: all
+    roles:
+        -   role: init
+        -   role: python
+        -   role: nginx
