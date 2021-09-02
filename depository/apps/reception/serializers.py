@@ -1,18 +1,16 @@
-from django.utils import timezone
-from khayyam.jalali_datetime import JalaliDatetime
-from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
-from rest_framework.generics import get_object_or_404
-from rest_framework.settings import api_settings
-
 from depository.apps.accounting.models import Pilgrim
 from depository.apps.accounting.serializers import PilgrimSerializer
 from depository.apps.reception.models import Delivery, Pack
 from depository.apps.reception.services import ReceptionHelper
 from depository.apps.structure.models import Cell
-from django.utils.translation import ugettext as _
-
 from depository.apps.utils.utils import sub_dict
+from django.utils import timezone
+from django.utils.translation import ugettext as _
+from khayyam.jalali_datetime import JalaliDatetime
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+from rest_framework.generics import get_object_or_404
+from rest_framework.settings import api_settings
 
 
 class ReceptionTakeSerializer(serializers.Serializer):
@@ -72,10 +70,11 @@ class ReceptionGiveSerializer(serializers.ModelSerializer):
     hash_id = serializers.CharField()
     exited_at = serializers.SerializerMethodField()
     pilgrim = serializers.SerializerMethodField()
+    cell_code = serializers.SerializerMethodField()
 
     class Meta:
         model = Delivery
-        fields = ('hash_id', 'exited_at', 'pilgrim')
+        fields = ('hash_id', 'exited_at', 'pilgrim', 'cell_code')
 
     def validate(self, attrs):
         delivery = get_object_or_404(Delivery.objects.all(), hash_id=attrs['hash_id'])
@@ -93,6 +92,9 @@ class ReceptionGiveSerializer(serializers.ModelSerializer):
         delivery.exited_at = timezone.now()
         delivery.save()
         return delivery
+
+    def get_cell_code(self, obj):
+        return obj.packs.first().cell.get_code()
 
     def get_exited_at(self, obj):
         if obj.exited_at:

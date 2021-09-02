@@ -13,12 +13,12 @@
         }
         @font-face {
             font-family: IranSans;
-            src: url("{{ BASE_DIR }}/static/fonts/iranian-sans.woff");
+            src: url("{{ BASE_DIR }}static/fonts/iranian-sans.ttf");
         }
 
         @font-face {
             font-family: "Calibri Light";
-            src: url("{{ BASE_DIR }}/static/fonts/calibril.ttf");
+            src: url("{{ BASE_DIR }}static/fonts/calibril.ttf");
         }
 
 
@@ -27,23 +27,31 @@
             font-family: "{{ font }}";
             direction: rtl;
             width: 95%;
-            font-size: 20px;
+            font-size: 14px;
             line-height: 1em;
             text-align: center;
         }
 
         .small {
-            font-size: 16px;
+            font-size: 14px;
         }
 
         .logo {
             height: 107px;
         }
 
-        .col {
+        .col-right {
             display: inline-block;
-            width: 47%;
+            width: 52%;
             vertical-align: top;
+            {#border: 1px solid;#}
+
+        }
+        .col-left {
+            display: inline-block;
+            width: 46%;
+            vertical-align: top;
+            {#border: 1px solid;#}
         }
 
         .en {
@@ -57,7 +65,7 @@
         }
 
         .barcode {
-            height: 147px;
+            height: 135px;
         }
 
         .border {
@@ -73,22 +81,22 @@
 
 <div class="border"></div>
 <div>
-    <div class="col">
-        <div>
+    <div class="col-left" style="padding: 0">
+        <div style="text-align: center">
             {{ entered_at }}
         </div>
         <div class="small">
             {{ depository_address }}
         </div>
         <div style="height: 20px"></div>
-        <div>
+        <div style="text-align: center">
             عجل لولیک الفرج
         </div>
-        <div class="en">
+        <div class="en"  style="text-align: center">
             {{ social }}
         </div>
     </div>
-    <div class="col">
+    <div class="col-right">
         <img src="{{ barcode }}" class="barcode">
     </div>
 </div>

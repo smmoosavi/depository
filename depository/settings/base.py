@@ -18,7 +18,6 @@ from rest_framework.utils import json
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/../'
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 def get_env_var(name, default=None, prefixed=False):
@@ -83,6 +82,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'depository.middleware.CheckDepository',
 ]
 
 ROOT_URLCONF = 'depository.urls'
@@ -112,9 +112,10 @@ WSGI_APPLICATION = 'depository.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join('/home/vahid/Projects/arbaeen/depository/depository/db.sqlite3'),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

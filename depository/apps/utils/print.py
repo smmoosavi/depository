@@ -25,8 +25,8 @@ class PrintHelper:
 
     def print(self, pathes):
         try:
-            # subprocess.run(["lpr", "-P", f"OSCAR-POS88F-NET{self.printer_id}", *pathes])
-            subprocess.run(["lpr", "-P", "OSCAR-POS88F-NET", *pathes])
+            subprocess.run(["lpr", "-P", f"depos-printer-{self.printer_id}", *pathes])
+            # subprocess.run(["lpr", "-P", "OSCAR-POS88F-NET", *pathes])
             for path in pathes:
                 os.remove(path)
             return True
