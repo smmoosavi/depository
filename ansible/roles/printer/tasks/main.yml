@@ -1,43 +1,66 @@
 ---
 
--   name: Add user to lpadmin group
-    command: usermod -a -G lpadmin khat
-    become: yes
-    become_user: root
+-   name: Add printer 11 to CUPS
+    command: lpadmin -p "depos-printer-11" -E -v socket://192.168.1.111:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 12 to CUPS
+    command: lpadmin -p "depos-printer-12" -E -v socket://192.168.1.112:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 13 to CUPS
+    command: lpadmin -p "depos-printer-13" -E -v socket://192.168.1.113:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 14 to CUPS
+    command: lpadmin -p "depos-printer-14" -E -v socket://192.168.1.114:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 15 to CUPS
+    command: lpadmin -p "depos-printer-15" -E -v socket://192.168.1.115:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 16 to CUPS
+    command: lpadmin -p "depos-printer-16" -E -v socket://192.168.1.116:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 17 to CUPS
+    command: lpadmin -p "depos-printer-17" -E -v socket://192.168.1.117:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 18 to CUPS
+    command: lpadmin -p "depos-printer-18" -E -v socket://192.168.1.118:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 19 to CUPS
+    command: lpadmin -p "depos-printer-19" -E -v socket://192.168.1.119:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 20 to CUPS
+    command: lpadmin -p "depos-printer-20" -E -v socket://192.168.1.120:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 21 to CUPS
+    command: lpadmin -p "depos-printer-21" -E -v socket://192.168.1.121:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 22 to CUPS
+    command: lpadmin -p "depos-printer-22" -E -v socket://192.168.1.122:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 23 to CUPS
+    command: lpadmin -p "depos-printer-23" -E -v socket://192.168.1.123:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 24 to CUPS
+    command: lpadmin -p "depos-printer-24" -E -v socket://192.168.1.124:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 25 to CUPS
+    command: lpadmin -p "depos-printer-25" -E -v socket://192.168.1.125:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 26 to CUPS
+    command: lpadmin -p "depos-printer-26" -E -v socket://192.168.1.126:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 27 to CUPS
+    command: lpadmin -p "depos-printer-27" -E -v socket://192.168.1.127:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 28 to CUPS
+    command: lpadmin -p "depos-printer-28" -E -v socket://192.168.1.128:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 29 to CUPS
+    command: lpadmin -p "depos-printer-29" -E -v socket://192.168.1.129:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
+
+-   name: Add printer 30 to CUPS
+    command: lpadmin -p "depos-printer-30" -E -v socket://192.168.1.130:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
 
 
--   name: Copy printer driver installer
-    copy:
-        src: "{{ code_directory }}/Oscar"
-        dest: "{{ resource_directory }}"
-
-
--   name: Change uninstall.sh permitions
-    command: chmod +x "{{ resource_directory }}/Oscar/printer/cupsprintdrv-1.1.0_linux/install/uninstall.sh"
-    become: yes
-    become_user: root
-
-
--   name: Change install.sh permitions
-    command: chmod +x "{{ resource_directory }}/Oscar/printer/cupsprintdrv-1.1.0_linux/install/install.sh"
-    become: yes
-    become_user: root
-
-
--   name: Uninstall Oscar driver
-    command: chdir="{{ resource_directory }}/Oscar/printer/cupsprintdrv-1.1.0_linux/install/ ./uninstall.sh"
-    become: yes
-    become_user: root
-    ignore_errors: yes
-
-
--   name: Install Oscar driver
-    command: chdir="{{ resource_directory }}/Oscar/printer/cupsprintdrv-1.1.0_linux/install/ ./install.sh"
-    become: yes
-    become_user: root
-
--   name: Add printer to CUPS
-    command: lpadmin -p "OSCAR-POS88F-NET" -E -v socket://{{ ip }}:9100 -P /usr/share/cups/model/printer/80mmSeries.ppd.gz -D "Decs" -L "Loc"
 # For more information about cups commads read following links:
 # https://www.techrepublic.com/article/control-printers-in-linux-from-the-command-line/
 # https://www.thegeekstuff.com/2015/01/lpadmin-examples/

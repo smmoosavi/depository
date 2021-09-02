@@ -1,3 +1,3 @@
 #!/bin/bash
 
-lpr -P OSCAR-POS88F-NET "Test For Thermal printer.pdf"
+lpr -P depos-printer-$1 "Test For Thermal printer.pdf"

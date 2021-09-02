@@ -1,6 +1,4 @@
 ---
--   hosts: 192.168.1.11
+-   hosts: all
     roles:
         -   role: printer
-#                vars:
-#                    ip: 192.168.1.111
