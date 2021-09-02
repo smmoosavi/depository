@@ -221,6 +221,7 @@ CABINET_DIGITS = 2
 ROW_DIGITS = 1
 CELL_DIGITS = 1
 STORE_DAYS = 1
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': timedelta(days=999),

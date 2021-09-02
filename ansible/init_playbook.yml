@@ -1,0 +1,8 @@
+---
+-   hosts: all
+    roles:
+        -   role: init
+        -   role: printer_init
+        -   role: printer
+        -   role: python
+        -   role: nginx

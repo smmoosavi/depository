@@ -1,24 +1,5 @@
 ---
-- name: Commenting poweroff button defualt action
-  replace:
-    path: '/etc/acpi/events/powerbtn'
-    regexp: '^action=/etc/acpi/powerbtn\.sh'
-    replace: '#action=/etc/acpi/powerbtn.sh'
-
-
-- name: Set power button as shutdown
-  lineinfile:
-    path: '/etc/acpi/events/powerbtn'
-    line: 'action=/sbin/poweroff'
-    insertafter: '#action=/etc/acpi/powerbtn\.sh'
-
-
-- name: Restart acpid
-  command: acpid restart
-  become: yes
-  become_user: root
-
-- name: delete lock
+- name: Delete Lock
   file:
     state: absent
     path: "{{ item.path }}"
@@ -28,8 +9,11 @@
 - name: reconfigure
   shell: dpkg --configure -a
 
+- name: Set timezone to Asia/Baghdad
+  community.general.timezone:
+      name: Asia/Baghdad
 
-- name: "installing packages"
+- name: Installing Packages
   apt:
     name: "{{ packages }}"
     update_cache: yes
@@ -47,8 +31,15 @@
     - libffi-dev
     - supervisor
     - locales-all
+    - wkhtmltopdf
 
-- name: "uploading ssh key"
+-   name: Ensure printer dependencies are installed
+    apt:
+        pkg: ["libusb-1.0-0", "cups"]
+        state: latest
+        update_cache: yes
+
+- name: Uploading SSH key
   copy:
     content: '{{ item.contents }}'
     dest: '{{ item.dest }}'
@@ -60,22 +51,3 @@
       dest: ~/.ssh/id_rsa
   become: true
   become_user: '{{ username }}'
-
-
-- name: download sources of wkhtmltopdf
-  get_url:
-    url: "https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.3/wkhtmltox-0.12.3_linux-generic-i386.tar.xz"
-    dest: "/tmp/"
-
-- name: install wkhtmltopdf
-  shell: tar vxf wkhtmltox-0.12.3_linux-generic-i386.tar.xz
-  args:
-    chdir: "/tmp/"
-
-- name: "cp wkhtmltopdf"
-  shell: cp wkhtmltox/bin/wk* /usr/local/bin/
-  args:
-    chdir: "/tmp/"
-
-
-

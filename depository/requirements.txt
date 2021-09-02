@@ -14,3 +14,4 @@ qrcode
 openpyxl
 gunicorn
 weasyprint
+pdfkit

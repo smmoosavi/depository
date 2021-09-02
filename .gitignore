@@ -6,6 +6,7 @@ __pycache__
 doc/*
 public/*
 
+test.py
 *.sqlite3
 Oscar/*
 

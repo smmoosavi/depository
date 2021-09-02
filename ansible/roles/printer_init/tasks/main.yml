@@ -1,0 +1,45 @@
+---
+
+# TODO: replace `khat` with a variable
+-   name: Ensure printer dependencies are installed
+    apt:
+        pkg: ["libusb-1.0-0", "cups"]
+        state: latest
+        update_cache: yes
+
+-   name: Add user to lpadmin group
+    command: usermod -a -G lpadmin khat
+    become: yes
+    become_user: root
+
+
+-   name: Copy printer driver installer
+    copy:
+        src: ../Oscar
+        dest: /home/khat/Desktop/resources
+
+
+-   name: Change uninstall.sh permitions
+    command: chmod +x "/home/khat/Desktop/resources/Oscar/printer/cupsprintdrv-1.1.0_linux/install/uninstall.sh"
+    become: yes
+    become_user: root
+
+
+-   name: Change install.sh permitions
+    command: chmod +x "/home/khat/Desktop/resources/Oscar/printer/cupsprintdrv-1.1.0_linux/install/install.sh"
+    become: yes
+    become_user: root
+
+
+-   name: Uninstall Oscar driver
+    command: chdir=/home/khat/Desktop/resources/Oscar/printer/cupsprintdrv-1.1.0_linux/install/ ./uninstall.sh
+    become: yes
+    become_user: root
+    ignore_errors: yes
+
+
+-   name: Install Oscar driver
+    command: chdir=/home/khat/Desktop/resources/Oscar/printer/cupsprintdrv-1.1.0_linux/install/ ./install.sh
+    become: yes
+    become_user: root
+

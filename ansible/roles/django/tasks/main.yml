@@ -1,72 +1,72 @@
 ---
-- name: Clean directory
-  file:
-    state: absent
-    path: "{{ base_directory }}/depository"
-  become_user: "{{ username }}"
-  become: yes
+-   name: Clean directory
+    file:
+        state: absent
+        path: "{{ code_directory }}"
+    become_user: "{{ username }}"
+    become: yes
 
-- name: "cloning"
-  git:
-    repo: 'git@github.com:vahidamintabar/depository.git'
-    dest: '{{ base_directory }}/depository'
-    accept_hostkey: yes
-    version: 'master'
-    update: yes
-    force: yes
-  become_user: "{{ username }}"
-  become: yes
+-   name: Cloning
+    git:
+        repo: "{{ git_repository }}"
+        dest: "{{ code_directory }}"
+        accept_hostkey: yes
+        version: master
+        update: yes
+        force: yes
+    become_user: "{{ username }}"
+    become: yes
 
-- name: "create home directories"
-  file: path={{ base_directory }}/{{ item.dir }}/
+-   name: Create Home Directories
+    file: path="{{ base_directory }}/{{ item.dir }}/"
         state=directory
-  with_items:
-    - dir: db
-    - dir: logs
+    with_items:
+        -   dir: db
+        -   dir: logs
 
-  become_user: "{{ username }}"
-  become: yes
+    become_user: "{{ username }}"
+    become: yes
 
-- name: "installing requirements.txt"
-  pip:
-    requirements: ~/depository/depository/requirements.txt
-    virtualenv: "{{ venv_directory }}"
-    virtualenv_python: python3.6
-  become_user: "{{ username }}"
-  become: yes
+-   name: Installing Code Requirements
+    pip:
+        requirements: "{{ code_directory }}/depository/requirements.txt"
+        virtualenv: "{{ venv_directory }}"
+        virtualenv_python: python3.7
+    become_user: "{{ username }}"
+    become: yes
 
-- name: "migrate"
-  django_manage:  command=migrate
-                  app_path="{{ base_directory}}/depository/"
-                  virtualenv="{{ venv_directory }}"
-  become_user: "{{ username }}"
-  become: yes
+-   name: Migrate
+    django_manage: command=migrate
+        app_path="{{ code_directory }}"
+        virtualenv="{{ venv_directory }}"
+    become_user: "{{ username }}"
+    become: yes
 
-- name: "loaddata"
-  django_manage:
-    command: loaddata
-    fixtures: initial_data
-    app_path: "{{ base_directory}}/depository/"
-    virtualenv: "{{ venv_directory }}"
-  become_user: "{{ username }}"
-  become: yes
+-   name: Load Initial Data
+    django_manage:
+        command: loaddata
+        fixtures: initial_data
+        app_path: "{{ code_directory }}"
+        virtualenv: "{{ venv_directory }}"
+    become_user: "{{ username }}"
+    become: yes
 
-- name: "creating directories"
-  file: path=~/depository/{{ item.dir }}/
+-   name: Creating Directories
+    file: path="{{ code_directory }}/{{ item.dir }}/"
         state=directory
-  with_items:
-    - dir: temp
-    - dir: temp/pdf
-    - dir: temp/barcode
-    - dir: public
-    - dir: public/static
-    - dir: public/media
-  become_user: "{{ username }}"
-  become: yes
+    with_items:
+        -   dir: temp
+        -   dir: temp/pdf
+        -   dir: temp/barcode
+        -   dir: public
+        -   dir: public/static
+        -   dir: public/media
+    become_user: "{{ username }}"
+    become: yes
 
-- name: "collectstatic"
-  django_manage:  command=collectstatic
-                  app_path="{{ base_directory}}/depository/"
-                  virtualenv="{{ venv_directory }}"
-  become_user: "{{ username }}"
-  become: yes
+-   name: Collect Static
+    django_manage: command=collectstatic
+        app_path="{{ code_directory }}"
+        virtualenv="{{ venv_directory }}"
+    become_user: "{{ username }}"
+    become: yes

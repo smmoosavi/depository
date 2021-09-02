@@ -1,5 +1,12 @@
 ---
-- name: ensure nginx is at the latest version
+- name: Disable apache2
+  ansible.builtin.service:
+    name: apache2
+    enabled: no
+    state: stopped
+  ignore_errors: yes
+
+- name: Ensure nginx is at the latest version
   apt: name=nginx state=latest
 
 - name: Clean directory
