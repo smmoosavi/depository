@@ -14,11 +14,12 @@ from depository.apps.accounting.models import Pilgrim
 from depository.apps.accounting.serializers import UserSerializer, \
     PilgrimSerializer, SignInSerializer, ImportUserSerializer
 from depository.apps.utils.permissions import IsAdmin
+from depository.apps.utils.rest import DepositoryPermission
 
 
 class AccountingViewSet(GenericViewSet, CreateModelMixin):
     serializer_class = UserSerializer
-    permission_classes = [IsAdmin, ]
+    permission_classes = [IsAdmin]
 
     def get_serializer_class(self):
         if self.action == 'import_users':
@@ -38,7 +39,7 @@ class AccountingViewSet(GenericViewSet, CreateModelMixin):
 
 
 class PilgrimViewSet(GenericViewSet, ListModelMixin):
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated, DepositoryPermission]
     serializer_class = PilgrimSerializer
     filter_class = PilgrimFilter
     queryset = Pilgrim.objects.all()

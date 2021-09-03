@@ -1,6 +1,7 @@
 import logging
 from unittest.mock import patch
 
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 # Create your tests here.
@@ -13,7 +14,6 @@ from depository.apps.reception.models import Pack, Delivery
 from depository.apps.reception.services import ReceptionHelper
 from depository.apps.structure.models import Cabinet, Row, Cell, Depository, Constant
 from depository.apps.utils.print import PrintHelper
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -22,13 +22,16 @@ logger = logging.getLogger(__name__)
 class ReceptionTest(APITestCase):
     def setUp(self):
         self.hash_id = "mg63x59lq8v0o29g"
-        self.user = User.objects.create(username="taker", first_name="وحید", last_name='امین تبار')
-        self.user.set_password('a')
-        self.user.save()
-        Constant.objects.create(key='social', value='@baghiatallah')
         depository = Depository.objects.create(
             name='امانت داری شماره ۱', address='صحن حضرت فاطمه - سمت چپ', code=14, printer_id=14
         )
+        self.user = User.objects.create(
+            username="taker", first_name="وحید", last_name='امین تبار', last_depository=depository
+        )
+        self.user.set_password('a')
+        self.user.save()
+        Constant.objects.create(key='social', value='@baghiatallah')
+
         cabinet = Cabinet.objects.create(code=10, depository=depository)
         row = Row.objects.create(code="1", cabinet=cabinet)
         Cell.objects.create(code="1", row=row)
@@ -37,6 +40,7 @@ class ReceptionTest(APITestCase):
         delivery = Delivery.objects.create(pilgrim_id=1, taker_id=1, hash_id=self.hash_id, entered_at=timezone.now())
         self.pack = Pack.objects.create(delivery=delivery, pram_count=1, cell_id=1)
         self.client.login(username="taker", password="a")
+        self.headers = {'HTTP_DEPOSITORY_ID': depository.id}
 
     @patch.object(PrintHelper, 'generate_pdf')
     @patch.object(PrintHelper, 'print')
@@ -48,22 +52,22 @@ class ReceptionTest(APITestCase):
             'phone': '09123456789',
             'bag_count': 1
         }
-        response = self.client.post(reverse("reception-take"), data)
+        response = self.client.post(reverse("reception-take"), data, **self.headers)
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertTrue(Pack.objects.filter(cell_id=2).exists())
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
 
     def test_give(self):
-        response = self.client.post(reverse("reception-give"), {'hash_id': self.hash_id})
+        response = self.client.post(reverse("reception-give"), {'hash_id': self.hash_id}, **self.headers)
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertEqual(Delivery.objects.get(hash_id=self.hash_id).giver, self.user)
 
     def test_give_list(self):
-        response = self.client.post(reverse("reception-give-list"), {'hash_ids': [self.hash_id]})
+        response = self.client.post(reverse("reception-give-list"), {'hash_ids': [self.hash_id]}, **self.headers)
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertEqual(len(response.data), 1)
 
-        response = self.client.post(reverse("reception-give-list"), {'hash_ids': [self.hash_id]})
+        response = self.client.post(reverse("reception-give-list"), {'hash_ids': [self.hash_id]}, **self.headers)
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
         self.assertEqual(len(response.data), 0)
 

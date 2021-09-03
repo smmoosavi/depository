@@ -1,14 +1,11 @@
-from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-
 # Create your tests here.
 from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
-from django.contrib.auth import get_user_model
 
-from depository.apps.structure.helpers import ConstantHelper
-from depository.apps.structure.models import Depository, Constant
+from depository.apps.structure.models import Depository
 
 User = get_user_model()
 
@@ -19,7 +16,6 @@ class SignInTest(APITestCase):
         self.user = User.objects.create(username="taker", last_depository=self.depository)
         self.user.set_password('a')
         self.user.save()
-
 
     def test_jwt_refresh_token(self):
         expected_status = status.HTTP_200_OK
@@ -39,7 +35,6 @@ class SignInTest(APITestCase):
         self.assertEqual(response.status_code, expected_status)
         self.assertIsNotNone(response.data['token'])
         self.assertEqual(response.data['depository'], self.depository.name)
-
 
 
 class ImportUserTest(APITestCase):

@@ -19,6 +19,7 @@ from depository.apps.structure.models import Cell, Cabinet
 from depository.apps.structure.serializers import CabinetCreateSerializer, \
     StatusSerializer, CabinetSerializer, CellSerializer, CabinetExtendSerializer
 from depository.apps.utils.permissions import IsAdmin
+from depository.apps.utils.rest import DepositoryPermission
 
 
 class ChangeStatusMixin:
@@ -32,7 +33,7 @@ class ChangeStatusMixin:
 
 class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
                      ListModelMixin, DestroyModelMixin):
-    permission_classes = [IsAdmin]
+    permission_classes = [IsAdmin, DepositoryPermission]
     queryset = Cabinet.objects.all()
     lookup_field = 'code'
 
@@ -84,7 +85,7 @@ class CabinetViewSet(GenericViewSet, CreateModelMixin, ChangeStatusMixin,
 
 
 class CellViewSet(GenericViewSet, ChangeStatusMixin, RetrieveModelMixin):
-    permission_classes = [IsAdmin]
+    permission_classes = [IsAdmin, DepositoryPermission]
     queryset = Cell.objects.all()
     serializer_class = CellSerializer
 
@@ -168,12 +169,12 @@ class CellViewSet(GenericViewSet, ChangeStatusMixin, RetrieveModelMixin):
 
 
 class RowViewSet(CellViewSet, ChangeStatusMixin):
-    permission_classes = [IsAdmin]
+    permission_classes = [IsAdmin, DepositoryPermission]
 
 
 class StructureViewSet(GenericViewSet, ListModelMixin):
     serializer_class = CabinetSerializer
-    permission_classes = [IsAdmin]
+    permission_classes = [IsAdmin, DepositoryPermission]
     queryset = Cabinet.objects.none()
 
 

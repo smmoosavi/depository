@@ -1,10 +1,8 @@
 # Create your views here.
-import csv
 import logging
 import os
 
 from django.conf import settings
-from django.http import HttpResponse
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.decorators import action
@@ -18,13 +16,14 @@ from depository.apps.reception.models import Delivery, Pack
 from depository.apps.reception.serializers import ReceptionTakeSerializer, \
     ReceptionGiveSerializer, DeliverySerializer, ReceptionGiveListSerializer
 from depository.apps.reception.services import ReceptionHelper
+from depository.apps.utils.rest import DepositoryPermission
 
 logger = logging.getLogger(__name__)
 
 
 class ReceptionViewSet(GenericViewSet, CreateModelMixin):
     serializer_class = ReceptionTakeSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, DepositoryPermission]
     queryset = Delivery.objects.none()
 
     def get_serializer_class(self):
