@@ -1,8 +1,10 @@
-from rest_framework import status, permissions
-from rest_framework.exceptions import APIException
 import logging
 
+from rest_framework import status, permissions
+from rest_framework.exceptions import APIException
+
 logger = logging.getLogger(__name__)
+
 
 class GenericAPIException(APIException):
     """
