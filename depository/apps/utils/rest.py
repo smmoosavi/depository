@@ -1,6 +1,8 @@
 from rest_framework import status, permissions
 from rest_framework.exceptions import APIException
+import logging
 
+logger = logging.getLogger(__name__)
 
 class GenericAPIException(APIException):
     """
@@ -22,7 +24,8 @@ class DepositoryPermission(permissions.BasePermission):
             depository_id = int(depository_id)
         except TypeError or ValueError:
             depository_id = None
-        print(request.user.last_depository.id, depository_id)
+        logger.info(request.user.last_depository.id)
+        logger.info(depository_id)
         if request.user.last_depository.id != depository_id:
             raise GenericAPIException(
                 detail="There is inconsistency in depository selection, please login again", status_code=468
