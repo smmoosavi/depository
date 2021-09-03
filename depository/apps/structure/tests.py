@@ -33,7 +33,7 @@ class StructureTest(APITestCase):
         Cell.objects.create(code=1, row=row)
         Cell.objects.create(code=2, row=row)
         self.client.login(username='admin', password='a')
-        self.headers = {'HTTP_DEPOSITORY_ID': depository.id}
+        self.headers = {'HTTP_DEPOSITORY_ID': depository.code}
 
     def test_create(self):
         data = {
@@ -119,7 +119,7 @@ class DeliveryTest(APITestCase):
         )
         self.pack = Pack.objects.create(delivery=self.delivery, cell=cell, bag_count=1)
         self.client.login(username='admin', password='a')
-        self.headers = {'HTTP_DEPOSITORY_ID': dep.id}
+        self.headers = {'HTTP_DEPOSITORY_ID': dep.code}
 
     def test_old_delivery(self):
         response = self.client.get(reverse("delivery-old"), **self.headers)

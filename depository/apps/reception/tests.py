@@ -40,7 +40,7 @@ class ReceptionTest(APITestCase):
         delivery = Delivery.objects.create(pilgrim_id=1, taker_id=1, hash_id=self.hash_id, entered_at=timezone.now())
         self.pack = Pack.objects.create(delivery=delivery, pram_count=1, cell_id=1)
         self.client.login(username="taker", password="a")
-        self.headers = {'HTTP_DEPOSITORY_ID': depository.id}
+        self.headers = {'HTTP_DEPOSITORY_ID': depository.code}
 
     @patch.object(PrintHelper, 'generate_pdf')
     @patch.object(PrintHelper, 'print')
