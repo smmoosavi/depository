@@ -5,4 +5,4 @@
         minute="*/5"
         cron_file="depository-backup"
         user="root"
-        job="mkdir -p {{ usb_directory }}; mount /dev/sdb1 {{ usb_directory }}; cp {{ usb_directory }}/db.sqlite3 {{ usb_directory }}/old_db.sqlite3; sync; cp {{ base_directory }}/db.sqlite3 {{ usb_directory }}; sync"
+        job="mkdir -p {{ usb_directory }}; mount /dev/sdb1 {{ usb_directory }}; cp {{ usb_directory }}/db.sqlite3 {{ usb_directory }}/old_db.sqlite3; sync; cp {{ base_directory }}/db/db.sqlite3 {{ usb_directory }}; sync"
