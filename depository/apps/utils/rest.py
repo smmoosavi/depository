@@ -26,7 +26,7 @@ class DepositoryPermission(permissions.BasePermission):
             depository_id = int(depository_id)
         except TypeError or ValueError:
             depository_id = None
-        if request.user.last_depository.code != depository_id:
+        if request.user.last_depository is None or request.user.last_depository.code != depository_id:
             raise GenericAPIException(
                 detail="There is inconsistency in depository selection, please login again", status_code=468
             )
