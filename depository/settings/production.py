@@ -6,3 +6,4 @@ DATABASES = {
         'NAME': os.path.join('/home/khat/db/db.sqlite3'),  # NOQA
     }
 }
+DEBUG=False

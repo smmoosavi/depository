@@ -1,0 +1,13 @@
+version: "3.8"
+volumes:
+  postgres_data:
+    driver: local
+
+services:
+  #  ################################################### WEB #########################################################
+  web:
+    image: depository
+    command: gunicorn depository.wsgi:application --name depository --bind 0.0.0.0:8000 --reload --workers 1 --threads 1
+    env_file:
+      - .env
+
