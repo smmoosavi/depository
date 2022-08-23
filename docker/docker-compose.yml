@@ -10,4 +10,11 @@ services:
     command: gunicorn depository.wsgi:application --name depository --bind 0.0.0.0:8000 --reload --workers 1 --threads 1
     env_file:
       - .env
-
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./depository.conf:/etc/nginx/conf.d/depository.conf:ro
+    restart: on-failure
