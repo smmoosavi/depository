@@ -1,84 +1,82 @@
 [
-  {
-    "model": "structure.depository",
-    "pk": 1,
-    "fields": {
-      "name": "depository1",
-      "address": "",
-      "code": 14,
-      "printer_id": 14
-    }
-  },
-  {
-    "model": "structure.constant",
-    "pk": 1,
-    "fields": {
-      "key": "social",
-      "value": "@gbaghiyatallah"
-    }
-  },
-  {
-    "model": "structure.constant",
-    "pk": 2,
-    "fields": {
-      "key": "phone",
-      "value": "02187654321"
-    }
-  },
-  {
-    "model": "structure.constant",
-    "pk": 3,
-    "fields": {
-      "key": "store_threshold",
-      "value": "1"
-    }
-  },
-  {
-    "model": "structure.constant",
-    "pk": 4,
-    "fields": {
-      "key": "notice_en",
-      "value": "Dear pilgrim, we keep your packages for 24 hours only."
-    }
-  },
-  {
-    "model": "structure.constant",
-    "pk": 5,
-    "fields": {
-      "key": "notice_fa",
-      "value": "زائر عزیز، امانات شما را فقط برای ۲۴ ساعت نگه می‌داریم."
-    }
-  },
-  {
-    "model": "structure.constant",
-    "pk": 6,
-    "fields": {
-      "key": "notice_ar",
-      "value": "اخي الزائر، الامانات لدینا فقط ۲۴ ساعة نرجوا منکم الالتزام بالوقت"
-    }
-  },
-  {
-    "model": "structure.constant",
-    "pk": 7,
-    "fields": {
-      "key": "notice_az",
-      "value": "Hörmətli zair, paketlərinizi yalnız 24 saat saxlayırıq."
-    }
-  },
-  {
-    "model": "structure.constant",
-    "pk": 8,
-    "fields": {
-      "key": "notice_tr",
-      "value": "Sevgili Zair, paketlerinizi sadece 24 saat saklıyoruz."
-    }
-  },
-  {
-    "model": "structure.constant",
-    "pk": 9,
-    "fields": {
-      "key": "notice_ur",
-      "value": "پیارے حاجی ، ہم آپ کے پیکیج صرف 24 گھنٹوں کے لئے رکھتے ہیں۔"
-    }
-  }
+	{
+		"model": "structure.constant",
+		"pk": 1,
+		"fields": {
+			"key": "social",
+			"value": "@gbaghiyatallah"
+		}
+	},
+	{
+		"model": "structure.constant",
+		"pk": 2,
+		"fields": {
+			"key": "phone",
+			"value": "02187654321"
+		}
+	},
+	{
+		"model": "structure.constant",
+		"pk": 3,
+		"fields": {
+			"key": "store_threshold",
+			"value": "1"
+		}
+	},
+	{
+		"model": "structure.constant",
+		"pk": 4,
+		"fields": {
+			"key": "notice_en",
+			"value": "Dear pilgrim, we keep your packages for 24 hours only."
+		}
+	},
+	{
+		"model": "structure.constant",
+		"pk": 5,
+		"fields": {
+			"key": "notice_fa",
+			"value": "زائر عزیز، امانات شما را فقط برای ۲۴ ساعت نگه می‌داریم."
+		}
+	},
+	{
+		"model": "structure.constant",
+		"pk": 6,
+		"fields": {
+			"key": "notice_ar",
+			"value": "اخي الزائر، الامانات لدینا فقط ۲۴ ساعة نرجوا منکم الالتزام بالوقت"
+		}
+	},
+	{
+		"model": "structure.constant",
+		"pk": 7,
+		"fields": {
+			"key": "notice_az",
+			"value": "Hörmətli zair, paketlərinizi yalnız 24 saat saxlayırıq."
+		}
+	},
+	{
+		"model": "structure.constant",
+		"pk": 8,
+		"fields": {
+			"key": "notice_tr",
+			"value": "Sevgili Zair, paketlerinizi sadece 24 saat saklıyoruz."
+		}
+	},
+	{
+		"model": "structure.constant",
+		"pk": 9,
+		"fields": {
+			"key": "notice_ur",
+			"value": "پیارے حاجی ، ہم آپ کے پیکیج صرف 24 گھنٹوں کے لئے رکھتے ہیں۔"
+		}
+	},
+	{
+		"model": "structure.constant",
+		"pk": 10,
+		"fields": {
+			"key": "blinkid_token",
+			"value": "sRwAAAARaXIubmlsdmEuYWJvdG9yYWL8E5lLoHoRkcC3kJ/oyh6a3BjshmFl1DAD7w9nqU+B2l9A4G9Jr8Qr5DWEY9zliAxdpXQ0xRIzXq0JHBvJBgkYBz6PzWsKhY9jqSW2XxAo7y1em4fV56+9vceObb4zeEz6Tf32NOUDm11EvwOPCPTyzVxNV0x+oaKOle5MLKikmQlZgWGRbfen6q+jg0vx2KBYsBaUqrj9tDdtKcs9FPYzalFgXqTcUXxqTx+GgqPztA=="
+		}
+	}
 ]
