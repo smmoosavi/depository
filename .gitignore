@@ -11,4 +11,4 @@ test.py
 Oscar/*
 
 ansible/*.retry
-
+.env

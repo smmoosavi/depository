@@ -1,6 +1,8 @@
 version: "3.8"
 volumes:
-  postgres_data:
+  db_data:
+    driver: local
+  public_data:
     driver: local
 
 services:
@@ -8,8 +10,11 @@ services:
   web:
     image: depository
     command: gunicorn depository.wsgi:application --name depository --bind 0.0.0.0:8000 --reload --workers 1 --threads 1
-    env_file:
-      - .env
+    volumes:
+      - public_data:/public
+      - db_data:/db
+    enviroment:
+      - DB_PATH: "/db/db.sqlite3"
   nginx:
     image: nginx:latest
     ports:
@@ -17,4 +22,5 @@ services:
       - 443:443
     volumes:
       - ./depository.conf:/etc/nginx/conf.d/depository.conf:ro
+      - public_data:/public
     restart: on-failure
