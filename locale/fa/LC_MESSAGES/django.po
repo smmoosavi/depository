@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-29 05:34+0300\n"
+"POT-Creation-Date: 2022-09-06 01:48+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: depository/apps/accounting/admin.py:18
+msgid "Personal info"
+msgstr ""
+
+#: depository/apps/accounting/admin.py:19
+msgid "Permissions"
+msgstr ""
+
+#: depository/apps/accounting/admin.py:22
+msgid "Important dates"
+msgstr ""
+
+#: depository/apps/accounting/admin.py:23
+msgid "Extra"
+msgstr ""
 
 #: depository/apps/accounting/serializers.py:72
 msgid "Depository Does not exists"
@@ -42,23 +58,23 @@ msgstr "انتقال به انبار"
 msgid "Missed"
 msgstr "گم شده"
 
-#: depository/apps/reception/serializers.py:30
+#: depository/apps/reception/serializers.py:29
 msgid ""
 "At least one of following fields is required: bag_count,'pram_count, "
 "suitcase_count"
 msgstr "حداقل یکی از موارد کیف، چمدان یا کالسکه باید وجود داشته باشد."
 
-#: depository/apps/reception/serializers.py:34
+#: depository/apps/reception/serializers.py:33
 msgid ""
 "The given combination of packs isn't valid, because size of bag and para/"
 "suitcase isn't equal."
 msgstr "چمدان و کالسکه ابعاد بزرگی دارند و نمی توانند با کیف باشند."
 
-#: depository/apps/reception/serializers.py:37
+#: depository/apps/reception/serializers.py:36
 msgid "You should specify one of bag, suitcase, pram"
 msgstr "حداقل یکی از کیف، چمدان و کالسکه مقداری غیر از صفر باشد داشته باشد."
 
-#: depository/apps/reception/serializers.py:57
+#: depository/apps/reception/serializers.py:56
 msgid "All spaces are busy"
 msgstr "فضای خالی وجود ندارد"
 
@@ -69,6 +85,10 @@ msgstr "این امانتی به انبار انتقال داده شده است.
 #: depository/apps/reception/serializers.py:85
 msgid "This pack has been given to the owner"
 msgstr "این امانتی قبلا به صاحبش تحویل داده شده است."
+
+#: depository/apps/reception/views.py:104
+msgid "Revert timeout exceeded"
+msgstr "تا یک دقیقه بعد از تحویل امکان بازگشت وجود دارد"
 
 #: depository/apps/structure/models.py:32
 msgid "Small"
@@ -88,11 +108,12 @@ msgstr "عدد ردیف باید کم تر از %s باشد"
 msgid "num_of_cols should be lower than %s"
 msgstr "عدد ستون باید کم تر از %s باشد"
 
-#: depository/apps/structure/views.py:80
+#: depository/apps/structure/views.py:83
 msgid "You can't delete it because this cabinet is used while ago"
-msgstr "امکان حذف قفسه وجود ندارد، زیرا قبلا از این قفسه در تحویل استفاده شده است."
+msgstr ""
+"امکان حذف قفسه وجود ندارد، زیرا قبلا از این قفسه در تحویل استفاده شده است."
 
-#: depository/apps/structure/views.py:134
+#: depository/apps/structure/views.py:139
 msgid "You should select a cell from first or last column"
 msgstr "شما باید یک فضا از ستون ابتدا یا انتها انتخاب کنید"
 

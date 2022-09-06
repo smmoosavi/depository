@@ -1,11 +1,14 @@
 # Create your views here.
 import logging
 import os
+from datetime import timedelta
 
 from django.conf import settings
 from django.utils import timezone
+from django.utils.translation import ugettext as _
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -97,6 +100,8 @@ class DeliveryViewSet(GenericViewSet, ListModelMixin):
     @action(methods=['POST'], detail=True)
     def revert_exit(self, request, hash_id):
         obj = self.get_object()
+        if timezone.now() - obj.exited_at > timedelta(minutes=settings.REVERT_THRESHOLD):
+            raise ValidationError(_("Revert timeout exceeded"))
         obj.exit_type = None
         obj.exited_at = None
         obj.giver = None

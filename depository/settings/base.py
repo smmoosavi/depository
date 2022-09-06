@@ -18,6 +18,7 @@ from rest_framework.utils import json
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + '/../'
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 def get_env_var(name, default=None, prefixed=False):
@@ -114,7 +115,6 @@ DATABASES = {
         'NAME': os.path.join('/home/vahid/Projects/arbaeen/depository/depository/db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -249,7 +249,7 @@ CONST_KEY_DEPOSITORY_ADDRESS = 'depository_address_%s_%s'
 CONST_KEY_DEPOSITORY_NAME = 'depository_name_%s_%s'
 APPEND_SLASH = False
 FARSI_CHARS = 'ABCDEFGHIJKLMNO'
-
+REVERT_THRESHOLD = 1
 f = open(BASE_DIR + 'lang.json')
 LANG_DICT = json.loads(f.read())
 f.close()

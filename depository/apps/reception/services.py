@@ -26,19 +26,11 @@ logger = logging.getLogger(__name__)
 class ReceptionHelper:
     def assign_cell(self, size):
         assert size in [Cell.SIZE_SMALL, Cell.SIZE_LARGE]
-        treshold = timezone.now() - timezone.timedelta(minutes=1)
+        treshold = timezone.now() - timezone.timedelta(minutes=settings.REVERT_THRESHOLD)
         busy_cells = Pack.objects.filter(
             Q(delivery__exited_at__isnull=True) | Q(delivery__exited_at__gt=treshold)
         ).values_list('cell', flat=True)
-        cabinet_order = Cell.objects.filter(
-            is_healthy=True
-        ).exclude(
-            pk__in=busy_cells
-        ).order_by('row__cabinet__order').first()
-        if not cabinet_order:
-            return None
-        cabinet_order = cabinet_order.row.cabinet.order
-        for cabinet in Cabinet.objects.filter(order=cabinet_order):
+        for cabinet in Cabinet.objects.order_by('order'):
             is_asc = cabinet.is_asc
             cells = Cell.objects.filter(
                 is_healthy=True, row__cabinet=cabinet, size=size

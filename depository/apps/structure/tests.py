@@ -46,6 +46,15 @@ class StructureTest(APITestCase):
         self.assertEqual(17, Cell.objects.count())
         self.assertEqual(5, Cell.objects.filter(size=Cell.SIZE_LARGE).count())
 
+    def test_create_greater_than_10(self):
+        data = {
+            'num_of_rows': 1,
+            'num_of_cols': 15,
+            'first_row_size': 1
+        }
+        response = self.client.post(reverse('cabinet-list'), data, **self.headers)
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
+
     def test_change_status_cell(self):
         data = {'code': '1011', 'is_healthy': False}
         response = self.client.post(reverse('cell-change-status'), data, **self.headers)
