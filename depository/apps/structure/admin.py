@@ -24,7 +24,7 @@ class RowAdmin(admin.ModelAdmin):
 
 @admin.register(Cell)
 class CellAdmin(admin.ModelAdmin):
-    list_display = ['code', 'is_healthy']
+    list_display = ['code', 'is_healthy', 'size', 'is_fav']
 
 
 @admin.register(Constant)

@@ -112,7 +112,7 @@ WSGI_APPLICATION = 'depository.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join('/home/vahid/Projects/arbaeen/depository/depository/db.sqlite3'),
+        'NAME': os.path.join('./db.sqlite3'),
     }
 }
 

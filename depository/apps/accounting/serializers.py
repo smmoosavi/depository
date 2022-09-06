@@ -2,6 +2,7 @@ import os
 import tempfile
 
 from django.contrib.auth import authenticate
+from django.core.exceptions import ValidationError
 
 from django.utils.translation import ugettext_lazy
 from rest_framework import serializers
@@ -52,7 +53,7 @@ class PilgrimSerializer(serializers.ModelSerializer):
 class SignInSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
-    depository_code = serializers.IntegerField(required=False)
+    depository_code = serializers.CharField(required=False)
 
     def validate(self, data):
         if all(data.values()):
@@ -64,7 +65,11 @@ class SignInSerializer(serializers.Serializer):
                 }
                 if 'depository_code' in data:
                     try:
-                        depository = Depository.objects.get(code=data['depository_code'])
+                        try:
+                            depository_id = int(data['depository_code'])
+                        except Exception:
+                            raise ValidationError({"depository_code": "depository must be integer"})
+                        depository = Depository.objects.get(code=depository_id)
                         new_data.update({'depository': depository.name})
                         user.last_depository = depository
                         user.save()
