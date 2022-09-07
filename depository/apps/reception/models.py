@@ -40,6 +40,10 @@ class Delivery(models.Model):
         choices=EXIT_CHOICES, null=True, blank=True
     )
 
+    def __str__(self):
+        exited = '' if self.exit_type is None else ' - (exited)'
+        return f'{self.pilgrim.get_full_name()}{exited}'
+
 
 class Pack(models.Model):
     bag_count = models.IntegerField(default=0)

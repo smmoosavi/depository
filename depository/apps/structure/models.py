@@ -12,6 +12,9 @@ class Depository(models.Model):
     code = models.IntegerField()
     printer_id = models.IntegerField(blank=True)
 
+    def __str__(self):
+        return f'{self.name} - {self.code}'
+
 
 class Cabinet(models.Model):
     code = models.PositiveIntegerField()
@@ -19,10 +22,19 @@ class Cabinet(models.Model):
     order = models.FloatField(default=1)
     is_asc = models.NullBooleanField(default=True)
 
+    def __str__(self):
+        return f'cab {self.code}'
+
 
 class Row(models.Model):
     code = models.PositiveIntegerField(default=settings.ROW_DIGITS)
     cabinet = models.ForeignKey(Cabinet, on_delete=models.CASCADE, related_name='rows')
+
+    def get_char(self):
+        return settings.FARSI_CHARS[self.code]
+
+    def __str__(self):
+        return f'row {self.get_char()}{self.cabinet.code}'
 
 
 class Cell(models.Model):
@@ -52,6 +64,9 @@ class Cell(models.Model):
     def get_printable_code(self):
         from depository.apps.structure.helpers import CodeHelper
         return CodeHelper().to_print(self.row.cabinet.code, self.row.code, self.code)
+
+    def __str__(self):
+        return f'cell {self.code}{self.row.get_char()}{self.row.cabinet.code}'
 
 
 class Constant(models.Model):
