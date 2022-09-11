@@ -15,7 +15,7 @@ class CodeHelper:
 
     def to_print(self, cabinet_code, row_code, cell_code):
         return ("{:0%s}" % settings.CELL_DIGITS).format(cell_code) + \
-               settings.FARSI_CHARS[row_code] + \
+               settings.ENGLISH_CHARS[row_code] + \
                ("{:0%s}" % settings.CABINET_DIGITS).format(cabinet_code)
 
     def to_code(self, code):
