@@ -63,11 +63,10 @@ class ReceptionHelper:
             logger.info(f"busy cells: {busy_cells}")
             logger.info(f"return best cell {cells[0]}")
             return cells[0]
-        first_cell = Cell.objects.filter(
-            is_healthy=True
-        ).exclude(
-            pk__in=busy_cells
-        ).order_by('row__cabinet__order').first()
+        first_cell = Cell.objects \
+            .filter(is_healthy=True, size=size) \
+            .exclude(pk__in=busy_cells) \
+            .order_by('row__cabinet__order').first()
         if not first_cell:
             logger.info(f"no free cell")
             return None
